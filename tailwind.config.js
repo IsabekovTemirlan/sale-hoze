@@ -24,6 +24,7 @@ module.exports = {
       black: '#000',
       white: '#fff',
       bgColor: '#ff5722',
+      btnColor: '#dd2c00',
 
       gray: {
         100: '#f7fafc',
