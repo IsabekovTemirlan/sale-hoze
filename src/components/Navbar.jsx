@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../assets/icons/logo.svg';
+import {logo} from '../assets/icons';
 import { SideBar } from "./SideBar";
 
 export const Navbar = () => {
