@@ -1,9 +1,16 @@
 import React from 'react';
+
+import { useSelector } from "react-redux";
+
 import { Button } from "../components/Button";
 import { kg, success, comfort } from "../assets/icons";
 import {Card} from "../components/Card";
 
 export const MainPage = () => {
+  const ads = useSelector((state) => state.ads);
+
+  console.log(ads);
+
   return (
     <div className="m-auto pt-12 p-2 max-w-screen-xl">
       <section className="py-12 px-4 text-center">
