@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from "../components/Button";
 import { kg, success, comfort } from "../assets/icons";
+import {Card} from "../components/Card";
 
 export const MainPage = () => {
   return (
@@ -38,11 +39,20 @@ export const MainPage = () => {
         <Button title={'Подробнее'} />
       </section>
       <hr/>
-      <section className="py-5 bg-white">
-        <div className="w-full max-w-4xl mx-auto">
-          <h3 className="text-3xl mt-2 mb-6 leading-tight font-heading">Категории</h3>
-          <p className="mb-8 text-gray-500 leading-relaxed"><span className='font-bold'>SaleHoz</span> - это бесплатная и удобная платформа для объявлений, разработанная именно для сельско-хозяйственного сегмента, здесь вы можете не только найти более подходящее вам объявление при помощи различной сортировки но и так же можете подать своё собственное.</p>
+      <section className="p-5 bg-white">
+        <div className="w-full max-w-4xl text-center mx-auto">
+          <h3 className="text-3xl mt-2 mb-6 leading-tight font-heading"><span className='font-bold text-bgColor'>VIP</span> - Объявления</h3>
+          <p className="mb-8 text-gray-500 leading-relaxed">
+            <span className='font-bold'>VIP</span> объявлении всегда находятся в доступной видимости как для старых пользователей так и для новых и оно будет паказано большему колличеству людей.
+          </p>
         </div>
+
+        <section className="w-full flex justify-center px-2">
+          <Card/>
+          <Card/>
+          <Card/>
+        </section>
+
       </section>
     </div>
   )

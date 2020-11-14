@@ -9,5 +9,7 @@ import logo from "./logo.svg";
 import kg from "./kg.png";
 import comfort from "./comfort.svg";
 import success from "./success.svg";
+import like from "./heart.svg";
+import liked from "./liked.svg";
 
-export {close, home, search, catS, plus, about, menu, logo, kg, comfort, success};
+export {close, home, search, catS, plus, about, menu, logo, kg, comfort, success, like, liked};
