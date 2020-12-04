@@ -11,5 +11,7 @@ import comfort from "./comfort.svg";
 import success from "./success.svg";
 import like from "./heart.svg";
 import liked from "./liked.svg";
+import allAds from "./allAds.svg";
+import profile from "./profile.svg";
 
-export {close, home, search, catS, plus, about, menu, logo, kg, comfort, success, like, liked};
+export {close, home, search, catS, plus, about, menu, logo, kg, comfort, success, like, liked, allAds, profile};

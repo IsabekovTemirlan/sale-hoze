@@ -1,11 +1,12 @@
 import React from 'react';
 
-export const Button = ({title, type}) => {
+export const Button = ({title, type, handler, btnType, pad}) => {
 
   return (
-    <a
-      className="inline-block py-4 px-8 mr-6 leading-none text-white uppercase bg-indigo-400 hover:bg-indigo-500 rounded shadow" href="/">
+    <button
+      onClick={handler ? handler : null} type={type || null}
+      className={`inline-block px-8 ${pad ? pad : 'py-4'} m-2 leading-none focus:outline-none outline-none text-white uppercase ${btnType ? btnType : "bg-bgColor"} hover:bg-opacity-75 rounded shadow`} >
       {title}
-    </a>
+    </button>
   )
 }

@@ -1,11 +1,50 @@
+import axios from "axios";
 import * as api from "../api";
+
+const adsUrl = 'http://localhost:5000/ads';
 
 export const getAds = () => async (dispatch) => {
   try {
-    const { data } = await api.fetchAds();
+    const {data} = await axios.get(adsUrl);
 
-    dispatch({ type: "FETCH_ALL", payload: data });
+    dispatch({type: "GET_ADS", payload: data});
   } catch (e) {
     console.log(e.message);
   }
+}
+
+export const createAd = (ad) => async (dispatch) => {
+  try {
+    const { data } = await api.addAd(ad)
+    dispatch({ type: "CREATE", payload: data });
+
+  } catch (e) {
+    console.log(e.message);
+  }
+}
+
+export const likeAd = (id) => async (dispatch) => {
+  try {
+    const { data } = await api.likeAd(id);
+
+    dispatch({ type: "LIKE", payload: data });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const deleteAd = (id) => async (dispatch) => {
+  try {
+    await api.deleteAd(id);
+
+    dispatch({ type: "DELETE", payload: id });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const searchAds = (value) => (dispatch) => {
+  dispatch({
+    type: "SEARCH_AD", payload: value
+  });
 }
