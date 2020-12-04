@@ -4,14 +4,14 @@ import AdMessage from "../models/adMessage.js";
 
 const router = express.Router();
 
-import ads from "../db/ads.js";
+// import ads from "../db/ads.js";
 
 export const getAds = async (req, res) => {
   try {
-    // const AdMessages = await AdMessage.find().lean();
-    // await res.status(200).json(AdMessages);
+    const AdMessages = await AdMessage.find().lean();
+    await res.status(200).json(AdMessages);
 
-    await res.status(200).json(ads);
+    // await res.status(200).json(ads);
 
   } catch (error) {
     await res.status(404).json({message: error.message});

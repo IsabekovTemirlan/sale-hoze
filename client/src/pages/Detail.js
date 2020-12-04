@@ -4,8 +4,7 @@ import {useSelector} from "react-redux";
 
 export const DetailPage = () => {
   const { id } = useParams();
-  const ads = useSelector(state => state.ads)
-  ads.forEach(item => console.log(item._id === id));
+  const ads = useSelector(state => state.ads.find(item => item._id === id));
 
   return (
 
