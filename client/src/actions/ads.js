@@ -16,7 +16,8 @@ export const getAds = () => async (dispatch) => {
 export const createAd = (ad) => async (dispatch) => {
   try {
     const { data } = await api.addAd(ad)
-    dispatch({ type: "CREATE", payload: data });
+    dispatch({ type: "CREATE", payload: data.newAd });
+    dispatch({type: "SET_ALERT", payload: data.message});
 
   } catch (e) {
     console.log(e.message);
@@ -47,4 +48,8 @@ export const searchAds = (value) => (dispatch) => {
   dispatch({
     type: "SEARCH_AD", payload: value
   });
+}
+
+export const searchAdByCategory = (value) => (dispatch) => {
+  dispatch({type: "SEARCH_AD_BY_CATEGORY", payload: value});
 }

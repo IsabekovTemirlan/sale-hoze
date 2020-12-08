@@ -15,7 +15,7 @@ export const Card = ({data, isAuth, handler, size}) => {
     dispatch(likeAd(_id));
   }
 
-  isLiked && setInterval(() => setIsLiked(false), 2000);
+  // isLiked && setInterval(() => setIsLiked(false), 2000);
 
   const LikeIcon = () => <img onClick={likeHandler} className="cursor-pointer mr-4 transition-all" src={isLiked ? liked : like} alt=""/>
 

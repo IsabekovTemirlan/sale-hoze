@@ -11,15 +11,16 @@ export const ProfilePage = () => {
   const {logout, userName, userId, isAuthenticated} = useContext(AuthContext);
 
   const ads = useSelector(state => state.ads.filter(ad => ad.creator === userId));
+  const alert = useSelector(state => state.alert);
   const dispatch = useDispatch();
 
-  const deleteAdById = (id) => {
-    dispatch(deleteAd(id));
-  }
+  const deleteAdById = id => dispatch(deleteAd(id));
+  const showFormHandler = () => setShowForm(!showForm);
 
-  const showFormHandler = () => {
-    setShowForm(!showForm);
-  }
+  alert && setTimeout(() => {
+    const timerId = dispatch({type: "SET_ALERT", payload: ""});
+    clearTimeout(timerId);
+  }, 5000);
 
   return (
     <section className="pb-6">
@@ -49,6 +50,7 @@ export const ProfilePage = () => {
           </div>
 
           {showForm && <AddForm ownerId={userId}/>}
+          {alert && <p className="text-center text-green-600 font-bold mt-4 p-2" >{alert}</p>}
         </div>
 
         <div className="w-full bg-white p-2 rounded">
@@ -63,4 +65,3 @@ export const ProfilePage = () => {
     </section>
   )
 }
-//   id={item._id} title={item.title} description={item.description} contactNumber={item.contactNumber} createdAt={item.createdAt} likeCount={item.likeCount} location={item.location} photo={item.photo} price={item.price}

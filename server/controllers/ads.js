@@ -6,10 +6,16 @@ const router = express.Router();
 
 // import ads from "../db/ads.js";
 
+const timeOut = (ads) => {
+  const nowDate = new Date().getTime();
+  return ads.filter(ad => ad.timeOut !== nowDate)
+}
+
 export const getAds = async (req, res) => {
   try {
     const AdMessages = await AdMessage.find().lean();
-    await res.status(200).json(AdMessages);
+    const finalAds = timeOut(AdMessages);
+    await res.status(200).json(finalAds);
 
     // await res.status(200).json(ads);
 
@@ -37,7 +43,7 @@ export const createAd = async (req, res) => {
 
   try {
     await newAd.save();
-    await res.status(201).json(newAd);
+    await res.status(201).json({newAd, message: 'Объявление успешно создано!'});
 
   } catch (e) {
     await res.status(409).json({message: e.message})
@@ -51,7 +57,7 @@ export const deleteAd = async (req, res) => {
 
   await AdMessage.findByIdAndRemove(id);
 
-  res.json({ message: "Post deleted successfully." });
+  res.json({ message: "Объявление упешно удалено!." });
 }
 
 export default router;

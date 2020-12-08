@@ -16,6 +16,7 @@ const adsSchema = mongoose.Schema({
     type: Date,
     default: new Date()
   },
+  timeOut: Number,
   creator: String,
   category: String
 })
