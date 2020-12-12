@@ -4,6 +4,7 @@ import {Card} from "../components/Card";
 import {Button} from "../components/Button";
 import {getAds} from "../actions/ads";
 import {SearchBar} from "../components/SearchBar";
+// import { Pagination } from "../components/Pagination";
 
 export const AllAdsPage = () => {
   const ads = useSelector((state) => state.ads);
@@ -15,7 +16,7 @@ export const AllAdsPage = () => {
 
   useEffect(() => {
     return () => dispatch(getAds())
-  }, [dispatch]);
+  }, [dispatch, ads]);
 
   return (
     <section>
@@ -27,6 +28,7 @@ export const AllAdsPage = () => {
       <div className="w-full mt-10 flex justify-center flex-wrap">
         {ads.length ? ads.map(item => <Card data={item} key={item._id}/>) : <p>Объявлений нет</p>}
       </div>
+
       <div className='text-center my-12 w-full'>
         <Button handler={getMoreAds} title="Загрузить ещё" />
       </div>

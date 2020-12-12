@@ -5,6 +5,9 @@ import {Button} from "../components/Button";
 import {Card} from "../components/Card";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteAd} from "../actions/ads";
+import { deletPhotoInFirebase } from "../utils";
+
+     
 
 export const ProfilePage = () => {
   const [showForm, setShowForm] = useState(false);
@@ -14,7 +17,12 @@ export const ProfilePage = () => {
   const alert = useSelector(state => state.alert);
   const dispatch = useDispatch();
 
-  const deleteAdById = id => dispatch(deleteAd(id));
+  const deleteAdById = id => {
+    dispatch(deleteAd(id))
+    const deletedPhotoName = [...ads.filter(ad => ad._id === id)[0].photoName];  
+    deletedPhotoName.forEach( pn => deletPhotoInFirebase(pn));
+  }
+
   const showFormHandler = () => setShowForm(!showForm);
 
   alert && setTimeout(() => {

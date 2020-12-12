@@ -1,8 +1,29 @@
-// helper functions
-export const createPersistentDownloadUrl = (bucket, pathToFile) => `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${pathToFile}?alt=media&token=72f92c7d-3d18-4008-ac05-86cabd234dc8`;
-export const getTimeOutValue = (time) => new Date(new Date().getTime() + ((+time * 86400) * 1000)).getTime();
+import {app} from "../base";
+// --------- // helper functions // --------- //
 
-// helper variables
+// create image url for using in front
+export const createPersistentDownloadUrl = (bucket, pathToFile) => `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${pathToFile}?alt=media&token=72f92c7d-3d18-4008-ac05-86cabd234dc8`;
+
+// calculate time when ad auto deleted
+export const getTimeOutValue = (time) => {
+  const nowDate = new Date();
+  nowDate.setDate(nowDate.getDate() + time);
+  return nowDate
+}
+
+// normolize and adaptation date
+export const getNormalDate = (date) => new Date(date.toString()).toLocaleString('ru', {year: 'numeric',month: 'long',day: 'numeric',hour: 'numeric',minute: 'numeric',});
+
+// this function delete photo in firebase with help photoName
+export const deletPhotoInFirebase = (photoName) => {
+  if (photoName) {
+      const storageRef = app.storage().ref();
+      const fileRef = storageRef.child(photoName);
+      fileRef.delete().catch(e => console.log(e));
+    }
+}
+
+// --------- // helper variables // --------- //
 export const location = ['Ыссык-Куль', 'Джалал-Абад', 'Нарын', 'Ош', 'Баткен', 'Чуй', 'Талас', 'Бишкек'];
 export const categoryList = ['Другое', 'Крупы и кормы', 'Услуги', 'Крупно-рогатый и мелко-копытный скот', 'Лощади', 'Сель-хоз техника', 'Ремесловые изделия', 'Домашние животные']
-export const initialStateForm = {contactNumber: "+996", timeOut: undefined, description: "", likeCount: 0, location: location[0], killDate: '7', price: "", title: "", photo: '', creator: '', category: 'Другое', createdAt: undefined};
+export const initialStateForm = {contactNumber: "+996 ", timeOut: undefined, description: "", likeCount: 0, location: location[0], killDate: '7', price: "", title: "", photo: [], creator: '', category: 'Другое', createdAt: undefined, photoName: [], isCheked: false};

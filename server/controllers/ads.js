@@ -6,16 +6,10 @@ const router = express.Router();
 
 // import ads from "../db/ads.js";
 
-const timeOut = (ads) => {
-  const nowDate = new Date().getTime();
-  return ads.filter(ad => ad.timeOut !== nowDate)
-}
-
 export const getAds = async (req, res) => {
   try {
     const AdMessages = await AdMessage.find().lean();
-    const finalAds = timeOut(AdMessages);
-    await res.status(200).json(finalAds);
+    await res.status(200).json(AdMessages);
 
     // await res.status(200).json(ads);
 

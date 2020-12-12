@@ -27,7 +27,7 @@ export const Navbar = ({isAuth}) => {
           <img src={logo} alt="logo"/>
           <div className="ml-4 text-2xl font-bold text-white">SaleHoz</div>
         </a>
-        {isAuth ? <SideBar state={authPageLinks} /> : <SideBar state={pageLinks}/> }
+        {isAuth ? <SideBar state={authPageLinks} /> : <SideBar state={pageLinks}/> }   
       </div>
     </div>
   )

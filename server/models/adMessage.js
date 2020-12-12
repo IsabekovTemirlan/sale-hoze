@@ -5,7 +5,7 @@ const adsSchema = mongoose.Schema({
   description: String,
   location: String,
   contactNumber: String,
-  photo: String,
+  photo: [String],
   killDate: String,
   price: String,
   likeCount: {
@@ -18,7 +18,8 @@ const adsSchema = mongoose.Schema({
   },
   timeOut: Number,
   creator: String,
-  category: String
+  category: String,
+  photoName: [String]
 })
 
 const AdMessage = mongoose.model('AdMessage', adsSchema);
