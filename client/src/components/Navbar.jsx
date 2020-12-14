@@ -1,21 +1,23 @@
 import React from 'react';
-import {about, allAds, catS, home, logo, plus, profile} from '../assets/icons';
-import { SideBar } from "./SideBar";
+import {logo} from '../assets/icons';
+import {SideBar} from "./SideBar";
 
 const authPageLinks = [
-  {id: 0, title: 'Главная', img: home, url: '/'},
-  {id: 1, title: 'Профиль', img: profile, url: '/profile'},
-  {id: 2, title: 'Все объявлении', img: allAds, url: '/ads'},
-  {id: 3, title: 'Категории', img: catS, url: '/categories'},
-  {id: 4, title: 'О проекте', img: about, url: '/about'},
+  {id: 0, title: 'Главная', img: "home", url: '/'},
+  {id: 1, title: 'Профиль', img: "user", url: '/profile'},
+  {id: 2, title: 'Все объявлении', img: "spreadsheet", url: '/ads'},
+  {id: 4, title: 'Подать объявление', img: "add-to-queue", url: '/advertise'},
+  {id: 5, title: 'Категории', img: "category-alt", url: '/categories'},
+  {id: 6, title: 'О проекте', img: "question-mark", url: '/about'}
 ];
 
 const pageLinks = [
-  {id: 0, title: 'Главная', img: home, url: '/'},
-  {id: 1, title: 'Все объявлении', img: allAds, url: '/ads'},
-  {id: 2, title: 'Категории', img: catS, url: '/categories'},
-  {id: 3, title: 'Подать объявление', img: plus, url: '/advertise'},
-  {id: 4, title: 'О проекте', img: about, url: '/about'},
+  {id: 0, title: 'Главная', img: "home", url: '/'},
+  {id: 1, title: 'Все объявлении', img: "spreadsheet", url: '/ads'},
+  {id: 2, title: 'Категории', img: "category-alt", url: '/categories'},
+  {id: 3, title: 'Подать объявление', img: "add-to-queue", url: '/advertise'},
+  {id: 4, title: 'О проекте', img: "question-mark", url: '/about'},
+  {id: 5, title: 'Войти', img: "log-in", url: '/auth'},
 ];
 
 export const Navbar = ({isAuth}) => {

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { like, liked } from "../assets/icons";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { likeAd } from "../actions/ads";
+
+import "boxicons";
 
 export const Card = ({ data, isAuth, handler, size }) => {
   const [isLiked, setIsLiked] = useState(false);
@@ -15,20 +16,15 @@ export const Card = ({ data, isAuth, handler, size }) => {
     dispatch(likeAd(_id));
   };
 
-  // isLiked && setInterval(() => setIsLiked(false), 2000);
-  isLiked &&
-    setTimeout(() => {
-      const likeTimer = setIsLiked(false);
-      clearTimeout(likeTimer);
-    }, 2000);
-
   const LikeIcon = () => (
-    <img
-      onClick={likeHandler}
-      className="cursor-pointer mr-4 transition-all"
-      src={isLiked ? liked : like}
-      alt=""
-    />
+    <div className="cursor-pointer mr-4 transition-all">
+      <box-icon
+        onClick={likeHandler}
+        name="like"
+        type={isLiked ? "solid" : ""}
+        color="#ff5722"
+      ></box-icon>
+    </div>
   );
 
   return (
@@ -67,7 +63,7 @@ export const Card = ({ data, isAuth, handler, size }) => {
             Удалить
           </button>
         )}
-      </div>     
+      </div>
     </div>
   );
 };

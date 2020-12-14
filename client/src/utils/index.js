@@ -11,6 +11,27 @@ export const getTimeOutValue = (time) => {
   return nowDate
 }
 
+// function to upload file into firebase storage
+export const fileUploadeToFirebase = (filesArr) => {
+  const files = [...filesArr];
+  const storageRef = app.storage().ref();
+
+  const imgUrl = [], fileName = [];
+
+  // loop for put every uploaded file into firebase storage
+  files.forEach((file) => {
+    const fileRef = storageRef.child(file.name);
+
+    fileRef.put(file).then((e) => {
+      const { bucket, path } = e._delegate.ref._location;
+      imgUrl.push(createPersistentDownloadUrl(bucket, path)); // save img URL for display in frontend
+      fileName.push(file.name)
+    });
+  });
+
+  return [imgUrl, fileName]
+}
+
 // normolize and adaptation date
 export const getNormalDate = (date) => new Date(date.toString()).toLocaleString('ru', {year: 'numeric',month: 'long',day: 'numeric',hour: 'numeric',minute: 'numeric',});
 

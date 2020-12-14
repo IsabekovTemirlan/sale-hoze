@@ -11,3 +11,5 @@ export const addAd = (newAd) => axios.post('http://localhost:5000/ads', newAd);
 export const likeAd = (id) => axios.patch(`http://localhost:5000/ads/${id}/likeAd`);
 
 export const deleteAd = (id) => axios.delete(`http://localhost:5000/ads/${id}`);
+
+export const updateAd = (id, updatedAd) => axios.patch(`http://localhost:5000/ads/${id}`, updatedAd);

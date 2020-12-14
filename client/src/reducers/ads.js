@@ -12,6 +12,9 @@ const adReducer = (state = [], action) => {
     case "DELETE":
       return state.filter((ad) => ad._id !== action.payload)
 
+    case "UPDATE":
+      return state.map((ad) => (ad._id === action.payload._id ? action.payload : ad));
+
     case "SEARCH_AD":
       return [...state.filter(ad => ad.title.toLowerCase().includes(action.payload.toLowerCase()))]
 

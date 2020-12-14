@@ -23,7 +23,7 @@ import { Breadcrumbs } from './components/Breadcrumbs';
 
 import { deletPhotoInFirebase } from "./utils";
 
-const Routes = ({ isAuthenticated }) => {
+const Routes = ({ isAuthenticated, userId }) => {
 
   if (isAuthenticated) {
     return (
@@ -34,6 +34,7 @@ const Routes = ({ isAuthenticated }) => {
         <Route path="/ads" component={AllAdsPage} />
         <Route path="/categories" exact component={CategoriesPage} />
         <Route path="/about" exact component={AboutPage} />
+        <Route path="/advertise" exact> <AdvertisePage isAuth={isAuthenticated} userId={userId}/></Route>
         <Route path="/profile" exact component={ProfilePage} />
         <Route path="/detail/:id" component={DetailPage} />
         <Redirect to='/profile' />
@@ -86,7 +87,7 @@ function App() {
           <Navbar isAuth={isAuthenticated} />
           <Breadcrumbs />
           <div className="m-auto pt-2 max-w-screen-xl">
-            <Routes isAuthenticated={isAuthenticated} />
+            <Routes isAuthenticated={isAuthenticated} userId={userId} />
           </div>
         </div>
       </Router>

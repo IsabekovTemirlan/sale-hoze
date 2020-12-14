@@ -53,3 +53,13 @@ export const searchAds = (value) => (dispatch) => {
 export const searchAdByCategory = (value) => (dispatch) => {
   dispatch({type: "SEARCH_AD_BY_CATEGORY", payload: value});
 }
+
+export const updateAd = (id, post) => async (dispatch) => {
+  try {
+    const { data } = await api.updateAd(id, post);
+
+    dispatch({ type: "UPDATE", payload: data });
+  } catch (error) {
+    console.log(error.message);
+  }
+};

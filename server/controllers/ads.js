@@ -54,4 +54,17 @@ export const deleteAd = async (req, res) => {
   res.json({ message: "Объявление упешно удалено!." });
 }
 
+export const updateAd = async (req, res) => {
+    const { id } = req.params;
+    const { title, description, location, killDate, price, creator, category, createdAt, likeCount, contactNumber, timeOut, photo, photoName } = req.body;
+    
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
+
+    const updatedAd = { title, description, location, killDate, price, creator, category, createdAt, likeCount, contactNumber, timeOut, photo, photoName, _id: id };
+
+    await AdMessage.findByIdAndUpdate(id, updatedAd, { new: true });
+
+    res.json(updatedAd);
+}
+
 export default router;

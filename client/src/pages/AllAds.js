@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from "react";
+import React, {useCallback} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Card} from "../components/Card";
 import {Button} from "../components/Button";
@@ -13,10 +13,6 @@ export const AllAdsPage = () => {
   const getMoreAds = useCallback(() => {
     dispatch(getAds())
   }, [dispatch]);
-
-  useEffect(() => {
-    return () => dispatch(getAds())
-  }, [dispatch, ads]);
 
   return (
     <section>

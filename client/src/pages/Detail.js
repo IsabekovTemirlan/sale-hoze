@@ -7,7 +7,7 @@ import { getNormalDate } from '../utils';
 export const DetailPage = () => {
   const { id } = useParams();
   const ads = useSelector((state) => state.ads.find((item) => item._id === id));
-  const [mainImg, setMainImg] = useState(ads.photo[0]);
+  const [mainImg, setMainImg] = useState(ads.photo);
 
   return (
     <div className="py-6 mt-1 bg-white rounded-lg">
@@ -28,7 +28,7 @@ export const DetailPage = () => {
               <div className="flex -mx-2 mb-4">
                 {
                   ads && ads.photo.map(p => (
-                    <div key={p.length} className="flex-1 px-2">
+                    <div key={p} className="flex-1 px-2">
                       <button onClick={() => setMainImg(p)} className={"overflow-hidden focus:outline-none w-full rounded-lg h-24 md:h-32 bg-gray-100 flex items-center justify-center" + (p === mainImg ? " border-2 border-bgColor ": "")}>
                         <img className="" src={p} alt="" />
                       </button>

@@ -14,9 +14,9 @@ export const SearchBar = () => {
   }
 
   return (
-    <div className="pt-2 relative w-1/2 text-gray-600 flex items-center relative z-0">
+    <div className="pt-2 w-1/2 text-gray-600 flex items-center relative z-0">
       <input
-        className="border-2 w-full text-2xl border-gray-300 mr-2 bg-white h-10 px-5 p-6 rounded-lg text-sm focus:outline-none"
+        className="border-2 w-full border-gray-300 mr-2 bg-white h-10 px-5 p-6 rounded-lg text-sm focus:outline-none"
         type="search"
         name="search"
         placeholder="Что ищете? (например: овцы)"
