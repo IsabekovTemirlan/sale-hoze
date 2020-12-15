@@ -5,6 +5,7 @@ import cors from "cors";
 
 import adRoutes from "./routes/ads.js";
 import authRoutes from "./routes/auth.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 app.use('/ads', adRoutes);
 app.use('/auth', authRoutes);
+app.use('/admin', adminRoutes);
 
 const CONNECTION_URL = 'mongodb+srv://isabekovtemirlan:isabekov99@cluster0.nci92.mongodb.net/<dbname>?retryWrites=true&w=majority';
 const PORT = process.env.PORT || 5000;

@@ -1,6 +1,5 @@
 import express from 'express';
 const {Router} = express;
-
 import expressValid from 'express-validator';
 const {check} = expressValid;
 
