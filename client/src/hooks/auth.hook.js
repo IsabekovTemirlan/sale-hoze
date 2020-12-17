@@ -7,14 +7,16 @@ export const useAuth = () => {
   const [userId, setUserId] = useState(null);
   const [userName, setUserName] = useState(null);
   const [userAds, setUserAds] = useState(null);
+  const [userType, setUserType] = useState(null);
 
-  const login = useCallback((jwtToken, id, name, ads) => {
+  const login = useCallback((jwtToken, id, name, ads, type) => {
     setToken(jwtToken);
     setUserId(id);
     setUserName(name);
-    setUserAds(ads)
+    setUserAds(ads);
+    setUserType(type);
 
-    localStorage.setItem(storageName, JSON.stringify({userID: id, userName: name, token: jwtToken, userAds: ads}));
+    localStorage.setItem(storageName, JSON.stringify({userID: id, userName: name, token: jwtToken, userAds: ads, userType: type}));
   }, []);
 
   const logout = useCallback(() => {
@@ -22,6 +24,7 @@ export const useAuth = () => {
     setUserId(null);
     setUserName(null);
     setUserAds(null);
+    setUserType(null);
 
     localStorage.removeItem(storageName);
   }, []);
@@ -30,10 +33,10 @@ export const useAuth = () => {
     const data = JSON.parse(localStorage.getItem(storageName));
 
     if (data && data.token) {
-      login(data.token, data.userID, data.userName, data.userAds);
+      login(data.token, data.userID, data.userName, data.userAds, data.userType);
     }
 
   }, [login]);
 
-  return {login, logout, token, userId, userName, userAds}
+  return {login, logout, token, userId, userName, userAds, userType}
 }

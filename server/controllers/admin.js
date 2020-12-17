@@ -42,7 +42,7 @@ export const loginAdmin = async (req, res) => {
     // const token = jwt.sign( { userId: user.id }, "isabekovMakeMERN", { expiresIn: '1h' });
     const token = generateAccessToke(user._id, user.roles);
 
-    res.json({ token, userName: login, msg: "Вы вошли!" });
+    res.json({ token, userName: login, msg: "Вы вошли как Админ!", isAdmin: true });
   } catch (e) {
     res.status(500).json({ message: e.message });
   }

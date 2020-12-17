@@ -20,7 +20,12 @@ const pageLinks = [
   {id: 5, title: 'Войти', img: "log-in", url: '/auth'},
 ];
 
-export const Navbar = ({isAuth}) => {
+const adminPages = [
+  {id: 0, title: 'Панель управления', img: "edit", url: '/dashboard'},
+  {id: 1, title: 'Все обьявления', img: "border-all", url: '/user:id'}
+];
+
+export const Navbar = ({isAuth, isAdmin}) => {
 
   return (
     <div className="w-full bg-bgColor shadow-2xl fixed z-20">
@@ -29,7 +34,7 @@ export const Navbar = ({isAuth}) => {
           <img src={logo} alt="logo"/>
           <div className="ml-4 text-2xl font-bold text-white">SaleHoz</div>
         </a>
-        {isAuth ? <SideBar state={authPageLinks} /> : <SideBar state={pageLinks}/> }   
+        {(isAdmin && isAuth) ?  <SideBar state={adminPages} /> : (isAuth ? <SideBar state={authPageLinks} /> : <SideBar state={pageLinks}/> ) }
       </div>
     </div>
   )

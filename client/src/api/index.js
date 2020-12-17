@@ -1,15 +1,13 @@
 import axios from "axios";
 
-const authLoginUrl = 'http://localhost:5000/auth/login';
-export const loginUser = (userData) => axios.post(authLoginUrl, userData);
+const url = 'http://localhost:5000/';
 
-const authRegisterUrl = 'http://localhost:5000/auth/register';
-export const registerUser = (userData) => axios.post(authRegisterUrl, userData)
+export const loginUser = (userData) => axios.post(`${url}auth/login`, userData);
+export const registerUser = (userData) => axios.post(`${url}auth/register`, userData)
 
-export const addAd = (newAd) => axios.post('http://localhost:5000/ads', newAd);
+export const addAd = (newAd) => axios.post(`${url}ads`, newAd);
+export const likeAd = (id) => axios.patch(`${url}ads/${id}/likeAd`);
+export const deleteAd = (id) => axios.delete(`${url}ads/${id}`);
+export const updateAd = (id, updatedAd) => axios.patch(`${url}ads/${id}`, updatedAd);
 
-export const likeAd = (id) => axios.patch(`http://localhost:5000/ads/${id}/likeAd`);
-
-export const deleteAd = (id) => axios.delete(`http://localhost:5000/ads/${id}`);
-
-export const updateAd = (id, updatedAd) => axios.patch(`http://localhost:5000/ads/${id}`, updatedAd);
+export const loginAdmin = (adminData) => axios.post(`${url}admin`, adminData);

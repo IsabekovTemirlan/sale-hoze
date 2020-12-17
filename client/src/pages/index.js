@@ -6,5 +6,6 @@ import {CategoriesPage} from "./Categories";
 import {AuthPage} from "./Auth";
 import {ProfilePage} from "./Profile";
 import {DetailPage} from "./Detail";
-
-export {MainPage, AboutPage, AdvertisePage, AllAdsPage, CategoriesPage, AuthPage, ProfilePage, DetailPage};
+import {AdminPanel} from "./AdminPanel";
+import {UserPage} from "./UserPage";
+export {MainPage, AdminPanel, AboutPage, AdvertisePage, AllAdsPage, CategoriesPage, AuthPage, ProfilePage, DetailPage, UserPage};

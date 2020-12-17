@@ -19,7 +19,6 @@ export const AddForm = ({ ownerId }) => {
   // put the data to the data base
   const submitForm = (e) => {
     e.preventDefault();
-    console.log(state);
 
     if (state.isCheked) {
       dispatch(createAd(state));
