@@ -33,7 +33,6 @@ export const AddForm = ({ ownerId }) => {
     setState({
       ...state,
       [e.target.name]: e.target.value,
-      createdAt: new Date(),
       creator: ownerId,
     });
 
@@ -42,9 +41,13 @@ export const AddForm = ({ ownerId }) => {
     setState({ ...state, killDate: e.target.value });
 
   // multiple files upload
-  const fileUploadHandler = (e) => {
-    const [imgUrl, fileName] = fileUploadeToFirebase(e.target.files);
-    setState((prev) => ({ ...prev, photo: imgUrl, photoName: fileName }));
+  const fileUploadHandler = async (e) => {
+    const [imgUrl, fileName] = await fileUploadeToFirebase(e.target.files);
+    try {
+      setState((prev) => ({ ...prev, photo: imgUrl, photoName: fileName })); 
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   // terms got it
@@ -205,7 +208,7 @@ export const AddForm = ({ ownerId }) => {
             Фото
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow overflow-hidden appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             name="photo"
             type="file"
             multiple

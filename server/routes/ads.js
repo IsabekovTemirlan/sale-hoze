@@ -8,6 +8,6 @@ router.get('/', getAds);
 router.post('/', createAd);
 router.patch('/:id/likeAd', likeAd);
 router.patch('/:id', updateAd);
-router.delete('/:id', deleteAd);
+router.post('/:id', deleteAd);
 
 export default router;

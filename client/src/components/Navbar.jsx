@@ -28,7 +28,7 @@ const adminPages = [
 export const Navbar = ({isAuth, isAdmin}) => {
 
   return (
-    <div className="w-full bg-bgColor shadow-2xl fixed z-20">
+    <div style={{backgroundColor: "#fc9842", backgroundImage: "linear-gradient(315deg, #fc9842 0%, #fe5f75 74%)"}} className="w-full shadow-2xl fixed z-20">
       <div className="m-auto p-2 h-16 flex justify-between items-center max-w-screen-xl">
         <a href="/" className="flex">
           <img src={logo} alt="logo"/>

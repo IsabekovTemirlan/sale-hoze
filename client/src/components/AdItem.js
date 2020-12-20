@@ -4,7 +4,7 @@ import { getNormalDate } from "../utils";
 import "boxicons";
 
 export const AdItem = ({ data, handler, id, editHandler }) => {
-  const { title, createdAt, killDate } = data;
+  const { title, createdAt, killDate, _id } = data;
   return (
     <tr className="border-b hover:bg-orange-100 bg-gray-100">
       <td className="p-3 px-5">
@@ -27,7 +27,7 @@ export const AdItem = ({ data, handler, id, editHandler }) => {
         </div>
         <div className="cursor-pointer">
           <box-icon
-            onClick={handler}
+            onClick={() => handler(_id)}
             name="trash"
             type="solid"
             color="red"

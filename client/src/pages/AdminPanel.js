@@ -1,8 +1,11 @@
-import React from 'react'
+import React, {useContext} from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-const UserItem = ({id, login, roles, links}) => {
+import { AuthContext } from "../context/authContext";
+
+const UserItem = ({ id, login, roles, ads }) => {
+  const adsCount = ads.filter(a => a.creator === id);
   return (
     <tr className="transition-all hover:bg-gray-100 hover:shadow-lg">
       <td className="px-6 py-4 whitespace-nowrap">
@@ -12,31 +15,47 @@ const UserItem = ({id, login, roles, links}) => {
           </div>
         </div>
       </td>
-      <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{links.length}</td>
+      <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+        {adsCount.length}
+      </td>
       <td className="px-6 py-4 whitespace-nowrap">
         <span className="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
           Active
         </span>
       </td>
-      <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{roles}</td>
+      <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+        {roles}
+      </td>
       <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-        <Link to={`users/${id}`} className="text-indigo-600 hover:text-indigo-900">Настроить</Link>
+        <Link
+          to={`users/${id}`}
+          className="text-indigo-600 hover:text-indigo-900"
+        >
+          Настроить
+        </Link>
       </td>
     </tr>
-  )
-}
+  );
+};
 
 export const AdminPanel = () => {
-  const users = useSelector(state => state.users);
-  const adsCount = useSelector(state => state.ads.length);
+  const { logout } = useContext(AuthContext);
+  const users = useSelector((state) => state.users);
+  const ads = useSelector((state) => state.ads);
+
+  const logoutHandler = () => {
+    logout();
+    window.location.href = '/';
+  };
 
   return (
     <div className="flex h-screen overflow-y-hidden bg-white" x-data="setup()">
       {/* <Navbar isAdmin isAuth /> */}
-      <section className="flex-1 mt-16 max-h-full p-5 overflow-hidden overflow-y-scroll">
-
+      <section className="flex-1 mt-16 max-h-full p-5 overflow-hidden">
         <div className="flex flex-col items-start justify-between pb-6 space-y-4 border-b lg:items-center lg:space-y-0 lg:flex-row">
-          <h1 className="text-2xl font-semibold whitespace-nowrap">Панель управления SaleHoz</h1>
+          <h1 className="text-2xl font-semibold whitespace-nowrap">
+            Панель управления SaleHoz
+          </h1>
         </div>
 
         <div className="my-2 flex w-1/3">
@@ -53,7 +72,19 @@ export const AdminPanel = () => {
             <div className="flex items-start justify-between">
               <div className="flex flex-col space-y-2">
                 <span className="text-gray-400">Всего объявлений</span>
-                <span className="text-lg font-semibold">{adsCount}</span>
+                <span className="text-lg font-semibold">{ads.length}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="ml-4 p-4 transition-shadow border rounded-lg shadow-sm hover:shadow-lg">
+            <div className="flex items-start justify-between">
+              <div className="flex flex-col space-y-2">
+                <span className="text-gray-400">
+                  <button onClick={logoutHandler}>
+                    Выйти
+                  </button>
+                </span>
               </div>
             </div>
           </div>
@@ -67,23 +98,49 @@ export const AdminPanel = () => {
                 <table className="min-w-full overflow-x-scroll divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th scope="col" className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                      >
                         Логин
                       </th>
-                      <th scope="col" className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase" >
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                      >
                         Кол-во объявлений
                       </th>
-                      <th scope="col" className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase" > Status </th>
-                      <th scope="col" className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase" >
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                      >
+                        {" "}
+                        Status{" "}
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                      >
                         Role
                       </th>
-                      <th scope="col" className="px-6 py-3 text-xs font-medium tracking-wider text-right text-gray-500 uppercase">
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-xs font-medium tracking-wider text-right text-gray-500 uppercase"
+                      >
                         Редактирование
                       </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {users.map( user => <UserItem key={user._id} id={user._id} login={user.login} roles={user.roles} links={user.links} />)}
+                    {users.map((user) => (
+                      <UserItem
+                        key={user._id}
+                        id={user._id}
+                        login={user.login}
+                        roles={user.roles}
+                        ads={ads}
+                      />
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -92,5 +149,5 @@ export const AdminPanel = () => {
         </div>
       </section>
     </div>
-  )
-}
+  );
+};

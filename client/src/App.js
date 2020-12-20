@@ -1,20 +1,9 @@
 import React, { useEffect } from 'react';
 
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 
 import { Navbar } from "./components/Navbar";
-import {
-  MainPage,
-  AboutPage,
-  AdvertisePage,
-  AllAdsPage,
-  CategoriesPage,
-  AuthPage,
-  ProfilePage,
-  DetailPage,
-  AdminPanel,
-  UserPage
-} from "./pages";
+import {Routes} from "./routes";
 import { useAuth } from "./hooks/auth.hook";
 
 import { AuthContext } from "./context/authContext";
@@ -26,53 +15,6 @@ import { Breadcrumbs } from './components/Breadcrumbs';
 
 import { deletPhotoInFirebase } from "./utils";
 
-const Routes = ({ isAuthenticated, userId, userType}) => {
-    
-  if (isAuthenticated && userType) {
-    return (
-      <Switch>
-        <Route path="/dashboard" exact component={AdminPanel}/>
-        <Route path="/users/:id" exact component={UserPage}/>
-        <Redirect to='/dashboard' />
-      </Switch>
-    )
-  }
-
-  if (isAuthenticated) {
-    return (
-      <Switch>
-        <Route path="/" exact><MainPage isAuth={isAuthenticated} /> </Route>
-        <Route path="/ads" component={AllAdsPage} />
-        <Route path="/categories" exact component={CategoriesPage} />
-        <Route path="/about" exact component={AboutPage} />
-        <Route path="/advertise" exact> <AdvertisePage isAuth={isAuthenticated} userId={userId} /></Route>
-        <Route path="/profile" exact component={ProfilePage} />
-        <Route path="/detail/:id" component={DetailPage} />
-        <Route path="/admin" exact>
-          <AuthPage isAdmin />
-        </Route>
-        <Redirect to='/profile' />
-      </Switch>
-    )
-  } else {
-    return (
-      <Switch>
-        <Route path="/" exact> <MainPage isAuth={isAuthenticated} /></Route>
-        <Route path="/ads" exact component={AllAdsPage} />
-        <Route path="/categories" exact component={CategoriesPage} />
-        <Route path="/advertise" exact component={AdvertisePage} />
-        <Route path="/about" exact component={AboutPage} />
-        <Route path="/auth" exact component={AuthPage} />
-        <Route path="/detail/:id" component={DetailPage} />
-        <Route path="/admin" exact>
-          <AuthPage isAdmin />
-        </Route>
-        <Redirect to='/auth' />
-      </Switch>
-    )
-  }
-}
-
 function App() {
   const { token, userId, login, logout, userName, userAds, userType } = useAuth();
   const isAuthenticated = !!token;
@@ -82,10 +24,10 @@ function App() {
 
   useEffect(() => { 
     dispatch(getAds());
-    if (token) {
-      dispatch(getUsers(token))
+    if (token && userType) {
+      dispatch(getUsers(token));
     }
-  }, [dispatch, token]);
+  }, [dispatch, token, userType]);
 
   useEffect(() => {
     // auto delete ads who time is out logic 
@@ -105,8 +47,8 @@ function App() {
         <div className={!userType ? "container max-w-screen-xxl" : null}>
           {userType ? <Navbar isAuth={isAuthenticated} isAdmin /> : <Navbar isAuth={isAuthenticated} />}
           {!userType && <Breadcrumbs />}
-          <div className={!userType ? "m-auto pt-2 max-w-screen-xl" : null}>
-            <Routes isAuthenticated={isAuthenticated} userId={userId} userType/>
+          <div className="m-auto pt-2 max-w-screen-xl">
+            <Routes isAuthenticated={isAuthenticated} userId={userId}/>
           </div>
         </div>
       </Router>

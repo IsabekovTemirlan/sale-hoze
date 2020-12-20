@@ -3,6 +3,7 @@ import { loginAdmin, loginUser, registerUser } from "../api";
 import { AuthContext } from "../context/authContext";
 
 export const AuthPage = ({ isAdmin }) => {
+
   const [alert, setAlert] = useState({ message: "", show: false });
   let [userData, setUserData] = useState({ login: '', password: '' });
   const auth = useContext(AuthContext)
@@ -13,16 +14,21 @@ export const AuthPage = ({ isAdmin }) => {
     if (userData.login.length && (userData.password.length >= 6)) {
 
       try {
-        const data = (isAdmin ? await loginAdmin(userData ) : await loginUser(userData));
+        const data = (isAdmin ? await loginAdmin(userData) : await loginUser(userData));
         const result = data.data;
 
         if (result) {
           setAlert({ message: result.msg, show: true, type: result.status });
           auth.login(result.token, result.userId, result.userName, result.userAds, result.isAdmin);
         }
+
       } catch ({ response }) {
         const message = response.data.message;
         setAlert({ message, show: true });
+      } finally {
+        if (isAdmin) {
+          window.location.href = '/dashboard';
+        }
       }
     }
   }
@@ -94,12 +100,12 @@ export const AuthPage = ({ isAdmin }) => {
             >Войти
           </button>
 
-          {isAdmin ? null : (<button
+            {isAdmin ? null : (<button
               className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
               name="registerSubmit"
               onClick={registerSubmit}
             >Зарегистрироватьяся
-          </button>)}
+            </button>)}
           </div>
 
 

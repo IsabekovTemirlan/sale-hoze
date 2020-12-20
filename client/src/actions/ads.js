@@ -6,11 +6,9 @@ const adsUrl = 'http://localhost:5000/ads';
 export const getAds = () => async (dispatch) => {
   try {
     const {data} = await axios.get(adsUrl);
-
     dispatch({type: "GET_ADS", payload: data});
-  } catch (e) {
-    console.log(e.message);
-  }
+    
+  } catch (e) {console.log(e.message);}
 }
 
 export const createAd = (ad) => async (dispatch) => {
@@ -19,35 +17,27 @@ export const createAd = (ad) => async (dispatch) => {
     dispatch({ type: "CREATE", payload: data.newAd });
     dispatch({type: "SET_ALERT", payload: data.message});
 
-  } catch (e) {
-    console.log(e.message);
-  }
+  } catch (e) { console.log(e.message); }
 }
 
 export const likeAd = (id) => async (dispatch) => {
   try {
     const { data } = await api.likeAd(id);
-
     dispatch({ type: "LIKE", payload: data });
-  } catch (error) {
-    console.log(error.message);
-  }
+
+  } catch (error) { console.log(error.message);}
 };
 
-export const deleteAd = (id) => async (dispatch) => {
+export const deleteAd = (id, userId) => (dispatch) => {
   try {
-    await api.deleteAd(id);
-
+    api.deleteAd(id, userId);
     dispatch({ type: "DELETE", payload: id });
-  } catch (error) {
-    console.log(error.message);
-  }
+
+  } catch (error) { console.log(error.message); }
 };
 
 export const searchAds = (value) => (dispatch) => {
-  dispatch({
-    type: "SEARCH_AD", payload: value
-  });
+  dispatch({ type: "SEARCH_AD", payload: value });
 }
 
 export const searchAdByCategory = (value) => (dispatch) => {
@@ -57,9 +47,7 @@ export const searchAdByCategory = (value) => (dispatch) => {
 export const updateAd = (id, post) => async (dispatch) => {
   try {
     const { data } = await api.updateAd(id, post);
-
     dispatch({ type: "UPDATE", payload: data });
-  } catch (error) {
-    console.log(error.message);
-  }
+
+  } catch (error) { console.log(error.message);}
 };

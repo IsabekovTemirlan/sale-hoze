@@ -47,4 +47,4 @@ export const deletPhotoInFirebase = (photoName) => {
 // --------- // helper variables // --------- //
 export const location = ['Ыссык-Куль', 'Джалал-Абад', 'Нарын', 'Ош', 'Баткен', 'Чуй', 'Талас', 'Бишкек'];
 export const categoryList = ['Другое', 'Крупы и кормы', 'Услуги', 'Крупно-рогатый и мелко-копытный скот', 'Лощади', 'Сель-хоз техника', 'Ремесловые изделия', 'Домашние животные']
-export const initialStateForm = {contactNumber: "+996 ", timeOut: undefined, description: "", likeCount: 0, location: location[0], killDate: '7', price: "", title: "", photo: [], creator: '', category: 'Другое', createdAt: undefined, photoName: [], isCheked: false};
+export const initialStateForm = {contactNumber: "+996 ", timeOut: undefined, description: "", likeCount: 0, location: location[0], killDate: '7', price: "", title: "", photo: [], creator: '', category: 'Другое', photoName: [], isCheked: false};

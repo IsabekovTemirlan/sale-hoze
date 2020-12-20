@@ -17,10 +17,8 @@ export const ProfilePage = () => {
   const dispatch = useDispatch();
 
   const deleteAdById = (id) => {
-    dispatch(deleteAd(id));
-    const deletedPhotoName = [
-      ...ads.filter((ad) => ad._id === id)[0].photoName,
-    ];
+    dispatch(deleteAd(id, {userId}));
+    const deletedPhotoName = [ ...ads.filter((ad) => ad._id === id)[0].photoName];
     deletedPhotoName.forEach((pn) => deletPhotoInFirebase(pn));
   };
 

@@ -3,6 +3,9 @@ const adReducer = (state = [], action) => {
     case "GET_ADS":
       return action.payload.reverse()
 
+    case "CLEARE_ADS":
+      return []
+
     case "CREATE":
       return [...state, action.payload]
 
