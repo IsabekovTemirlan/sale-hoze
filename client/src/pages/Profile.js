@@ -1,11 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { AuthContext } from "../context/authContext";
 import { Button } from "../components/Button";
 import { AdItem } from "../components/AdItem";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAd } from "../actions/ads";
-import { deletPhotoInFirebase} from "../utils";
+import { deletPhotoInFirebase } from "../utils";
 import { AdEditForm } from "../components/AdEditForm";
+import { Alert } from "../components/Alert";
+import { Link } from "react-router-dom";
 
 export const ProfilePage = () => {
   const { logout, userName, userId } = useContext(AuthContext);
@@ -14,27 +16,34 @@ export const ProfilePage = () => {
   const ads = useSelector((state) =>
     state.ads.filter((ad) => ad.creator === userId)
   );
+  const alert = useSelector(state => state.alert);
   const dispatch = useDispatch();
 
   const deleteAdById = (id) => {
-    dispatch(deleteAd(id, {userId}));
-    const deletedPhotoName = [ ...ads.filter((ad) => ad._id === id)[0].photoName];
+    dispatch(deleteAd(id, { userId }));
+    const deletedPhotoName = [...ads.filter((ad) => ad._id === id)[0].photoName];
     deletedPhotoName.forEach((pn) => deletPhotoInFirebase(pn));
   };
 
+  useEffect(() => {
+    return () => dispatch({type: "SET_ALERT", payload: ""});
+  }, [dispatch]);
+
   const editFormHandler = (data, id) => {
     setShowEditForm(true);
-    setSelectedAd({data, id});
+    setSelectedAd({ data, id });
   }
 
   return (
     <section className="pb-6">
+    {alert && <Alert text={alert} />}
       <div className="flex justify-between items-center">
         <h2 className="text-3xl uppercase font-bold leading-tight font-heading">
           Профиль
         </h2>
         <div className="flex items-center">
           <div className="text-2xl ">{userName}</div>
+          <Link to="/advertise"><Button title="Подать" pad="py-2" /></Link>
           <Button
             handler={logout}
             title="Выйти"

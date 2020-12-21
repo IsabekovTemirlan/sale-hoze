@@ -20,11 +20,14 @@ export const Routes = ({ isAuthenticated, userId}) => {
     
   if (isAuthenticated && userType) {
     return (
-      <Switch>
-        <Route path="/dashboard" exact component={AdminPanel}/>
-        <Route path="/users/:id" component={UserPage}/>
-        <Redirect to='/dashboard' />
-      </Switch>
+      <div className="pt-10">
+        <Switch>
+          <Route path="/dashboard" exact component={AdminPanel}/>
+          <Route path="/users/:id" component={UserPage}/>
+          <Route path="/detail/:id" component={DetailPage} />
+          <Redirect to='/dashboard' />
+        </Switch>
+      </div>
     )
   }
 

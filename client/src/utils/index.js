@@ -1,4 +1,4 @@
-import {app} from "../base";
+import { app } from "../base";
 // --------- // helper functions // --------- //
 
 // create image url for using in front
@@ -33,18 +33,22 @@ export const fileUploadeToFirebase = (filesArr) => {
 }
 
 // normolize and adaptation date
-export const getNormalDate = (date) => new Date(date.toString()).toLocaleString('ru', {year: 'numeric',month: 'long',day: 'numeric',hour: 'numeric',minute: 'numeric',});
+export const getNormalDate = (date) => new Date(date.toString()).toLocaleString('ru', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', });
 
 // this function delete photo in firebase with help photoName
 export const deletPhotoInFirebase = (photoName) => {
   if (photoName) {
+    try {
       const storageRef = app.storage().ref();
       const fileRef = storageRef.child(photoName);
       fileRef.delete().catch(e => console.log(e));
+    } catch (error) {
+      console.log(error);
     }
+  }
 }
 
 // --------- // helper variables // --------- //
 export const location = ['Ыссык-Куль', 'Джалал-Абад', 'Нарын', 'Ош', 'Баткен', 'Чуй', 'Талас', 'Бишкек'];
 export const categoryList = ['Другое', 'Крупы и кормы', 'Услуги', 'Крупно-рогатый и мелко-копытный скот', 'Лощади', 'Сель-хоз техника', 'Ремесловые изделия', 'Домашние животные']
-export const initialStateForm = {contactNumber: "+996 ", timeOut: undefined, description: "", likeCount: 0, location: location[0], killDate: '7', price: "", title: "", photo: [], creator: '', category: 'Другое', photoName: [], isCheked: false};
+export const initialStateForm = { contactNumber: "+996 ", timeOut: undefined, description: "", likeCount: 0, location: location[0], killDate: '7', price: "", title: "", photo: [], creator: '', category: 'Другое', photoName: [], isCheked: false };

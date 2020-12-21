@@ -47,7 +47,7 @@ function App() {
         <div className={!userType ? "container max-w-screen-xxl" : null}>
           {userType ? <Navbar isAuth={isAuthenticated} isAdmin /> : <Navbar isAuth={isAuthenticated} />}
           {!userType && <Breadcrumbs />}
-          <div className="m-auto pt-2 max-w-screen-xl">
+          <div className="m-auto max-w-screen-xl">
             <Routes isAuthenticated={isAuthenticated} userId={userId}/>
           </div>
         </div>

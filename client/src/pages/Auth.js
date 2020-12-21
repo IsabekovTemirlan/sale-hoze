@@ -57,7 +57,7 @@ export const AuthPage = ({ isAdmin }) => {
       <div className="w-full m-auto mt-32 max-w-xs">
 
         <form
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+          className="bg-white shadow-md rounded px-8 pt-2 pb-8 mb-4"
           onSubmit={e => e.preventDefault()}
         >
           <div className="mb-4">

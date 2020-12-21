@@ -13,7 +13,7 @@ import {
 } from "../utils"
 
 export const AddForm = ({ ownerId }) => {
-  const [state, setState] = useState(initialStateForm);
+  const [state, setState] = useState(initialStateForm);  
   const dispatch = useDispatch();
 
   // put the data to the data base
@@ -23,6 +23,7 @@ export const AddForm = ({ ownerId }) => {
     if (state.isCheked) {
       dispatch(createAd(state));
       setState(initialStateForm); // set initial state
+      window.scrollTo(0, 0);
     } else {
       dispatch({ type: "SET_ALERT", payload: "Загрузите фото" });
     }

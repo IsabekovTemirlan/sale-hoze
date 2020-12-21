@@ -12,7 +12,7 @@ export const MainPage = ({isAuth}) => {
 
   return (
     <>
-      <section className="py-12 px-4 text-center">
+      <section className="pt-2 pb-12 px-4 text-center">
         <div className="w-full max-w-4xl mx-auto">
           <h2 className="text-5xl mt-2 mb-6 leading-tight font-heading">Добро пожаловать в <span
             className='font-bold text-bgColor'>SaleHoz</span>!</h2>

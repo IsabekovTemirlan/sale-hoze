@@ -46,16 +46,20 @@ export const createAd = async (req, res) => {
 export const deleteAd = async (req, res) => {
   const { id } = req.params;
   const { userId } = await req.body;
+  let newLinks;
+
+  if (userId) {
+    const user = await User.findById(userId);
+    newLinks = user.links.filter(l=> l != id);
+  }
 
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
     await AdMessage.findByIdAndRemove(id);
-    await User.findByIdAndUpdate(userId, { $pop: { links: 1 } }).exec();
-    res.json({ message: "Объявление упешно удалено!." });
+    await User.findByIdAndUpdate(userId, { links: newLinks }, { new: true });
+    res.json({ message: "Объявление успешно удалено!" });
 
-  } catch (e) {
-    res.json({ message: e });
-  }
+  } catch (e) { res.json({ message: e });}
 }
 
 export const updateAd = async (req, res) => {

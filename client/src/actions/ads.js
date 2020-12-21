@@ -28,10 +28,11 @@ export const likeAd = (id) => async (dispatch) => {
   } catch (error) { console.log(error.message);}
 };
 
-export const deleteAd = (id, userId) => (dispatch) => {
+export const deleteAd = (id, userId) => async (dispatch) => {
   try {
-    api.deleteAd(id, userId);
+    const {data} = await api.deleteAd(id, userId);
     dispatch({ type: "DELETE", payload: id });
+    dispatch({type: "SET_ALERT", payload: data.message});
 
   } catch (error) { console.log(error.message); }
 };
