@@ -19,10 +19,7 @@ const adReducer = (state = [], action) => {
       return state.map((ad) => (ad._id === action.payload._id ? action.payload : ad));
 
     case "SEARCH_AD":
-      return [...state.filter(ad => ad.title.toLowerCase().includes(action.payload.toLowerCase()))]
-
-    case "SEARCH_AD_BY_CATEGORY":
-      return [...state.filter(ad => ad.category.toLowerCase() === action.payload.toLowerCase())]
+      return action.payload
 
     default :
       return state

@@ -3,7 +3,7 @@ import { AuthContext } from "../context/authContext";
 import { Button } from "../components/Button";
 import { AdItem } from "../components/AdItem";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteAd } from "../actions/ads";
+import { deleteAd, getAds } from "../actions/ads";
 import { deletPhotoInFirebase } from "../utils";
 import { AdEditForm } from "../components/AdEditForm";
 import { Alert } from "../components/Alert";
@@ -26,7 +26,12 @@ export const ProfilePage = () => {
   };
 
   useEffect(() => {
+    const getMoreAds = () => dispatch(getAds(1));
+    dispatch({type: "SET_ALERT", payload: ""});
+
+    getMoreAds();
     return () => dispatch({type: "SET_ALERT", payload: ""});
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   const editFormHandler = (data, id) => {

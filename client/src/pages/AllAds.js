@@ -1,22 +1,28 @@
-import React, { useEffect, useCallback} from "react";
+import React, { useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Card} from "../components/Card";
-import {Button} from "../components/Button";
 import {getAds} from "../actions/ads";
 import {SearchBar} from "../components/SearchBar";
 // import { Pagination } from "../components/Pagination";
 
 export const AllAdsPage = () => {
+  const [page, setPage] = useState(1);
   const ads = useSelector((state) => state.ads);
+  const alert = useSelector(state => state.alert);
   const dispatch = useDispatch();
 
-  const getMoreAds = useCallback(() => {
-    dispatch(getAds())
-  }, [dispatch]);
+  const handleScroll = () => {
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
 
-  useEffect(() => {
-    return () => getMoreAds();
-  }, [getMoreAds]);
+    if (scrollHeight - scrollTop === clientHeight) {
+      setPage(prev => prev + 1);
+      dispatch(getAds(page));
+    }
+  }
+
+  window.onscroll = function (e) {
+    handleScroll(e);
+  }
 
   return (
     <section>
@@ -25,12 +31,9 @@ export const AllAdsPage = () => {
         <SearchBar />
       </div>
       <hr/>
+      {alert && <p className="text-center">{alert}</p>}
       <div className="w-full mt-10 flex justify-center flex-wrap">
         {ads.length ? ads.map(item => <Card data={item} key={item._id}/>) : <p>Объявлений нет</p>}
-      </div>
-
-      <div className='text-center my-12 w-full'>
-        <Button handler={getMoreAds} title="Загрузить ещё" />
       </div>
 
     </section>

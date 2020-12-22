@@ -1,6 +1,6 @@
 import React from "react";
 import {useDispatch} from "react-redux";
-import {searchAdByCategory} from "../actions/ads";
+import {searchAds} from "../actions/ads";
 import {Link} from "react-router-dom";
 import {categoryList} from "../utils";
 
@@ -12,7 +12,7 @@ const CategoryItem = ({title, select}) => (
 
 export const CategoriesPage = () => {
   const dispatch = useDispatch();
-  const selectCategory = value => dispatch(searchAdByCategory(value));
+  const selectCategory = value => dispatch(searchAds(value, "category"));
 
   return (
     <section className="pb-10">

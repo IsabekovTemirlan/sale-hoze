@@ -31,15 +31,15 @@ export const AddForm = ({ ownerId }) => {
 
   // set field names and values
   const fieldChange = (e) =>
-    setState({
-      ...state,
+    setState(prev => ({
+      ...prev,
       [e.target.name]: e.target.value,
       creator: ownerId,
-    });
+    }));
 
   // set date when ads to be auto deleted
   const changeKillDate = (e) =>
-    setState({ ...state, killDate: e.target.value });
+    setState(prev => ({ ...prev, killDate: e.target.value }));
 
   // multiple files upload
   const fileUploadHandler = async (e) => {
@@ -52,9 +52,9 @@ export const AddForm = ({ ownerId }) => {
   }
 
   // terms got it
-  const checkboxHandler = (e) => {
-    const timeOut = getTimeOutValue(state.killDate).getTime(); // get ended time for auto delet ads
-    setState({ ...state, isCheked: e.target.value, timeOut });
+  const checkboxHandler = async (e) => {
+    const timeOut = await getTimeOutValue(state.killDate).getTime(); // get ended time for auto delet ads
+    setState(prev => ({ ...prev, isCheked: e.target.value, timeOut }));
   }
 
   return (

@@ -78,4 +78,24 @@ export const updateAd = async (req, res) => {
   
 }
 
+export const searchAds = async (req, res) => {
+  const {value, type} = await req.body;
+  const ads = await AdMessage.find();
+
+  try {
+    
+    const searchedAds = ads.filter(ad => type === "category" ? ad.category.toLowerCase() === value.toLowerCase() : ad.title.toLowerCase().includes(value.toLowerCase()));
+
+    if (searchedAds.length) {
+      await res.status(201).json(searchedAds);
+    } else {
+      await res.json({message: "Ничего не найдено"});
+    }
+    
+
+  } catch (e) {
+    await res.status(409).json({ message: e.message })
+  }
+}
+
 export default router;

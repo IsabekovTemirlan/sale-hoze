@@ -20,12 +20,13 @@ export const fileUploadeToFirebase = (filesArr) => {
 
   // loop for put every uploaded file into firebase storage
   files.forEach((file) => {
-    const fileRef = storageRef.child(file.name);
+    const namePrefix = new Date().getMinutes().toString();
+    const fileRef = storageRef.child(file.name + namePrefix);
 
     fileRef.put(file).then((e) => {
       const { bucket, path } = e._delegate.ref._location;
-      imgUrl.push(createPersistentDownloadUrl(bucket, path)); // save img URL for display in frontend
-      fileName.push(file.name)
+      imgUrl.push(createPersistentDownloadUrl(bucket, path)); // save img URL
+      fileName.push(file.name + namePrefix);
     });
   });
 
@@ -51,4 +52,4 @@ export const deletPhotoInFirebase = (photoName) => {
 // --------- // helper variables // --------- //
 export const location = ['Ыссык-Куль', 'Джалал-Абад', 'Нарын', 'Ош', 'Баткен', 'Чуй', 'Талас', 'Бишкек'];
 export const categoryList = ['Другое', 'Крупы и кормы', 'Услуги', 'Крупно-рогатый и мелко-копытный скот', 'Лощади', 'Сель-хоз техника', 'Ремесловые изделия', 'Домашние животные']
-export const initialStateForm = { contactNumber: "+996 ", timeOut: undefined, description: "", likeCount: 0, location: location[0], killDate: '7', price: "", title: "", photo: [], creator: '', category: 'Другое', photoName: [], isCheked: false };
+export const initialStateForm = { contactNumber: "+996 ", timeOut: 7, description: "", likeCount: 0, location: location[0], killDate: '7', price: "", title: "", photo: [], creator: '', category: 'Другое', photoName: [], isCheked: false };

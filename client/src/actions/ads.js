@@ -3,9 +3,9 @@ import * as api from "../api";
 
 const adsUrl = 'http://localhost:5000/ads';
 
-export const getAds = () => async (dispatch) => {
+export const getAds = (page) => async (dispatch) => {
   try {
-    const {data} = await axios.get(adsUrl);
+    const {data} = await axios.get(`${adsUrl}?${page}=1&limit=16`);
     dispatch({type: "GET_ADS", payload: data});
     
   } catch (e) {console.log(e.message);}
@@ -37,12 +37,15 @@ export const deleteAd = (id, userId) => async (dispatch) => {
   } catch (error) { console.log(error.message); }
 };
 
-export const searchAds = (value) => (dispatch) => {
-  dispatch({ type: "SEARCH_AD", payload: value });
-}
-
-export const searchAdByCategory = (value) => (dispatch) => {
-  dispatch({type: "SEARCH_AD_BY_CATEGORY", payload: value});
+export const searchAds = (value, type) => async (dispatch) => {
+  const {data} = await api.searchAds({value, type})
+  if (data.message) {
+    dispatch({type: "SET_ALERT", payload: data.message});
+    dispatch({ type: "SEARCH_AD", payload: [] });
+  } else {
+    dispatch({type: "SET_ALERT", payload: ''});
+    dispatch({ type: "SEARCH_AD", payload: data });
+  }
 }
 
 export const updateAd = (id, post) => async (dispatch) => {

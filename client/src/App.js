@@ -31,15 +31,17 @@ function App() {
 
   useEffect(() => {
     // auto delete ads who time is out logic 
-    if (ads) {
+    if (ads.length) {
       ads.forEach(element => {
         if (element.timeOut <= new Date().getTime()) {
-          dispatch(deleteAd(element._id));
+          
+          dispatch(deleteAd(element._id, userId));
           element.photoName.forEach(pn => deletPhotoInFirebase(pn));
         }
       });
     }
-  }, [ads, dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   
   return (
     <AuthContext.Provider value={{ token, userName, userId, login, logout, isAuthenticated, userAds, userType }}>
