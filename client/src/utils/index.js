@@ -4,13 +4,6 @@ import { app } from "../base";
 // create image url for using in front
 export const createPersistentDownloadUrl = (bucket, pathToFile) => `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${pathToFile}?alt=media&token=72f92c7d-3d18-4008-ac05-86cabd234dc8`;
 
-// calculate time when ad auto deleted
-export const getTimeOutValue = (time) => {
-  const nowDate = new Date();
-  nowDate.setDate(nowDate.getDate() + time);
-  return nowDate
-}
-
 // function to upload file into firebase storage
 export const fileUploadeToFirebase = (filesArr) => {
   const files = [...filesArr];
@@ -52,4 +45,4 @@ export const deletPhotoInFirebase = (photoName) => {
 // --------- // helper variables // --------- //
 export const location = ['Ыссык-Куль', 'Джалал-Абад', 'Нарын', 'Ош', 'Баткен', 'Чуй', 'Талас', 'Бишкек'];
 export const categoryList = ['Другое', 'Крупы и кормы', 'Услуги', 'Крупно-рогатый и мелко-копытный скот', 'Лощади', 'Сель-хоз техника', 'Ремесловые изделия', 'Домашние животные']
-export const initialStateForm = { contactNumber: "+996 ", timeOut: 7, description: "", likeCount: 0, location: location[0], killDate: '7', price: "", title: "", photo: [], creator: '', category: 'Другое', photoName: [], isCheked: false };
+export const initialStateForm = { contactNumber: "+996 ", description: "", likeCount: 0, location: location[0], killDate: '7', price: "", title: "", photo: [], creator: '', category: 'Другое', photoName: [], isCheked: false};

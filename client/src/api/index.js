@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = 'http://localhost:5000/';
+export const url = 'http://localhost:5000/';
 
 export const loginUser = (userData) => axios.post(`${url}auth/login`, userData);
 export const registerUser = (userData) => axios.post(`${url}auth/register`, userData)
@@ -12,3 +12,4 @@ export const updateAd = (id, updatedAd) => axios.patch(`${url}ads/${id}`, update
 export const searchAds = (value) => axios.post(`${url}ads/search`, value);
 
 export const loginAdmin = (adminData) => axios.post(`${url}admin`, adminData);
+export const deleteUser = (data, headers) => axios.post(`${url}admin/users/${data.id}`, data, {headers});

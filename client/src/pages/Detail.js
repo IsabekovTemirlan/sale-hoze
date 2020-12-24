@@ -7,9 +7,9 @@ import { getNormalDate } from '../utils';
 export const DetailPage = () => {
   const { id } = useParams();
   const ads = useSelector((state) => state.ads.find((item) => item._id === id));
-  const [mainImg, setMainImg] = useState(ads.photo);
+  const [mainImg, setMainImg] = useState(ads ? ads.photo : []);
 
-  try {
+  if (ads) {
     return (
       <div className="py-6 mt-1 bg-white rounded-lg">
         <div className="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8">
@@ -25,12 +25,12 @@ export const DetailPage = () => {
                     /> : <p className="text-4xl text-gray-500">Нет фото</p>}
                   </div>
                 </div>
-  
+
                 <div className="flex -mx-2 mb-4">
                   {
                     ads.photo.length ? ads.photo.map(p => (
                       <div key={p} className="flex-1 px-2">
-                        <button onClick={() => setMainImg(p)} className={"overflow-hidden focus:outline-none w-full rounded-lg h-24 md:h-32 bg-gray-100 flex items-center justify-center" + (p === mainImg ? " border-2 border-bgColor ": "")}>
+                        <button onClick={() => setMainImg(p)} className={"overflow-hidden focus:outline-none w-full rounded-lg h-24 md:h-32 bg-gray-100 flex items-center justify-center" + (p === mainImg ? " border-2 border-bgColor " : "")}>
                           <img className="" src={p} alt="" />
                         </button>
                       </div>
@@ -47,7 +47,7 @@ export const DetailPage = () => {
                 {ads && getNormalDate(ads.createdAt)}
               </p>
               <hr />
-  
+
               <div className="flex items-center space-x-4 my-4">
                 <div>
                   <div className="rounded-lg bg-gray-100 flex py-2 px-3">
@@ -59,14 +59,14 @@ export const DetailPage = () => {
                 </div>
               </div>
               <hr />
-  
+
               <p>Описание:</p>
               <p className="text-gray-500 break-words">
                 {ads && ads.description}
               </p>
-  
+
               <hr />
-  
+
               <p>Область:</p>
               <p className="text-gray-500 break-words">{ads && ads.location}</p>
               <hr />
@@ -83,8 +83,9 @@ export const DetailPage = () => {
           </div>
         </div>
       </div>
-    );  
-  } catch (error) {
-    console.log(error);
+    );
+  } else {
+    return <p className="mt-16 text-center">Ничего нет</p>
   }
+
 };

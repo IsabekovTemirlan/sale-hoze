@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import Role from "../models/Role.js";
 import expressValid from 'express-validator';
 const { validationResult } = expressValid;
 
@@ -42,7 +43,7 @@ export const loginAdmin = async (req, res) => {
     // const token = jwt.sign( { userId: user.id }, "isabekovMakeMERN", { expiresIn: '1h' });
     const token = generateAccessToke(user._id, user.roles);
 
-    res.json({ token, userName: login, msg: "Вы вошли как Админ!", isAdmin: true });
+    res.json({ token, userId: user._id, userName: login, msg: "Вы вошли как Админ!", isAdmin: true });
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
@@ -55,5 +56,44 @@ export const getUsers = async (req, res) => {
     res.json(users);
   } catch (e) {
     console.log(e);
+  }
+}
+
+export const setAdminRoleForUser = async (req, res) => {
+  const { id, userName } = req.body;
+
+  try {
+    const userRole = await Role.findOne({value: "ADMIN"});
+
+    await User.findByIdAndUpdate(id, { $push: { roles: userRole.value } }).exec();
+    await res.json({ message: `Пользователь ${userName} успешно получил роль администратора!` });
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const revokeAdminRoleForUser = async (req, res) => {
+  const { id, userName } = req.body;
+
+  try {
+    await User.findByIdAndUpdate(id, { roles: ["USER"] }, { new: true });
+    await res.status(201).json({ message: `Пользователь ${userName} лишён роли администратора!` });
+
+  } catch (error) {
+    await res.status(400).json({ message: error });
+  }
+}
+
+
+export const deleteUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await User.findByIdAndRemove(id);
+    await res.status(201).json({ message: "Пользователь успешно удалён!" });
+
+  } catch (error) {
+    await res.status(400).json({ message: error });
   }
 }

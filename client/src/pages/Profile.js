@@ -13,24 +13,21 @@ export const ProfilePage = () => {
   const { logout, userName, userId } = useContext(AuthContext);
   const [showEditForm, setShowEditForm] = useState(false);
   const [selectedAd, setSelectedAd] = useState({});
-  const ads = useSelector((state) =>
-    state.ads.filter((ad) => ad.creator === userId)
-  );
+
+  const ads = useSelector((state) => state.ads.filter((ad) => ad.creator === userId));
   const alert = useSelector(state => state.alert);
+
   const dispatch = useDispatch();
 
   const deleteAdById = (id) => {
-    dispatch(deleteAd(id, { userId }));
+    dispatch(deleteAd(id, {userId}));
     const deletedPhotoName = [...ads.filter((ad) => ad._id === id)[0].photoName];
     deletedPhotoName.forEach((pn) => deletPhotoInFirebase(pn));
   };
 
   useEffect(() => {
     const getMoreAds = () => dispatch(getAds(1));
-    dispatch({type: "SET_ALERT", payload: ""});
-
     getMoreAds();
-    return () => dispatch({type: "SET_ALERT", payload: ""});
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 

@@ -7,7 +7,6 @@ import { createAd } from "../actions/ads";
 import {
   categoryList,
   fileUploadeToFirebase,
-  getTimeOutValue,
   initialStateForm,
   location,
 } from "../utils"
@@ -31,19 +30,23 @@ export const AddForm = ({ ownerId }) => {
 
   // set field names and values
   const fieldChange = (e) =>
-    setState(prev => ({
-      ...prev,
+    setState({
+      ...state,
       [e.target.name]: e.target.value,
       creator: ownerId,
-    }));
+    });
 
   // set date when ads to be auto deleted
-  const changeKillDate = (e) =>
-    setState(prev => ({ ...prev, killDate: e.target.value }));
+  const changeKillDate = (e) => {
+    const killDate = e.target.value;
+    setState(prev => {
+        return { ...prev, killDate }
+    });
+  }
 
   // multiple files upload
-  const fileUploadHandler = async (e) => {
-    const [imgUrl, fileName] = await fileUploadeToFirebase(e.target.files);
+  const fileUploadHandler = (e) => {
+    const [imgUrl, fileName] = fileUploadeToFirebase(e.target.files);
     try {
       setState((prev) => ({ ...prev, photo: imgUrl, photoName: fileName })); 
     } catch (error) {
@@ -52,10 +55,7 @@ export const AddForm = ({ ownerId }) => {
   }
 
   // terms got it
-  const checkboxHandler = async (e) => {
-    const timeOut = await getTimeOutValue(state.killDate).getTime(); // get ended time for auto delet ads
-    setState(prev => ({ ...prev, isCheked: e.target.value, timeOut }));
-  }
+  const checkboxHandler = (e) => setState({ ...state, isCheked: e.target.value });
 
   return (
     <div className="w-full m-auto max-w-sm">

@@ -1,4 +1,7 @@
-const alertReducer = (state = "", action) => {
+const alertReducer = (state = {
+  text: '',
+  type: undefined
+}, action) => {
   switch (action.type) {
 
     case "SET_ALERT":

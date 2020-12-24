@@ -1,12 +1,16 @@
 import React, { useState, useContext } from "react";
+
+import {Alert} from "../components/Alert";
+
 import { loginAdmin, loginUser, registerUser } from "../api";
 import { AuthContext } from "../context/authContext";
+import { useSelector, useDispatch } from "react-redux";
 
 export const AuthPage = ({ isAdmin }) => {
-
-  const [alert, setAlert] = useState({ message: "", show: false });
   let [userData, setUserData] = useState({ login: '', password: '' });
   const auth = useContext(AuthContext)
+  const alert = useSelector(state => state.alert);
+  const dispatch = useDispatch();
 
   const fieldChanged = e => setUserData({ ...userData, [e.target.name]: e.target.value });
 
@@ -18,17 +22,16 @@ export const AuthPage = ({ isAdmin }) => {
         const result = data.data;
 
         if (result) {
-          setAlert({ message: result.msg, show: true, type: result.status });
+          dispatch({type: "SET_ALERT", payload: {text: result.msg}})
           auth.login(result.token, result.userId, result.userName, result.userAds, result.isAdmin);
         }
 
       } catch ({ response }) {
         const message = response.data.message;
-        setAlert({ message, show: true });
-      } finally {
-        if (isAdmin) {
-          window.location.href = '/dashboard';
-        }
+        dispatch({type: "SET_ALERT", payload: {text: message, type: response.status}});
+      } 
+      if (isAdmin) {
+        window.location.href = '/dashboard';
       }
     }
   }
@@ -40,11 +43,11 @@ export const AuthPage = ({ isAdmin }) => {
         const result = data.data;
 
         if (result) {
-          setAlert({ message: result.message, show: true })
+          dispatch({type: "SET_ALERT", payload: {text: result.message, type: 200}})
         }
       } catch ({ response }) {
         const message = response.data.message;
-        setAlert({ message, show: true });
+        dispatch({type: "SET_ALERT", payload: {text: message, type: response.status}});
       }
     }
   }
@@ -107,16 +110,9 @@ export const AuthPage = ({ isAdmin }) => {
             >Зарегистрироватьяся
             </button>)}
           </div>
-
-
         </form>
-        {alert.show && (
-          <div
-            className={`max-w-xs ${alert.type === 400 ? 'bg-red-200 border-red-800' : 'bg-green-200'} px-4 py-2 mb-2 rounded border border-green-800`}>
-            <p className="mt-25 text-bgColor font-bold text-center text-sm">{alert.message}</p>
-          </div>
-        )}
       </div>
+      {alert && <Alert />}
     </>
   )
 }

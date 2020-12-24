@@ -22,7 +22,9 @@ export const Routes = ({ isAuthenticated, userId}) => {
     return (
       <div className="pt-10">
         <Switch>
-          <Route path="/dashboard" exact component={AdminPanel}/>
+          <Route path="/dashboard" exact >
+            <AdminPanel userId={userId} />
+          </Route>
           <Route path="/users/:id" component={UserPage}/>
           <Route path="/detail/:id" component={DetailPage} />
           <Redirect to='/dashboard' />
