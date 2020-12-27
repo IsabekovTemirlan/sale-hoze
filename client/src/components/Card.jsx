@@ -1,30 +1,69 @@
-import React, {useState} from 'react';
-import {like, liked} from "../assets/icons";
-import cardImg from "../assets/images/card-top.jpg";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { likeAd } from "../actions/ads";
 
-export const Card = () => {
+import "boxicons";
+
+export const Card = ({ data, isAuth, handler, size }) => {
   const [isLiked, setIsLiked] = useState(false);
+  const { title, description, photo, likeCount, price, _id } = data;
 
-  const LikeIcon = () => <img onClick={() => setIsLiked(true)} className="cursor-pointer mr-4" src={isLiked ? liked : like} alt=""/>
+  const dispatch = useDispatch();
+
+  const likeHandler = () => {
+    setIsLiked(true);
+    dispatch(likeAd(_id));
+  };
+
+  const LikeIcon = () => (
+    <div className="cursor-pointer mr-4 transition-all">
+      <box-icon
+        onClick={likeHandler}
+        name="like"
+        type={isLiked ? "solid" : ""}
+        color="#ff5722"
+      ></box-icon>
+    </div>
+  );
 
   return (
-    <div className="wrapper mx-5 max-w-xs bg-gray-50 rounded-b-md shadow-lg overflow-hidden">
-      <div><img src={cardImg} alt=""/></div>
-      <div className="p-3 space-y-3">
-        <h3 className="text-gray-700 font-semibold text-md"> Nepal Mountain</h3>
-        <p className="text-sm text-gray-900 leading-sm">Bienvenido a la montaña de nepal un maravilloso lugar en el que
-          podras escalar y repirar aire limpio, serás acompoañado por profesonales en alpinismo.</p>
+    <div
+      className={`wrapper m-1 mb-4 ${
+        size ? size : "w-290"
+      } bg-gray-50 rounded-b-md shadow-lg overflow-hidden`}
+    >
+      <div className="h-40 overflow-hidden">
+        <img src={photo[0]} alt="" className="w-full h-inherit" />
+      </div>
+      <div className="p-3 space-y-3 overflow-hidden">
+        <h3 className="text-gray-700 font-semibold text-md">{title}</h3>
+        <p className="text-sm h-12 text-gray-900 leading-sm">{description}</p>
       </div>
 
       <div className="p-4 flex justify-between items-center">
-        <div className="flex"> <LikeIcon /> <span>25</span></div>
-        <span className="font-bold text-2xl text-bgColor">4 000 com</span>
+        <div className="flex w-6">
+          <LikeIcon /> <span>{likeCount}</span>
+        </div>
+        <span className="font-bold text-2xl text-bgColor">{price} com</span>
       </div>
 
-      <button
-        className="bg-bgColor w-full flex justify-center py-2 text-white font-semibold transition duration-300 hover:bg-opacity-75">
-        reservation
-      </button>
+      <div className="flex">
+        <Link
+          to={`/detail/${_id}`}
+          className="bg-bgColor w-full flex justify-center py-2 text-white font-semibold transition duration-300 hover:bg-opacity-75"
+        >
+          Подробнее
+        </Link>
+        {isAuth && (
+          <button
+            onClick={() => handler && handler(_id)}
+            className="bg-red-600 w-full flex justify-center py-2 text-white font-semibold transition duration-300 hover:bg-opacity-75"
+          >
+            Удалить
+          </button>
+        )}
+      </div>
     </div>
-  )
-}
+  );
+};

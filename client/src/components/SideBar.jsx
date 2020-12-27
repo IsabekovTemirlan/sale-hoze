@@ -1,24 +1,75 @@
-import React, {useState} from 'react';
-import { home, close, about, plus, catS, search, menu} from "../assets/icons";
+import React, { useState } from "react";
+import { menu } from "../assets/icons";
+import "boxicons";
 
-export const SideBar = () => {
-  const [visible, setVisible] = useState(false);
-  const listStyle = 'list-none border rounded transition-all uppercase duration-200 mb-1 px-3 py-3 hover:bg-gray-100 hover:border-red-500 cursor-pointer'
+import { Link } from "react-router-dom";
+
+const ListItem = ({ title, icon, url }) => {
+  const listStyle =
+    "list-none border bg-white rounded transition-all transform hover:translate-x-2 transition-transform duration-200 text-gray-500 hover:text-gray-800 uppercase duration-200 mb-1 px-3 py-3 hover:bg-gray-100 cursor-pointer";
 
   return (
-    <div>
-      <img onClick={() => setVisible(true)} className="transform rotate-180 cursor-pointer" src={menu} alt="menu"/>
-      <div className={`transition-all duration-300 fixed bg-white fixed right-0 top-0 h-full shadow-2xl bg-gray-200 ${!visible ? 'w-0' : 'w-1/4  p-4'}`}
+    <Link to={url}>
+      <li className={listStyle}>
+        <span className="flex flex-row items-center">
+          <span className="inline-flex items-center justify-center w-12 text-lg">
+            <box-icon name={icon} color="#ff5722"></box-icon>
+          </span>
+          <span className="text-sm font-medium">{title}</span>
+        </span>
+      </li>
+    </Link>
+  );
+};
+
+export const SideBar = ({ state }) => {
+  const [visible, setVisible] = useState(false);
+
+  document.onclick = (e) => {
+    if (visible) {
+      e.target.classList[0] === "transition-all"
+        ? setVisible(true)
+        : setVisible(false);
+    }
+  };
+
+  return (
+    <div id="sidebar">
+      <img
+        onClick={() => setVisible(true)}
+        className="transform rotate-180 cursor-pointer"
+        src={menu}
+        alt="menu"
+      />
+      <div
+        className={`duration-300 z-20 bg-white shadow-lg bg-opacity-75 ease-out fixed right-0 top-0 h-full ${
+          !visible ? "w-0" : "w-3/5 p-4 md:w-2/6  "
+        }`}
+        style={{backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)"}}
       >
-        <img onClick={() => setVisible(false)} className="cursor-pointer" src={close} alt="cross"/>
+        <button onClick={() => setVisible(false)} className="p-2 rounded-full transition-all border border-gray-600 duration-500 hover:bg-white focus:outline-none focus:ring outline-none">
+            <svg
+              className="w-6 h-6 text-gray-800"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         <ul className="list-disc mt-6">
-          <li className={listStyle}><div className="flex items-center"><img src={home} className="mr-2" alt=""/>Главная</div></li>
-          <li className={listStyle}><div className="flex items-center"><img src={search} className="mr-2" alt=""/>Поиск</div></li>
-          <li className={listStyle}><div className="flex items-center"><img src={catS} className="mr-2" alt=""/>Категории</div></li>
-          <li className={listStyle}><div className="flex items-center"><img src={plus} className="mr-2" alt=""/>Подать объявление</div></li>
-          <li className={listStyle}><div className="flex items-center"><img src={about} className="mr-2" alt=""/>О проекте</div></li>
+          {state &&
+            state.map((item) => (
+              <ListItem
+                key={item.id}
+                url={item.url}
+                title={item.title}
+                icon={item.img}
+              />
+            ))}
         </ul>
       </div>
     </div>
-  )
-}
+  );
+};
