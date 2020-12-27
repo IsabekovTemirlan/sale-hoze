@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { getNormalDate } from '../utils';
+import { Comment } from "../components/Comment";
 
 export const DetailPage = () => {
   const { id } = useParams();
@@ -11,7 +12,7 @@ export const DetailPage = () => {
 
   if (ads) {
     return (
-      <div className="py-6 mt-1 bg-white rounded-lg">
+      <div className="py-6 mt-6 bg-white rounded-lg">
         <div className="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row -mx-4">
             <div className="md:flex-1 px-4">
@@ -28,10 +29,10 @@ export const DetailPage = () => {
 
                 <div className="flex -mx-2 mb-4">
                   {
-                    ads.photo.length ? ads.photo.map(p => (
+                    ads.photo.length ? ads.photo.map((p) => (
                       <div key={p} className="flex-1 px-2">
-                        <button onClick={() => setMainImg(p)} className={"overflow-hidden focus:outline-none w-full rounded-lg h-24 md:h-32 bg-gray-100 flex items-center justify-center" + (p === mainImg ? " border-2 border-bgColor " : "")}>
-                          <img className="" src={p} alt="" />
+                        <button onClick={() => setMainImg(p)} className={`overflow-hidden focus:outline-none rounded-lg h-24 md:h-32 bg-gray-100 flex items-center ${ads.photo.length === 1 ? 'w-1/3' : 'w-full'} justify-center` + (p === mainImg ? " border-2 border-bgColor " : "")}>
+                          <img src={p} alt="" />
                         </button>
                       </div>
                     )) : <p></p>
@@ -74,13 +75,15 @@ export const DetailPage = () => {
               <p className="text-gray-500 break-words">{ads && ads.category}</p>
               <hr />
               <p>Номер телефона:</p>
-              <div className="flex py-1 space-x-4">
+              <div className="flex mb-2 py-1 space-x-4">
                 <div className="h-14 px-6 py-2 font-semibold rounded-xl bg-bgColor hover:bg-opacity-75 text-white">
                   {ads && ads.contactNumber}
                 </div>
               </div>
             </div>
           </div>
+          <hr />
+          {ads.creator ? <Comment comments={ads.comments} id={id}/> : null}
         </div>
       </div>
     );

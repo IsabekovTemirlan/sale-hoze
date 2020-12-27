@@ -12,7 +12,7 @@ import { getUsers } from "../actions/users"
 import { deletPhotoInFirebase } from "../utils";
 
 const tablHeaders = {
-  user: ["Логин", "Кол-во объявлений", "Status", "Привилегия"],
+  user: ["Логин", "email", "Кол-во объявлений", "Status", "Привилегия"],
   ads: ["Заголовок", "Дата размещения", "Автор"],
 };
 
@@ -115,7 +115,7 @@ export const AdminPanel = () => {
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {tab === "user"
-                      ? users.map((user) => (user._id !== userId) ? (<UserItem key={user._id} id={user._id} login={user.login} roles={user.roles} ads={ads} />): null)
+                      ? users.map((user) => (user._id !== userId) ? (<UserItem key={user._id} id={user._id} email={user.email} login={user.login} roles={user.roles} ads={ads} />): null)
                       : null}
                     {tab === "ads"
                       ? ads.map((ad) => (

@@ -4,8 +4,9 @@ import {SideBar} from "./SideBar";
 
 const authPageLinks = [
   {id: 0, title: 'Главная', img: "home", url: '/'},
-  {id: 1, title: 'Профиль', img: "user", url: '/profile'},
-  {id: 2, title: 'Все объявлении', img: "spreadsheet", url: '/ads'},
+  {id: 1, title: 'Сообщения', img: "message", url: '/chat'},
+  {id: 2, title: 'Профиль', img: "user", url: '/profile'},
+  {id: 3, title: 'Все объявлении', img: "spreadsheet", url: '/ads'},
   {id: 4, title: 'Подать объявление', img: "add-to-queue", url: '/advertise'},
   {id: 5, title: 'Категории', img: "category-alt", url: '/categories'},
   {id: 6, title: 'О проекте', img: "question-mark", url: '/about'}
@@ -13,16 +14,16 @@ const authPageLinks = [
 
 const pageLinks = [
   {id: 0, title: 'Главная', img: "home", url: '/'},
-  {id: 1, title: 'Все объявлении', img: "spreadsheet", url: '/ads'},
-  {id: 2, title: 'Категории', img: "category-alt", url: '/categories'},
-  {id: 3, title: 'Подать объявление', img: "add-to-queue", url: '/advertise'},
-  {id: 4, title: 'О проекте', img: "question-mark", url: '/about'},
-  {id: 5, title: 'Войти', img: "log-in", url: '/auth'},
+  {id: 2, title: 'Все объявлении', img: "spreadsheet", url: '/ads'},
+  {id: 3, title: 'Категории', img: "category-alt", url: '/categories'},
+  {id: 4, title: 'Подать объявление', img: "add-to-queue", url: '/advertise'},
+  {id: 5, title: 'О проекте', img: "question-mark", url: '/about'},
+  {id: 6, title: 'Войти', img: "log-in", url: '/auth'},
 ];
 
 const adminPages = [
   {id: 0, title: 'Панель управления', img: "edit", url: '/dashboard'},
-  {id: 1, title: 'Все обьявления', img: "border-all", url: '/user:id'}
+  {id: 1, title: 'Сообщения', img: "message", url: '/chat'}
 ];
 
 export const Navbar = ({isAuth, isAdmin}) => {

@@ -12,7 +12,7 @@ import {
   ProfilePage,
   DetailPage,
   AdminPanel,
-  UserPage
+  UserPage,
 } from "./pages";
 
 export const Routes = ({ isAuthenticated, userId}) => {
@@ -52,7 +52,7 @@ export const Routes = ({ isAuthenticated, userId}) => {
   } else {
     return (
       <Switch>
-        <Route path="/" exact> <MainPage isAuth={isAuthenticated} /></Route>
+        <Route path="/" exact> <MainPage /></Route>
         <Route path="/ads" exact component={AllAdsPage} />
         <Route path="/categories" exact component={CategoriesPage} />
         <Route path="/advertise" exact component={AdvertisePage} />

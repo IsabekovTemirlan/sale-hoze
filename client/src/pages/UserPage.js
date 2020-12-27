@@ -59,6 +59,12 @@ export const UserPage = () => {
         </div>
         <div className="m-4">
           <p className="pr-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+            Email
+          </p>
+          <p className="">{user.email}</p>
+        </div>
+        <div className="m-4">
+          <p className="pr-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
             Roles
           </p>
           <div className="">

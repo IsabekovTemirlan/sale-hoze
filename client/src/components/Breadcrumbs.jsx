@@ -34,6 +34,7 @@ export const Breadcrumbs = () => {
           {pathname === "/categories" ? "Категории" : null}
           {pathname.includes("/detail/") ? "Подробнее" : null }
           {pathname === "/auth" ? "Вход" : null}
+          {pathname === "/chat" ? "Сообщения" : null}
         </p>}
       </div>
     </div>

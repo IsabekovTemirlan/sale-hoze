@@ -37,7 +37,7 @@ export const AdItem = ({ data, handler, id, editHandler, forAdmin }) => {
       <td className="p-3 px-5">
         <p>{forAdmin ? (
           userToBe.length ? <Link className="underline" to={`users/${creator}`}>{creator}</Link> : "Нет автора"
-        ) : killDate}</p>
+        ) : (killDate === "false" ? "Бесконечно" : killDate)}</p>
       </td>
       <td className="p-3 px-5 flex justify-end items-center">
         <div className="cursor-pointer mr-2">

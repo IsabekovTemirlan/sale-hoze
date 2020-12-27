@@ -98,4 +98,19 @@ export const searchAds = async (req, res) => {
   }
 }
 
+export const adComment = async (req, res) => {
+  const {id, text, author, date} = await req.body;
+
+  try {
+    await AdMessage.findByIdAndUpdate(id, { $push: { comments: {text, author, date} } }).exec();
+    const {comments} = await AdMessage.findById(id);
+    const newComment = comments[comments.length - 1];
+
+    res.status(200).json({message: 'Комментарий добавлен'});
+  } catch (error) {
+    res.status(400).json({message: error.message});
+  }
+
+}
+
 export default router;

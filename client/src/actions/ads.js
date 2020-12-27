@@ -15,7 +15,7 @@ export const createAd = (ad) => async (dispatch) => {
   try {
     const { data } = await api.addAd(ad)
     dispatch({ type: "CREATE", payload: data.newAd });
-    dispatch({type: "SET_ALERT", payload: data.message});
+    dispatch({type: "SET_ALERT", payload: {text: data.message}});
 
   } catch (e) { console.log(e.message); }
 }
@@ -32,7 +32,7 @@ export const deleteAd = (id, userId) => async (dispatch) => {
   try {
     const {data} = await api.deleteAd(id, userId);
     dispatch({ type: "DELETE", payload: id });
-    dispatch({type: "SET_ALERT", payload: data.message});
+    dispatch({type: "SET_ALERT", payload: {text: data.message}});
 
   } catch (error) { console.log(error.message); }
 };
@@ -40,10 +40,9 @@ export const deleteAd = (id, userId) => async (dispatch) => {
 export const searchAds = (value, type) => async (dispatch) => {
   const {data} = await api.searchAds({value, type})
   if (data.message) {
-    dispatch({type: "SET_ALERT", payload: data.message});
+    dispatch({type: "SET_ALERT", payload: {text: data.message, type:data.status}});
     dispatch({ type: "SEARCH_AD", payload: [] });
   } else {
-    dispatch({type: "SET_ALERT", payload: ''});
     dispatch({ type: "SEARCH_AD", payload: data });
   }
 }

@@ -1,20 +1,23 @@
 import React, { useState, useContext } from "react";
 
-import {Alert} from "../components/Alert";
+import { Alert } from "../components/Alert";
 
 import { loginAdmin, loginUser, registerUser } from "../api";
 import { AuthContext } from "../context/authContext";
 import { useSelector, useDispatch } from "react-redux";
 
 export const AuthPage = ({ isAdmin }) => {
-  let [userData, setUserData] = useState({ login: '', password: '' });
+  let [userData, setUserData] = useState({ login: '', password: '', email: '' });
+  const [isRegister, setIsResgister] = useState(false);
+
   const auth = useContext(AuthContext)
   const alert = useSelector(state => state.alert);
   const dispatch = useDispatch();
 
   const fieldChanged = e => setUserData({ ...userData, [e.target.name]: e.target.value });
 
-  const loginSubmit = async () => {
+  const loginSubmit = async () => {   
+    setIsResgister(false); 
     if (userData.login.length && (userData.password.length >= 6)) {
 
       try {
@@ -22,14 +25,14 @@ export const AuthPage = ({ isAdmin }) => {
         const result = data.data;
 
         if (result) {
-          dispatch({type: "SET_ALERT", payload: {text: result.msg}})
+          dispatch({ type: "SET_ALERT", payload: { text: result.msg } })
           auth.login(result.token, result.userId, result.userName, result.userAds, result.isAdmin);
         }
 
       } catch ({ response }) {
         const message = response.data.message;
-        dispatch({type: "SET_ALERT", payload: {text: message, type: response.status}});
-      } 
+        dispatch({ type: "SET_ALERT", payload: { text: message, type: response.status } });
+      }
       if (isAdmin) {
         window.location.href = '/dashboard';
       }
@@ -37,17 +40,18 @@ export const AuthPage = ({ isAdmin }) => {
   }
 
   const registerSubmit = async () => {
+    setIsResgister(true);
     if (userData.login.length && (userData.password.length >= 6)) {
       try {
         const data = await registerUser(userData);
         const result = data.data;
 
         if (result) {
-          dispatch({type: "SET_ALERT", payload: {text: result.message, type: 200}})
+          dispatch({ type: "SET_ALERT", payload: { text: result.message, type: 200 } })
         }
       } catch ({ response }) {
         const message = response.data.message;
-        dispatch({type: "SET_ALERT", payload: {text: message, type: response.status}});
+        dispatch({ type: "SET_ALERT", payload: { text: message, type: response.status } });
       }
     }
   }
@@ -57,16 +61,16 @@ export const AuthPage = ({ isAdmin }) => {
       <h2 className="text-3xl uppercase font-bold leading-tight font-heading">
         {isAdmin ? "Вход для администратора" : "Вход"}
       </h2>
-      <div className="w-full m-auto mt-32 max-w-xs">
+      <div className="w-full m-auto mt-20 max-w-xs">
 
         <form
           className="bg-white shadow-md rounded px-8 pt-2 pb-8 mb-4"
           onSubmit={e => e.preventDefault()}
         >
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="login">
               Логин
-          </label>
+            </label>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               name="login"
@@ -78,10 +82,27 @@ export const AuthPage = ({ isAdmin }) => {
               onChange={fieldChanged}
             />
           </div>
+          {auth.token || isAdmin || !isRegister ? null : (
+            <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+              E-mail
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              name="email"
+              type="email"
+              value={userData.email}
+              placeholder="Ваш email"
+              autoComplete="email"
+              required
+              onChange={fieldChanged}
+            />
+          </div>
+          )}
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
               Пароль
-          </label>
+            </label>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
               name="password"

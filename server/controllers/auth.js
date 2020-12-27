@@ -27,16 +27,21 @@ export const registerUser = async (req, res) => {
       })
     }
 
-    const { login, password } = req.body;
+    const { login, password, email } = req.body;
     const candidate = await User.findOne({ login });
+    const emailCandidate = await User.findOne({email});
 
     if (candidate) {
       return res.status(400).json({ message: "Такой пользовалтель уже существует" });
     }
 
+    if (emailCandidate) {
+      return res.status(400).json({ message: "Пользователь с таким email-ом уще существуев"})
+    }
+
     const hashedPassword = bcrypt.hashSync(password, 12);
     const userRole = await Role.findOne({value: "USER"});
-    const user = new User({ login, password: hashedPassword, roles: [userRole.value] });
+    const user = new User({ login, password: hashedPassword, email, roles: [userRole.value] });
     await user.save();
     res.status(201).json({ message: "Пользователь успешно создан!" });
 

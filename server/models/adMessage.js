@@ -19,7 +19,14 @@ const adsSchema = mongoose.Schema({
   timeOut: Number,
   creator: String,
   category: String,
-  photoName: [String]
+  photoName: [String],
+  comments: [{
+    text: String,
+    author: String,
+    date: {
+      type: Date
+    }
+  }]
 })
 
 const AdMessage = mongoose.model('AdMessage', adsSchema);

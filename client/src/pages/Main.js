@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState } from 'react';
 
 import {Button} from "../components/Button";
 import {Card} from "../components/Card";
@@ -7,12 +7,26 @@ import {kg, success, comfort} from "../assets/icons";
 import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 
+const storageName = "isVisiting";
+
 export const MainPage = ({isAuth}) => {
+  const [greeting, setGreeting] = useState(false);
   const ads = useSelector(state => state.ads);
+
+  useEffect(() => {
+    const greetingFlag = JSON.parse(localStorage.getItem(storageName));
+
+    if (greetingFlag) {
+     setGreeting(greetingFlag);
+    } else {
+      localStorage.setItem(storageName, JSON.stringify(true));
+    }
+
+  }, [greeting]);
 
   return (
     <>
-      <section className="pt-2 pb-12 px-4 text-center">
+      {greeting ? <h2 className="text-3xl mt-2 uppercase mb-6 font-bold leading-tight font-heading">Главная</h2> : (<><section className="pt-2 pb-12 px-4 text-center">
         <div className="w-full max-w-4xl mx-auto">
           <h2 className="text-5xl mt-2 mb-6 leading-tight font-heading">Добро пожаловать в <span
             className='font-bold text-bgColor'>SaleHoz</span>!</h2>
@@ -57,9 +71,11 @@ export const MainPage = ({isAuth}) => {
         <Link to="/about">
           <Button title={'Подробнее'}/>
         </Link>
-      </section>
+      </section></>)
+      }
+      <hr/>
 
-      <section className="bg-white mb-32 py-10 shadow-2xl">
+      <section className="bg-white mt-6 mb-32 py-10 shadow-2xl">
         <div className="w-full max-w-4xl text-center mx-auto">
           <h3 className="text-3xl mt-2 mb-6 leading-tight font-heading"><span
             className='font-bold text-bgColor'>VIP</span> - Объявления</h3>

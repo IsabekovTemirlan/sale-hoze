@@ -24,7 +24,7 @@ export const AddForm = ({ ownerId }) => {
       setState(initialStateForm); // set initial state
       window.scrollTo(0, 0);
     } else {
-      dispatch({ type: "SET_ALERT", payload: "Загрузите фото" });
+      dispatch({ type: "SET_ALERT", payload: {text: "Загрузите фото", type: 300} });
     }
   }
 

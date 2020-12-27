@@ -13,3 +13,5 @@ export const searchAds = (value) => axios.post(`${url}ads/search`, value);
 
 export const loginAdmin = (adminData) => axios.post(`${url}admin`, adminData);
 export const deleteUser = (data, headers) => axios.post(`${url}admin/users/${data.id}`, data, {headers});
+
+export const adComment = (data) => axios.post(`${url}ads/comments`, data);

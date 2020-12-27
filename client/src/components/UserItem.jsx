@@ -2,7 +2,7 @@ import React from 'react';
 
 import {Link} from "react-router-dom";
 
-export const UserItem = ({ id, login, roles, ads }) => {
+export const UserItem = ({ id, login, roles, ads, email }) => {
   const adsCount = ads.filter((a) => a.creator === id);
   return (
     <tr className="transition-all hover:bg-gray-100 hover:shadow-lg">
@@ -12,6 +12,9 @@ export const UserItem = ({ id, login, roles, ads }) => {
             <div className="text-sm font-medium text-gray-900">{login}</div>
           </div>
         </div>
+      </td>
+      <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+        {email}
       </td>
       <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
         {adsCount.length}
