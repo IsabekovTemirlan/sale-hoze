@@ -29,12 +29,11 @@ export const Card = ({ data, isAuth, handler, size }) => {
 
   return (
     <div
-      className={`wrapper m-1 mb-4 ${
-        size ? size : "w-290"
-      } bg-gray-50 rounded-b-md shadow-lg overflow-hidden`}
+      className={`wrapper m-1 mb-4 ${size ? size : "w-290"
+        } bg-gray-50 rounded-b-md shadow-lg overflow-hidden`}
     >
       <div className="h-40 overflow-hidden">
-        <img src={photo[0]} alt="" className="w-full h-inherit" />
+        {photo[0] ? <img src={photo[0]} alt="" className="w-full h-inherit" /> : <div className="mt-12 flex justify-center aitems-center text-4xl font-extrabold text-gray-400">Нет фото</div>}
       </div>
       <div className="p-3 space-y-3 overflow-hidden">
         <h3 className="text-gray-700 font-semibold text-md">{title}</h3>
@@ -45,7 +44,7 @@ export const Card = ({ data, isAuth, handler, size }) => {
         <div className="flex w-6">
           <LikeIcon /> <span>{likeCount}</span>
         </div>
-        <span className="font-bold text-2xl text-bgColor">{price} com</span>
+        <span className="font-bold text-2xl text-bgColor">{price} сом</span>
       </div>
 
       <div className="flex">

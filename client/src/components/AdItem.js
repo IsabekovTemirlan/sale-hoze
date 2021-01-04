@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Link } from "react-router-dom";
 
 import { Modal } from "./Modal";
@@ -11,9 +11,7 @@ export const AdItem = ({ data, handler, id, editHandler, forAdmin }) => {
   const { title, createdAt, killDate, _id, creator } = data;
   let userToBe;
 
-  if (forAdmin) {
-    userToBe = forAdmin.filter(v=> v._id === creator)
-  }
+  if (forAdmin) userToBe = forAdmin.filter(v => v._id === creator);
 
   const confireHandler = () => {
     handler(_id);
@@ -28,11 +26,11 @@ export const AdItem = ({ data, handler, id, editHandler, forAdmin }) => {
       <td className="p-3 px-5">
         <p>{getNormalDate(createdAt)}</p>
         {showModal && <Modal
-        title="Удаление объявления"
-        body="Вы уверены что хотите удалить объявление?"
-        close={() => setShowModal(false)}
-        agree={confireHandler}
-    />}
+          title="Удаление объявления"
+          body="Вы уверены что хотите удалить объявление?"
+          close={() => setShowModal(false)}
+          agree={confireHandler}
+        />}
       </td>
       <td className="p-3 px-5">
         <p>{forAdmin ? (
@@ -40,10 +38,11 @@ export const AdItem = ({ data, handler, id, editHandler, forAdmin }) => {
         ) : (killDate === "false" ? "Бесконечно" : killDate)}</p>
       </td>
       <td className="p-3 px-5 flex justify-end items-center">
+
         <div className="cursor-pointer mr-2">
           <Link to={`/detail/${id}`}>
             <box-icon title="Открыть" name="window-open" color="blue"></box-icon>
-          </Link> 
+          </Link>
         </div>
         {forAdmin ? null : <div className="cursor-pointer"> <box-icon title="Редактировать" onClick={() => editHandler(data, id)} name="edit-alt" color="green"></box-icon></div>}
         <div className="cursor-pointer ml-2">

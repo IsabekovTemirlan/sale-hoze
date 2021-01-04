@@ -42,7 +42,9 @@ export const Routes = ({ isAuthenticated, userId}) => {
         <Route path="/about" exact component={AboutPage} />
         <Route path="/advertise" exact> <AdvertisePage isAuth={isAuthenticated} userId={userId} /></Route>
         <Route path="/profile" exact component={ProfilePage} />
-        <Route path="/detail/:id" component={DetailPage} />
+        <Route path="/detail/:id" >
+          <DetailPage isAuth={isAuthenticated} userId={userId} />
+        </Route>
         <Route path="/admin" exact>
           <AuthPage isAdmin />
         </Route>

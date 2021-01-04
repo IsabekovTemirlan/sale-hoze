@@ -1,24 +1,15 @@
-import React, {useEffect} from "react";
+import React from "react";
 
-import { Alert } from "../components/Alert";
 import { Button } from "../components/Button";
 import { AddForm } from "../components/AddForm";
 
 import { Link } from "react-router-dom";
-import {useSelector, useDispatch} from "react-redux";
 
 export const AdvertisePage = ({ isAuth, userId }) => {
-  const alert = useSelector(state => state.alert);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    return () => dispatch({type: "SET_ALERT", payload: ""});
-  }, [dispatch]);
 
   if (isAuth) {
     return (
       <section>
-      {alert && <Alert text={alert} />}
         <h2 className="text-3xl mt-2 mb-6 font-bold uppercase leading-tight font-heading">Подать объявления</h2>
         <div className="w-full">
           <AddForm ownerId={userId} />
@@ -52,8 +43,6 @@ export const AdvertisePage = ({ isAuth, userId }) => {
             уничтожется. Это сделано для удобного и быстрого использлвания.</p>
             <hr />
 
-            {alert && <Alert text={alert} />}
-
             <div className="mt-4 text-left">
               <AddForm />
             </div>
@@ -61,7 +50,6 @@ export const AdvertisePage = ({ isAuth, userId }) => {
           </div>
         </div>
       </section>
-
     )
   }
 };

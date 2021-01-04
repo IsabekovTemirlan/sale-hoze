@@ -1,27 +1,32 @@
+import { GET_ADS, CLEARE_ADS, CREATE, LIKE, DELETE, UPDATE, SEARCH_AD, SORT_ADS } from "../types";
+
 const adReducer = (state = [], action) => {
   switch (action.type) {
-    case "GET_ADS":
+    case GET_ADS:
       return action.payload.reverse()
 
-    case "CLEARE_ADS":
+    case CLEARE_ADS:
       return []
 
-    case "CREATE":
+    case CREATE:
       return [...state, action.payload]
 
-    case "LIKE":
+    case LIKE:
       return state.map((ad) => (ad._id === action.payload._id ? action.payload : ad))
 
-    case "DELETE":
+    case DELETE:
       return state.filter((ad) => ad._id !== action.payload)
 
-    case "UPDATE":
+    case UPDATE:
       return state.map((ad) => (ad._id === action.payload._id ? action.payload : ad));
 
-    case "SEARCH_AD":
+    case SEARCH_AD:
       return action.payload
 
-    default :
+    case SORT_ADS:
+      return action.payload
+
+    default:
       return state
   }
 }

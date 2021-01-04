@@ -1,23 +1,22 @@
 import React, { useState, useContext } from "react";
 
-import { Alert } from "../components/Alert";
-
 import { loginAdmin, loginUser, registerUser } from "../api";
 import { AuthContext } from "../context/authContext";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+
+import { SET_ALERT } from "../types";
 
 export const AuthPage = ({ isAdmin }) => {
   let [userData, setUserData] = useState({ login: '', password: '', email: '' });
   const [isRegister, setIsResgister] = useState(false);
 
   const auth = useContext(AuthContext)
-  const alert = useSelector(state => state.alert);
   const dispatch = useDispatch();
 
   const fieldChanged = e => setUserData({ ...userData, [e.target.name]: e.target.value });
 
-  const loginSubmit = async () => {   
-    setIsResgister(false); 
+  const loginSubmit = async () => {
+    setIsResgister(false);
     if (userData.login.length && (userData.password.length >= 6)) {
 
       try {
@@ -25,13 +24,13 @@ export const AuthPage = ({ isAdmin }) => {
         const result = data.data;
 
         if (result) {
-          dispatch({ type: "SET_ALERT", payload: { text: result.msg } })
+          dispatch({ type: SET_ALERT, payload: { text: result.msg } })
           auth.login(result.token, result.userId, result.userName, result.userAds, result.isAdmin);
         }
 
       } catch ({ response }) {
         const message = response.data.message;
-        dispatch({ type: "SET_ALERT", payload: { text: message, type: response.status } });
+        dispatch({ type: SET_ALERT, payload: { text: message, type: response.status } });
       }
       if (isAdmin) {
         window.location.href = '/dashboard';
@@ -47,11 +46,11 @@ export const AuthPage = ({ isAdmin }) => {
         const result = data.data;
 
         if (result) {
-          dispatch({ type: "SET_ALERT", payload: { text: result.message, type: 200 } })
+          dispatch({ type: SET_ALERT, payload: { text: result.message, type: 200 } })
         }
       } catch ({ response }) {
         const message = response.data.message;
-        dispatch({ type: "SET_ALERT", payload: { text: message, type: response.status } });
+        dispatch({ type: SET_ALERT, payload: { text: message, type: response.status } });
       }
     }
   }
@@ -84,20 +83,20 @@ export const AuthPage = ({ isAdmin }) => {
           </div>
           {auth.token || isAdmin || !isRegister ? null : (
             <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-              E-mail
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                E-mail
             </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              name="email"
-              type="email"
-              value={userData.email}
-              placeholder="Ваш email"
-              autoComplete="email"
-              required
-              onChange={fieldChanged}
-            />
-          </div>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                name="email"
+                type="email"
+                value={userData.email}
+                placeholder="Ваш email"
+                autoComplete="email"
+                required
+                onChange={fieldChanged}
+              />
+            </div>
           )}
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
@@ -133,7 +132,6 @@ export const AuthPage = ({ isAdmin }) => {
           </div>
         </form>
       </div>
-      {alert && <Alert />}
     </>
   )
 }

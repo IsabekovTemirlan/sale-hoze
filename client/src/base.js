@@ -1,8 +1,10 @@
 import firebase from 'firebase/app';
 import "firebase/storage";
 
+const apiKey = process.env.REACT_API_KEY;
+
 const firebaseConfig = {
-  apiKey: "AIzaSyAqQ2--_V-dY9vxVB8QEc7qu-aBDQb6V14",
+  apiKey,
   authDomain: "sale-hoze-storeg.firebaseapp.com",
   projectId: "sale-hoze-storeg",
   storageBucket: "sale-hoze-storeg.appspot.com",

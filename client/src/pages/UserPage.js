@@ -1,17 +1,18 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link } from "react-router-dom";
 
-import {Button} from "../components/Button";
-import {Modal} from "../components/Modal";
-import {Alert} from "../components/Alert";
+import { Button } from "../components/Button";
+import { Modal } from "../components/Modal";
+import { Alert } from "../components/Alert";
 
-import {getUsers} from "../actions/users";
+import { getUsers } from "../actions/users";
 
-import {url, deleteUser} from "../api";
+import { url, deleteUser } from "../api";
 import "boxicons";
 import { AuthContext } from "../context/authContext";
+import { SET_ALERT } from "../types";
 
 export const UserPage = () => {
   const { id } = useParams();
@@ -23,25 +24,21 @@ export const UserPage = () => {
   const user = useSelector((state) => state.users.find((item) => item._id === id));
   const alert = useSelector(state => state.alert);
 
-  useEffect(() => {
-    return () => dispatch({type: "SET_ALERT", payload: ""})
-  }, [dispatch]);
-
   const toAdminister = async () => {
     const endUrl = `${url}admin/users`,
-    data = {id: user._id, userName: user.login},
-    headers = { 'Content-Type': 'application/json', 'Authorization': "Bearer " + token };
-    const res = user.roles.includes("ADMIN") ? await axios.patch(endUrl, data, {headers}) : await axios.post(endUrl, data, {headers});
+      data = { id: user._id, userName: user.login },
+      headers = { 'Content-Type': 'application/json', 'Authorization': "Bearer " + token };
+    const res = user.roles.includes("ADMIN") ? await axios.patch(endUrl, data, { headers }) : await axios.post(endUrl, data, { headers });
     dispatch(getUsers(token))
-    dispatch({type: "SET_ALERT", payload: res.data.message});    
+    dispatch({ type: SET_ALERT, payload: res.data.message });
     setSowModal(false)
   }
 
   const deleteUserHandler = async () => {
-    const data = {id: user._id},
-    headers = { 'Content-Type': 'application/json', 'Authorization': "Bearer " + token };
+    const data = { id: user._id },
+      headers = { 'Content-Type': 'application/json', 'Authorization': "Bearer " + token };
     const res = await deleteUser(data, headers);
-    dispatch({type: "SET_ALERT", payload: {text: res.data.message}});
+    dispatch({ type: SET_ALERT, payload: { text: res.data.message } });
     dispatch(getUsers(token))
     setModalForUser(false);
   }
@@ -88,11 +85,10 @@ export const UserPage = () => {
       </div>
       <hr />
       <div className="flex items-center">
-        <Button title="Написать" pad="py-2"/>
-        {user.roles.includes("ADMIN") ? <Button title="Лишить привилегий" handler={ () => setSowModal(!showModal)} pad="py-2" /> : <Button handler={ () => setSowModal(!showModal)} title="Назначить Админом" pad="py-2" />}
+        {user.roles.includes("ADMIN") ? <Button title="Лишить привилегий" handler={() => setSowModal(!showModal)} pad="py-2" /> : <Button handler={() => setSowModal(!showModal)} title="Назначить Админом" pad="py-2" />}
         <Button handler={() => setModalForUser(true)} title="Удалить" btnType="bg-red-600" pad="py-2" />
       </div>
-      {alert && <Alert text={alert}  />}
+      {alert && <Alert text={alert} />}
     </>
   );
 };

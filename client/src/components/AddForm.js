@@ -9,10 +9,11 @@ import {
   fileUploadeToFirebase,
   initialStateForm,
   location,
-} from "../utils"
+} from "../utils";
+import { SET_ALERT } from "../types";
 
 export const AddForm = ({ ownerId }) => {
-  const [state, setState] = useState(initialStateForm);  
+  const [state, setState] = useState(initialStateForm);
   const dispatch = useDispatch();
 
   // put the data to the data base
@@ -24,7 +25,7 @@ export const AddForm = ({ ownerId }) => {
       setState(initialStateForm); // set initial state
       window.scrollTo(0, 0);
     } else {
-      dispatch({ type: "SET_ALERT", payload: {text: "Загрузите фото", type: 300} });
+      dispatch({ type: SET_ALERT, payload: { text: "Загрузите фото", type: 300 } });
     }
   }
 
@@ -40,7 +41,7 @@ export const AddForm = ({ ownerId }) => {
   const changeKillDate = (e) => {
     const killDate = e.target.value;
     setState(prev => {
-        return { ...prev, killDate }
+      return { ...prev, killDate }
     });
   }
 
@@ -48,7 +49,7 @@ export const AddForm = ({ ownerId }) => {
   const fileUploadHandler = (e) => {
     const [imgUrl, fileName] = fileUploadeToFirebase(e.target.files);
     try {
-      setState((prev) => ({ ...prev, photo: imgUrl, photoName: fileName })); 
+      setState((prev) => ({ ...prev, photo: imgUrl, photoName: fileName }));
     } catch (error) {
       console.log(error);
     }

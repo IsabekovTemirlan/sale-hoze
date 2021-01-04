@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { getNormalDate } from '../utils';
 import { Comment } from "../components/Comment";
 
-export const DetailPage = () => {
+export const DetailPage = ({isAuth}) => {
   const { id } = useParams();
   const ads = useSelector((state) => state.ads.find((item) => item._id === id));
   const [mainImg, setMainImg] = useState(ads ? ads.photo : []);
@@ -19,11 +19,11 @@ export const DetailPage = () => {
               <div>
                 <div className="h-64 md:h-80 rounded-lg bg-gray-300 mb-4">
                   <div className="h-64 md:h-80 rounded-lg bg-gray-300 mb-4 flex items-center justify-center">
-                    {mainImg ? <img
+                    {mainImg.length ? <img
                       className="h-64 m-4 w-auto"
                       src={ads && mainImg}
                       alt=""
-                    /> : <p className="text-4xl text-gray-500">Нет фото</p>}
+                    /> : <div className="flex justify-center aitems-center text-4xl font-extrabold text-gray-800">Фото нет</div>}
                   </div>
                 </div>
 
@@ -83,7 +83,7 @@ export const DetailPage = () => {
             </div>
           </div>
           <hr />
-          {ads.creator ? <Comment comments={ads.comments} id={id}/> : null}
+          {ads.creator ? <Comment isAuth={isAuth} id={id} adCreator={ads.creator}/> : null}
         </div>
       </div>
     );

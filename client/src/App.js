@@ -14,6 +14,7 @@ import { getUsers } from "./actions/users";
 import { Breadcrumbs } from './components/Breadcrumbs';
 
 import { deletPhotoInFirebase } from "./utils";
+import { Alert } from './components/Alert';
 
 function App() {
   const { token, userId, login, logout, userName, userAds, userType } = useAuth();
@@ -23,11 +24,14 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => { 
-    dispatch(getAds());
+
+    dispatch(getAds());  
     if (token && userType) {
       dispatch(getUsers(token));
     }
-  }, [dispatch, token, userType]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     // auto delete ads who time is out logic 
@@ -53,6 +57,7 @@ function App() {
           {userType ? <Navbar isAuth={isAuthenticated} isAdmin /> : <Navbar isAuth={isAuthenticated} />}
           {!userType && <Breadcrumbs />}
           <div className="m-auto max-w-screen-xl">
+            {alert ?<Alert title={alert.text} type={alert.type} /> : null}
             <Routes isAuthenticated={isAuthenticated} userId={userId}/>
           </div>
         </div>

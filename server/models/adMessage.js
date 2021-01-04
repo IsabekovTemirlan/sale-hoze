@@ -1,13 +1,15 @@
 import mongoose from "mongoose";
 
-const adsSchema = mongoose.Schema({
+const { Schema, model, Types } = mongoose;
+
+const adsSchema = Schema({
   title: String,
   description: String,
   location: String,
   contactNumber: String,
   photo: [String],
   killDate: String,
-  price: String,
+  price: Number,
   likeCount: {
     type: Number,
     default: 0
@@ -17,18 +19,11 @@ const adsSchema = mongoose.Schema({
     default: new Date()
   },
   timeOut: Number,
-  creator: String,
+  creator: { type: Types.ObjectId, ref: "user" },
   category: String,
-  photoName: [String],
-  comments: [{
-    text: String,
-    author: String,
-    date: {
-      type: Date
-    }
-  }]
+  photoName: [String]
 })
 
-const AdMessage = mongoose.model('AdMessage', adsSchema);
+const AdMessage = model('AdMessage', adsSchema);
 
 export default AdMessage;

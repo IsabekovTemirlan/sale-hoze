@@ -3,33 +3,37 @@ import { AuthContext } from "../context/authContext";
 import { Button } from "../components/Button";
 import { AdItem } from "../components/AdItem";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteAd, getAds } from "../actions/ads";
+import { deleteAd } from "../actions/ads";
+import { getUserAds } from "../actions/users";
 import { deletPhotoInFirebase } from "../utils";
 import { AdEditForm } from "../components/AdEditForm";
-import { Alert } from "../components/Alert";
 import { Link } from "react-router-dom";
+
+import { DELETE_USER_AD } from "../types";
 
 export const ProfilePage = () => {
   const { logout, userName, userId } = useContext(AuthContext);
   const [showEditForm, setShowEditForm] = useState(false);
   const [selectedAd, setSelectedAd] = useState({});
 
-  const ads = useSelector((state) => state.ads.filter((ad) => ad.creator === userId));
-  const alert = useSelector(state => state.alert);
+  // const ads = useSelector((state) => state.ads.filter((ad) => ad.creator === userId));
+  const userAds = useSelector(state => state.users);
 
   const dispatch = useDispatch();
 
   const deleteAdById = (id) => {
-    dispatch(deleteAd(id, {userId}));
-    const deletedPhotoName = [...ads.filter((ad) => ad._id === id)[0].photoName];
+    dispatch(deleteAd(id, { userId }));
+    dispatch({ type: DELETE_USER_AD, payload: id });
+    const deletedPhotoName = [...userAds.filter((ad) => ad._id === id)[0].photoName];
     deletedPhotoName.forEach((pn) => deletPhotoInFirebase(pn));
   };
 
+  const getMoreAds = () => dispatch(getUserAds({ userId }));
+
   useEffect(() => {
-    const getMoreAds = () => dispatch(getAds(1));
-    getMoreAds();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+    if (!userAds.length) getMoreAds();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const editFormHandler = (data, id) => {
     setShowEditForm(true);
@@ -38,7 +42,6 @@ export const ProfilePage = () => {
 
   return (
     <section className="pb-6">
-    {alert && <Alert text={alert} />}
       <div className="flex justify-between items-center">
         <h2 className="text-3xl uppercase font-bold leading-tight font-heading">
           Профиль
@@ -60,7 +63,7 @@ export const ProfilePage = () => {
         <h1 className="text-2xl text-center"> Мои обьявления</h1>
       </div>
       <div className="py-4 flex justify-center">
-        {ads.length ? (
+        {userAds.length ? (
           <table className="w-full text-md bg-white shadow-md rounded mb-4">
             <tbody>
               <tr className="border-b">
@@ -69,7 +72,7 @@ export const ProfilePage = () => {
                 <th className="text-left p-3 px-5">Срок</th>
                 <th className="text-right p-3 px-6">Действия</th>
               </tr>
-              {ads.map((item) => (
+              {userAds.map((item) => (
                 <AdItem
                   handler={deleteAdById}
                   key={item._id}

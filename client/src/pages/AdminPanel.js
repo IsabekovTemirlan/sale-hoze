@@ -26,8 +26,11 @@ export const AdminPanel = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    return () => dispatch(getUsers(token));
-  }, [dispatch, token])
+    if (!users.length) {
+      dispatch(getUsers(token))
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const logoutHandler = () => {
     logout();

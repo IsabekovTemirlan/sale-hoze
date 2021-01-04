@@ -28,7 +28,6 @@ export const likeAd = async (req, res) => {
   }
 }
 
-
 export const createAd = async (req, res) => {
   const data = await req.body;
   const newAd = new AdMessage(data);
@@ -98,19 +97,52 @@ export const searchAds = async (req, res) => {
   }
 }
 
-export const adComment = async (req, res) => {
-  const {id, text, author, date} = await req.body;
+export const getUserAds = async (req, res) => {
+  const {userId} = await req.body;
 
   try {
-    await AdMessage.findByIdAndUpdate(id, { $push: { comments: {text, author, date} } }).exec();
-    const {comments} = await AdMessage.findById(id);
-    const newComment = comments[comments.length - 1];
+    const ads = await AdMessage.find();
+    const userAds = ads.filter((ad) => ad.creator == userId);
 
-    res.status(200).json({message: 'Комментарий добавлен'});
+    res.status(200).json(userAds);
+    
   } catch (error) {
     res.status(400).json({message: error.message});
   }
+}
 
+export const sortAds = async (req, res) => {
+  const {value} = await req.body;
+  let sortedAds;
+
+  try {
+    switch (value) {
+      case "cheap":
+        sortedAds = await AdMessage.find().sort({'price': 1});
+        break;
+
+      case "expensive":
+        sortedAds = await AdMessage.find().sort({'price': -1});
+        break;
+      
+      case "old":
+        sortedAds = await AdMessage.find().sort("-date").exec();
+        break;
+      
+      case "new": 
+        sortedAds = await AdMessage.find().sort("date").exec();
+        break;
+
+      default:
+        sortedAds = await AdMessage.find().lean();
+        break;
+    }
+
+    res.status(200).json(sortedAds);  
+
+  } catch (error) {
+    res.status(400).json({message: error.message});
+  }
 }
 
 export default router;
