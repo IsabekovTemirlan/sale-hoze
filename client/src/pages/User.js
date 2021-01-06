@@ -2,17 +2,14 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link } from "react-router-dom";
-
 import { Button } from "../components/Button";
 import { Modal } from "../components/Modal";
 import { Alert } from "../components/Alert";
-
 import { getUsers } from "../actions/users";
-
 import { url, deleteUser } from "../api";
-import "boxicons";
 import { AuthContext } from "../context/authContext";
 import { SET_ALERT } from "../types";
+import "boxicons";
 
 export const UserPage = () => {
   const { id } = useParams();
@@ -47,7 +44,7 @@ export const UserPage = () => {
     <>
       {modalForUser && <Modal close={() => setModalForUser(false)} agree={deleteUserHandler} title="Удаление пользователя" body={`Вы уверены что хотите удалить пользователя ${user.login}?`} />}
       {showModal && <Modal close={() => setSowModal(false)} agree={toAdminister} title="Админимстрирование" body={`Вы уверены в присвоении пользователю ${user.login} роль Адмимнистратора?`} />}
-      <div className="mt-1 md:flex-1 flex">
+      <div className="mt-1 md:flex-1 flex page-enter">
         <div className="m-4">
           <p className="pr-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
             Login
@@ -84,7 +81,7 @@ export const UserPage = () => {
         </div>
       </div>
       <hr />
-      <div className="flex items-center">
+      <div className="flex items-center page-enter">
         {user.roles.includes("ADMIN") ? <Button title="Лишить привилегий" handler={() => setSowModal(!showModal)} pad="py-2" /> : <Button handler={() => setSowModal(!showModal)} title="Назначить Админом" pad="py-2" />}
         <Button handler={() => setModalForUser(true)} title="Удалить" btnType="bg-red-600" pad="py-2" />
       </div>

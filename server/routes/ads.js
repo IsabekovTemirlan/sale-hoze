@@ -3,16 +3,18 @@ import User from "../models/User.js";
 
 import {paginatedResults} from "../middleware/paginatedmiddleware.js";
 
-import { getAds, createAd, likeAd, deleteAd, updateAd, searchAds, getUserAds, sortAds } from "../controllers/ads.js";
+import { getAds, createAd, likeAd, deleteAd, updateAd, searchAds, getUserAds, sortAds, getFavoriteAds, clearFavoritesAds } from "../controllers/ads.js";
 
 const router = express.Router();
 
 router.get('/', paginatedResults(User), getAds);
+router.post('/', createAd);
 router.post('/userads', getUserAds);
 router.post('/search', searchAds);
 router.post('/sort', sortAds);
-router.post('/', createAd);
-router.patch('/:id/likeAd', likeAd);
+router.post('/favorites', getFavoriteAds);
+router.post('/userfavorites', likeAd);
+router.post('/clearfavorites', clearFavoritesAds);
 router.patch('/:id', updateAd);
 router.post('/:id', deleteAd);
 

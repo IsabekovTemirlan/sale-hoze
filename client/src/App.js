@@ -1,20 +1,16 @@
 import React, { useEffect } from 'react';
-
 import { BrowserRouter as Router } from "react-router-dom";
-
-import { Navbar } from "./components/Navbar";
-import {Routes} from "./routes";
-import { useAuth } from "./hooks/auth.hook";
-
-import { AuthContext } from "./context/authContext";
 import { useDispatch, useSelector } from "react-redux";
-
+import { Navbar } from "./components/Navbar";
+import { Breadcrumbs } from './components/Breadcrumbs';
+import { Routes } from "./routes";
+import { Alert } from './components/Alert';
+import { useAuth } from "./hooks/auth.hook";
+import { AuthContext } from "./context/authContext";
 import { getAds, deleteAd } from "./actions/ads";
 import { getUsers } from "./actions/users";
-import { Breadcrumbs } from './components/Breadcrumbs';
-
 import { deletPhotoInFirebase } from "./utils";
-import { Alert } from './components/Alert';
+import "./app.css";
 
 function App() {
   const { token, userId, login, logout, userName, userAds, userType } = useAuth();
@@ -22,15 +18,14 @@ function App() {
 
   const ads = useSelector(state => state.ads);
   const dispatch = useDispatch();
+  const greetingFlag = JSON.parse(localStorage.getItem("isVisiting"));
 
-  useEffect(() => { 
+  useEffect(() => {
+    if (!greetingFlag) { localStorage.setItem("isVisiting", JSON.stringify(true)); }
+    dispatch(getAds());
+    if (token && userType) { dispatch(getUsers(token)); }
 
-    dispatch(getAds());  
-    if (token && userType) {
-      dispatch(getUsers(token));
-    }
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -49,16 +44,16 @@ function App() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   return (
     <AuthContext.Provider value={{ token, userName, userId, login, logout, isAuthenticated, userAds, userType }}>
       <Router>
-        <div className={!userType ? "container max-w-screen-xxl" : null}>
+        <div className={!userType ? "container max-w-screen-xl mx-auto" : null}>
           {userType ? <Navbar isAuth={isAuthenticated} isAdmin /> : <Navbar isAuth={isAuthenticated} />}
           {!userType && <Breadcrumbs />}
-          <div className="m-auto max-w-screen-xl">
-            {alert ?<Alert title={alert.text} type={alert.type} /> : null}
-            <Routes isAuthenticated={isAuthenticated} userId={userId}/>
+          <div className="mx-auto max-w-screen">
+            {alert ? <Alert title={alert.text} type={alert.type} /> : null}
+            <Routes isAuthenticated={isAuthenticated} userId={userId} />
           </div>
         </div>
       </Router>

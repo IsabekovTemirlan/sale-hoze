@@ -3,20 +3,18 @@ import { AuthContext } from '../context/authContext';
 import { Button } from "./Button";
 import { adComment } from "../api";
 import { getNormalDate } from "../utils";
-
 import * as api from "../api";
 
-const CommentItem = ({ text, date, author }) => {
-  return (
-    <div className="bg-white border border-l-0 border-t-0 justify-start border-r-0 p-3 flex flex-col">
-      <div className="flex flex-row items-center mr-2">
-        <h3 className="mr-2 text-purple-600 font-semibold text-sm md:text-left ">@{author}</h3>
-        <p className="text-gray-500 text-sm ">{date && getNormalDate(date)}</p>
-      </div>
-      <p className="text-gray-800">{text}</p>
+const CommentItem = ({ text, date, author }) => (
+  <div className="bg-white border border-l-0 border-t-0 justify-start border-r-0 p-3 flex flex-col">
+    <div className="flex flex-row items-center mr-2">
+      <h3 className="mr-2 text-purple-600 font-semibold text-sm md:text-left ">@{author}</h3>
+      <p className="text-gray-500 text-sm ">{date && getNormalDate(date)}</p>
     </div>
-  )
-}
+    <p className="text-gray-800">{text}</p>
+  </div>
+)
+
 
 export const Comment = ({ id, isAuth }) => {
   const [comments, setComments] = useState([]);
@@ -36,7 +34,6 @@ export const Comment = ({ id, isAuth }) => {
 
   const sendComment = async (e) => {
     e.preventDefault();
-
     const commentObj = { id, value, author: userName };
 
     if (value) {

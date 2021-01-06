@@ -6,7 +6,7 @@ import { comfort, success, kg } from "../assets/icons";
 export const AboutPage = ({ isAuth }) => {
   return (
     <>
-      <section className="pt-2 pb-12 px-4 text-center">
+      <section className="pt-2 pb-12 mx-auto px-4 text-center page-enter">
         <div className="w-full max-w-4xl mx-auto">
           <h2 className="text-5xl mt-2 mb-6 leading-tight font-heading">Добро пожаловать в <span
             className='font-bold text-bgColor'>SaleHoz</span>!</h2>
@@ -25,7 +25,7 @@ export const AboutPage = ({ isAuth }) => {
         </div>
       </section>
 
-      <section className="py-12 px-4 mb-32 text-center bg-white shadow-2xl">
+      <section className="py-12 px-4 mb-32 text-center bg-white shadow-2xl page-enter">
         <h2 className="text-3xl mb-8 font-heading">В чём приумушество <span
           className='font-bold text-bgColor'>SaleHoz</span>?</h2>
         <div className="flex flex-wrap items-center justify-center -mx-8 mb-12">
@@ -48,13 +48,10 @@ export const AboutPage = ({ isAuth }) => {
               распрастранено, ваше объявление будет доступно по всей стране.</p>
           </div>
         </div>
-        <Link to="/about">
-          <Button title={'Подробнее'} />
-        </Link>
       </section>
 
       <div>
-        <Link to="/admin" className="m-2 text-blue-600 underline"> Для правообладателей</Link>
+        <Link to="/admin" className="m-2 text-blue-600 underline p-4 text-center"> Для правообладателей</Link>
       </div>
     </>
   )

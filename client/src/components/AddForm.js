@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-
 import { useDispatch } from "react-redux";
 import { Button } from "./Button";
 import { createAd } from "../actions/ads";
-
 import {
   categoryList,
   fileUploadeToFirebase,
@@ -24,9 +22,7 @@ export const AddForm = ({ ownerId }) => {
       dispatch(createAd(state));
       setState(initialStateForm); // set initial state
       window.scrollTo(0, 0);
-    } else {
-      dispatch({ type: SET_ALERT, payload: { text: "Загрузите фото", type: 300 } });
-    }
+    } else { dispatch({ type: SET_ALERT, payload: { text: "Загрузите фото", type: 300 } }); }
   }
 
   // set field names and values
@@ -50,16 +46,14 @@ export const AddForm = ({ ownerId }) => {
     const [imgUrl, fileName] = fileUploadeToFirebase(e.target.files);
     try {
       setState((prev) => ({ ...prev, photo: imgUrl, photoName: fileName }));
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) { console.log(error); }
   }
 
   // terms got it
   const checkboxHandler = (e) => setState({ ...state, isCheked: e.target.value });
 
   return (
-    <div className="w-full m-auto max-w-sm">
+    <div className="w-full m-auto max-w-sm page-enter">
       <form
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         onSubmit={submitForm}

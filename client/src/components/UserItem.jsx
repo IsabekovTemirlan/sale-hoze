@@ -1,11 +1,10 @@
 import React from 'react';
-
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const UserItem = ({ id, login, roles, ads, email }) => {
   const adsCount = ads.filter((a) => a.creator === id);
   return (
-    <tr className="transition-all hover:bg-gray-100 hover:shadow-lg">
+    <tr className="transition-all hover:bg-gray-100 hover:shadow-lg page-enter">
       <td className="px-6 py-4 whitespace-nowrap">
         <div className="flex items-center">
           <div className="">

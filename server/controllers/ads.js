@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import AdMessage from "../models/adMessage.js";
 import User from "../models/User.js";
+import Comment from "../models/Comment.js";
 
 const router = express.Router();
 
@@ -15,13 +16,13 @@ export const getAds = async (req, res) => {
 }
 
 export const likeAd = async (req, res) => {
-  const { id } = req.params;
+  const { adId, userId } = await req.body;
 
   try {
-    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No ads with id: ${id}`);
-    const ad = await AdMessage.findById(id);
-    const updatedAd = await AdMessage.findByIdAndUpdate(id, { likeCount: ad.likeCount + 1 }, { new: true });
-    res.json(updatedAd);
+
+    await User.updateOne({ _id: userId }, { $push: { favorites: adId } });
+
+    res.status(200).json("Объявление добавлено в избранное!")
 
   } catch (error) {
     res.json({ message: error });
@@ -46,19 +47,22 @@ export const deleteAd = async (req, res) => {
   const { id } = req.params;
   const { userId } = await req.body;
   let newLinks;
+  let newFavorites;
 
   if (userId) {
     const user = await User.findById(userId);
-    newLinks = user.links.filter(l=> l != id);
+    newLinks = user.links.filter(l => l != id);
+    newFavorites = user.favorites.filter(l => l != id);
   }
 
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
     await AdMessage.findByIdAndRemove(id);
-    await User.findByIdAndUpdate(userId, { links: newLinks }, { new: true });
+    await User.findByIdAndUpdate(userId, { links: newLinks, favorites: newFavorites }, { new: true });
+    await Comment.deleteMany({owner: id});
     res.json({ message: "Объявление успешно удалено!" });
 
-  } catch (e) { res.json({ message: e });}
+  } catch (e) { res.json({ message: e }); }
 }
 
 export const updateAd = async (req, res) => {
@@ -69,67 +73,58 @@ export const updateAd = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
     const updatedAd = { title, description, location, killDate, price, creator, category, createdAt, likeCount, contactNumber, timeOut, photo, photoName, _id: id };
     await AdMessage.findByIdAndUpdate(id, updatedAd, { new: true });
-    res.json(updatedAd); 
-     
+    res.json(updatedAd);
+
   } catch (error) {
-    res.json({message: error});
+    res.json({ message: error });
   }
-  
+
 }
 
 export const searchAds = async (req, res) => {
-  const {value, type} = await req.body;
-  const ads = await AdMessage.find();
-
   try {
-    
+    const { value, type } = await req.body;
+    const ads = await AdMessage.find();
     const searchedAds = ads.filter(ad => type === "category" ? ad.category.toLowerCase() === value.toLowerCase() : ad.title.toLowerCase().includes(value.toLowerCase()));
-
     if (searchedAds.length) {
       await res.status(201).json(searchedAds);
-    } else {
-      await res.json({message: "Ничего не найдено"});
-    }
-    
-
-  } catch (e) {
-    await res.status(409).json({ message: e.message })
-  }
+    } else { await res.json({ message: "Ничего не найдено" }); }
+  } catch (e) { await res.status(409).json({ message: e.message }); }
 }
 
 export const getUserAds = async (req, res) => {
-  const {userId} = await req.body;
+  const { userId } = await req.body;
 
   try {
     const ads = await AdMessage.find();
     const userAds = ads.filter((ad) => ad.creator == userId);
 
     res.status(200).json(userAds);
-    
+
   } catch (error) {
-    res.status(400).json({message: error.message});
+    res.status(400).json({ message: error.message });
   }
 }
 
 export const sortAds = async (req, res) => {
-  const {value} = await req.body;
+  const { value } = await req.body;
   let sortedAds;
 
   try {
     switch (value) {
       case "cheap":
-        sortedAds = await AdMessage.find().sort({'price': 1});
+        sortedAds = await AdMessage.find().sort({ 'price': 1 });
         break;
 
       case "expensive":
-        sortedAds = await AdMessage.find().sort({'price': -1});
+        sortedAds = await AdMessage.find().sort({ 'price': -1 });
         break;
-      
+
       case "old":
         sortedAds = await AdMessage.find().sort("-date").exec();
         break;
-      
-      case "new": 
+
+      case "new":
         sortedAds = await AdMessage.find().sort("date").exec();
         break;
 
@@ -138,10 +133,37 @@ export const sortAds = async (req, res) => {
         break;
     }
 
-    res.status(200).json(sortedAds);  
+    res.status(200).json(sortedAds);
 
   } catch (error) {
-    res.status(400).json({message: error.message});
+    res.status(400).json({ message: error.message });
+  }
+}
+
+export const getFavoriteAds = async (req, res) => {
+  const { userId } = await req.body;
+
+  try {
+    const user = await User.findById(userId);
+    const userFavoriteAds = [...user.favorites];
+
+    const favoriteAds = await AdMessage.find({ _id: { $in: userFavoriteAds } });
+    res.status(200).json(favoriteAds);
+
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+}
+
+export const clearFavoritesAds = async (req, res) => {
+  const { userId } = await req.body;
+
+  try {
+    await User.findByIdAndUpdate(userId, { favorites: [] });
+    res.status(200).json("Список избранных очищен!");
+
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 }
 

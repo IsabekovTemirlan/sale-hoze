@@ -1,30 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import {AllAdsPage} from "./AllAds";
+import { AllAdsPage } from "./AllAds";
 import { Button } from "../components/Button";
 import { kg, success, comfort } from "../assets/icons";
-
-const storageName = "isVisiting";
 
 export const MainPage = ({ isAuth }) => {
   const [greeting, setGreeting] = useState(false);
   const ads = useSelector(state => state.ads.length);
+  const greetingFlag = JSON.parse(localStorage.getItem("isVisiting"));
 
   useEffect(() => {
-    const greetingFlag = JSON.parse(localStorage.getItem(storageName));
     const countFlag = JSON.parse(localStorage.getItem("countFlag"));
-
-    if (!countFlag) {
-      localStorage.setItem("countFlag", JSON.stringify(ads));
-    }
-    
-    if (greetingFlag) {
-      setGreeting(greetingFlag);
-    } else {
-      localStorage.setItem(storageName, JSON.stringify(true));
-    }
-
+    if (!countFlag) { localStorage.setItem("countFlag", JSON.stringify(ads)); }
+    if (greetingFlag) { setGreeting(greetingFlag); }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -32,7 +21,7 @@ export const MainPage = ({ isAuth }) => {
     <>
       {greeting ? null : (
         <>
-          <section className="pt-2 pb-12 px-4 text-center">
+          <section className="pt-2 pb-12 px-4 text-center page-enter">
             <div className="w-full max-w-4xl mx-auto">
               <h2 className="text-5xl mt-2 mb-6 leading-tight font-heading">Добро пожаловать в <span
                 className='font-bold text-bgColor'>SaleHoz</span>!</h2>

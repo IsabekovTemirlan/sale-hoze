@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-
 import { getNormalDate } from '../utils';
 import { Comment } from "../components/Comment";
 
-export const DetailPage = ({isAuth}) => {
+export const DetailPage = ({ isAuth }) => {
   const { id } = useParams();
   const ads = useSelector((state) => state.ads.find((item) => item._id === id));
   const [mainImg, setMainImg] = useState(ads ? ads.photo : []);
 
   if (ads) {
     return (
-      <div className="py-6 mt-6 bg-white rounded-lg">
+      <div className="py-6 mt-6 bg-white rounded-lg page-enter">
         <div className="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row -mx-4">
             <div className="md:flex-1 px-4">
@@ -83,12 +82,9 @@ export const DetailPage = ({isAuth}) => {
             </div>
           </div>
           <hr />
-          {ads.creator ? <Comment isAuth={isAuth} id={id} adCreator={ads.creator}/> : null}
+          {ads.creator ? <Comment isAuth={isAuth} id={id} adCreator={ads.creator} /> : null}
         </div>
       </div>
     );
-  } else {
-    return <p className="mt-16 text-center">Ничего нет</p>
-  }
-
+  } else { return <p className="mt-16 text-center">Ничего нет</p>}
 };

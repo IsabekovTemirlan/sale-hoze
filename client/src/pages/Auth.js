@@ -1,9 +1,7 @@
 import React, { useState, useContext } from "react";
-
+import { useDispatch } from "react-redux";
 import { loginAdmin, loginUser, registerUser } from "../api";
 import { AuthContext } from "../context/authContext";
-import { useDispatch } from "react-redux";
-
 import { SET_ALERT } from "../types";
 
 export const AuthPage = ({ isAdmin }) => {
@@ -32,9 +30,7 @@ export const AuthPage = ({ isAdmin }) => {
         const message = response.data.message;
         dispatch({ type: SET_ALERT, payload: { text: message, type: response.status } });
       }
-      if (isAdmin) {
-        window.location.href = '/dashboard';
-      }
+      if (isAdmin) { window.location.href = '/dashboard'; }
     }
   }
 
@@ -45,9 +41,7 @@ export const AuthPage = ({ isAdmin }) => {
         const data = await registerUser(userData);
         const result = data.data;
 
-        if (result) {
-          dispatch({ type: SET_ALERT, payload: { text: result.message, type: 200 } })
-        }
+        if (result) { dispatch({ type: SET_ALERT, payload: { text: result.message, type: 200 } }) }
       } catch ({ response }) {
         const message = response.data.message;
         dispatch({ type: SET_ALERT, payload: { text: message, type: response.status } });
@@ -57,13 +51,13 @@ export const AuthPage = ({ isAdmin }) => {
 
   return (
     <>
-      <h2 className="text-3xl uppercase font-bold leading-tight font-heading">
+      <h2 className="text-3xl uppercase font-bold leading-tight font-heading text-center mt-2 w-full md:w-auto md:text-left">
         {isAdmin ? "Вход для администратора" : "Вход"}
       </h2>
-      <div className="w-full m-auto mt-20 max-w-xs">
+      <div style={{top: "40%"}} className="w-full m-auto absolute left-0 right-0 max-w-xs page-enter">
 
         <form
-          className="bg-white shadow-md rounded px-8 pt-2 pb-8 mb-4"
+          className="bg-white shadow-md rounded p-8 mb-4"
           onSubmit={e => e.preventDefault()}
         >
           <div className="mb-4">

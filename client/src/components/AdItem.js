@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from "react-router-dom";
-
 import { Modal } from "./Modal";
-
 import { getNormalDate } from "../utils";
 import "boxicons";
 
@@ -19,25 +17,24 @@ export const AdItem = ({ data, handler, id, editHandler, forAdmin }) => {
   }
 
   return (
-    <tr className="border-b hover:bg-orange-100 bg-gray-100">
-      <td className="p-3 px-5">
+    <tr className="border-b hover:bg-orange-100 bg-gray-100 page-enter">
+      <td className="p-1 cdd:p-3 cdd:px-5">
         <p>{title}</p>
       </td>
-      <td className="p-3 px-5">
+      <td className="p-1 cdd:p-3 cdd:px-5">
         <p>{getNormalDate(createdAt)}</p>
         {showModal && <Modal
           title="Удаление объявления"
           body="Вы уверены что хотите удалить объявление?"
           close={() => setShowModal(false)}
-          agree={confireHandler}
-        />}
+          agree={confireHandler} />}
       </td>
-      <td className="p-3 px-5">
+      <td className="p-1 cdd:p-3 cdd:px-5 hidden sm:table-cell">
         <p>{forAdmin ? (
           userToBe.length ? <Link className="underline" to={`users/${creator}`}>{creator}</Link> : "Нет автора"
         ) : (killDate === "false" ? "Бесконечно" : killDate)}</p>
       </td>
-      <td className="p-3 px-5 flex justify-end items-center">
+      <td className="p-1 cdd:p-3 cdd:px-5 flex justify-end items-center">
 
         <div className="cursor-pointer mr-2">
           <Link to={`/detail/${id}`}>

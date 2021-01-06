@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Card } from "../components/Card";
 import { getAds } from "../actions/ads";
 import { SearchBar } from "../components/SearchBar";
-import { Skeleton } from "../components/Skeleton";
+import { Loader } from "../components/Loader";
 
 export const AllAdsPage = () => {
   // eslint-disable-next-line no-unused-vars
@@ -14,40 +14,46 @@ export const AllAdsPage = () => {
   const dispatch = useDispatch();
   const adsCount = JSON.parse(localStorage.getItem("countFlag"));
 
-  useEffect(() => {
-    
+  const getAdsFromRedux = async () => {
     if (adsCount > ads.length) {
-      dispatch(getAds(page));
+      await dispatch(getAds(page));
     }
+  }
+
+  useEffect(() => {
+    getAdsFromRedux()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleScroll = () => {
-    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-    // change === to >= if data be very large
-    if (scrollHeight - scrollTop === clientHeight) {
-      // setPage(prev => prev + 1);
-      // dispatch(getAds(page));
+  // - 100
+  const handleScroll = (e) => {
+    let { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+    if (scrollHeight - Math.floor(scrollTop) === clientHeight) {
+      const timeout = setTimeout(() => {
+        !sorted && dispatch(getAds(page));
+        setPage(prev => prev++);
+        clearTimeout(timeout)
+      }, 1000);
     }
   }
 
   window.onscroll = (e) => !sorted ? handleScroll(e) : null;
 
   return (
-    <section>
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-3xl mt-2 uppercase font-bold leading-tight font-heading">Все объявления</h2>
+    <section className="mt-2" >
+      <div className="flex justify-between items-center mb-4 w-full ">
+        <h2 className="text-3xl mt-2 ml-2 uppercase font-bold leading-tight font-heading text-center w-full md:text-left">Все объявления</h2>
       </div>
       <hr />
-
       <SearchBar setSorted={setSorted} />
+      <hr />
 
-      <div className="w-full my-5 flex justify-center flex-wrap bg-white rounded-sm shadow-sm">
-        {ads.length ? ads.map(item => <Card data={item} key={item._id} />) : <p>Объявлений нет</p>}
-      </div>
-      <div className="w-full my-5 flex min-h-full justify-center flex-wrap bg-white rounded-sm shadow-sm">
-        {(loading || !ads) ? new Array(8).fill(0).map((_,idx) => <Skeleton key={idx}/>) : null }
+
+      <div className="w-full py-2 my-5 flex justify-center flex-wrap rounded-sm shadow-sm">
+        {ads.length ? ads.map(item => <Card data={item} key={item._id} />) : null}
+        {!loading && !ads.length ? <p>Объявлений нет</p> : null}
+        {loading ? <Loader /> : null}
       </div>
     </section>
   )
