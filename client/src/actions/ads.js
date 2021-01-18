@@ -4,11 +4,11 @@ import { CLEAR_LOADING, CREATE, DELETE, GET_ADS, LIKE, SEARCH_AD, SET_ALERT, SET
 
 const adsUrl = api.url + 'ads';
 
-export const getAds = (page = 1) => async (dispatch) => {
+export const getAds = (page) => async (dispatch) => {
   dispatch({ type: SET_LOADING });
   try {
-    const { data } = await axios.get(`${adsUrl}?${page}=1&limit=16`);
-    dispatch({ type: GET_ADS, payload: data });
+    const { data } = await axios.get(`${adsUrl}?page=${page}&limit=16`);
+    dispatch({ type: GET_ADS, payload: data.results });
   } catch (e) { console.log(e.message); }
   finally { dispatch({ type: CLEAR_LOADING });}
 }

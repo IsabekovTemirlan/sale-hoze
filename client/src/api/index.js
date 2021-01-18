@@ -20,3 +20,5 @@ export const getComments = (id) => axios.post(`${url}comments/all`, id);
 export const getFavoriteAds = (userId) => axios.post(`${url}ads/favorites`, userId);
 export const likeAd = (data) => axios.post(`${url}ads/userfavorites`, data);
 export const clearFavoritesAds = (userId) => axios.post(`${url}ads/clearfavorites`, userId);
+
+export const uploadImage = (data) => axios.post(`${url}imgUpload`, data);

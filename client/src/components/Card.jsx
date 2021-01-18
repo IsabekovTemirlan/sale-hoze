@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { likeAd } from "../actions/ads";
 import { AuthContext } from "../context/authContext";
+import {url} from "../api";
 
 export const Card = ({ data, size }) => {
   const { userId } = useContext(AuthContext);
@@ -25,7 +26,7 @@ export const Card = ({ data, size }) => {
   return (
     <div className={`wrapper m-1 mb-4 ${size ? size : "w-290"} page-enter bg-white rounded-b-md shadow-lg overflow-hidden`}>
       <div className="h-40 overflow-hidden">
-        {photo[0] ? <img src={photo[0]} alt="" className="w-full h-inherit" /> : <div className="mt-12 flex justify-center aitems-center text-4xl font-extrabold text-gray-400">Нет фото</div>}
+        {photo.length ? <img src={`${url}${photo[0].url}`} alt="" className="w-full h-inherit" /> : <div className="mt-12 flex justify-center aitems-center text-4xl font-extrabold text-gray-400">Нет фото</div>}
       </div>
       <hr/>
       <div className="p-3 space-y-3 overflow-hidden">

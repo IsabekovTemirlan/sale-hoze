@@ -3,11 +3,12 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getNormalDate } from '../utils';
 import { Comment } from "../components/Comment";
+import {url} from "../api";
 
 export const DetailPage = ({ isAuth }) => {
   const { id } = useParams();
   const ads = useSelector((state) => state.ads.find((item) => item._id === id));
-  const [mainImg, setMainImg] = useState(ads ? ads.photo : []);
+  const [mainImg, setMainImg] = useState(ads ? ads.photo[0] : []);
 
   if (ads) {
     return (
@@ -18,9 +19,9 @@ export const DetailPage = ({ isAuth }) => {
               <div>
                 <div className="h-64 md:h-80 rounded-lg bg-gray-300 mb-4">
                   <div className="h-64 md:h-80 rounded-lg bg-gray-300 mb-4 flex items-center justify-center">
-                    {mainImg.length ? <img
+                    {ads.photo.length ? <img
                       className="h-64 m-4 w-auto"
-                      src={ads && mainImg}
+                      src={`${url}${mainImg.url}`}
                       alt=""
                     /> : <div className="flex justify-center aitems-center text-4xl font-extrabold text-gray-800">Фото нет</div>}
                   </div>
@@ -29,9 +30,9 @@ export const DetailPage = ({ isAuth }) => {
                 <div className="flex -mx-2 mb-4">
                   {
                     ads.photo.length ? ads.photo.map((p) => (
-                      <div key={p} className="flex-1 px-2">
+                      <div key={p.id} className="flex-1 px-2">
                         <button onClick={() => setMainImg(p)} className={`overflow-hidden focus:outline-none rounded-lg h-24 md:h-32 bg-gray-100 flex items-center ${ads.photo.length === 1 ? 'w-1/3' : 'w-full'} justify-center` + (p === mainImg ? " border-2 border-bgColor " : "")}>
-                          <img src={p} alt="" />
+                          <img src={`${url}${p.url}`} alt="" />
                         </button>
                       </div>
                     )) : <p></p>

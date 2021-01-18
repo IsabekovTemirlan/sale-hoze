@@ -36,7 +36,7 @@ export const AuthPage = ({ isAdmin }) => {
 
   const registerSubmit = async () => {
     setIsResgister(true);
-    if (userData.login.length && (userData.password.length >= 6)) {
+    if (userData.login.length && (userData.password.length >= 6) && userData.email.length) {
       try {
         const data = await registerUser(userData);
         const result = data.data;

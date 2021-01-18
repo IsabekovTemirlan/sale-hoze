@@ -7,18 +7,14 @@ const adsSchema = Schema({
   description: String,
   location: String,
   contactNumber: String,
-  photo: [String],
+  photo: [Object],
   killDate: String,
   price: Number,
-  createdAt: {
-    type: Date,
-    default: new Date()
-  },
+  createdAt: { type: Date, default: new Date() },
   timeOut: Number,
   creator: { type: Types.ObjectId, ref: "user" },
-  category: String,
-  photoName: [String]
-})
+  category: String
+});
 
 const AdMessage = model('AdMessage', adsSchema);
 

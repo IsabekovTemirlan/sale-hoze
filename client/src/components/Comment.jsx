@@ -34,11 +34,13 @@ export const Comment = ({ id, isAuth }) => {
 
   const sendComment = async (e) => {
     e.preventDefault();
-    const commentObj = { id, value, author: userName };
+    const date = new Date();
+    const commentObj = { id, value, author: userName, date};
 
     if (value) {
       await adComment(commentObj);
       commentObj.id = Date.now();
+      commentObj.date = date;
       comments.push(commentObj);
     }
     setValue("");

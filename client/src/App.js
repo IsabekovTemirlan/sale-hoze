@@ -7,9 +7,9 @@ import { Routes } from "./routes";
 import { Alert } from './components/Alert';
 import { useAuth } from "./hooks/auth.hook";
 import { AuthContext } from "./context/authContext";
-import { getAds, deleteAd } from "./actions/ads";
+import { deleteAd } from "./actions/ads";
 import { getUsers } from "./actions/users";
-import { deletPhotoInFirebase } from "./utils";
+
 import "./app.css";
 
 function App() {
@@ -22,13 +22,8 @@ function App() {
 
   useEffect(() => {
     if (!greetingFlag) { localStorage.setItem("isVisiting", JSON.stringify(true)); }
-    dispatch(getAds());
     if (token && userType) { dispatch(getUsers(token)); }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     // auto delete ads who time is out logic 
     if (ads.length) {
       ads.forEach(element => {
@@ -37,8 +32,7 @@ function App() {
         const daysLag = Math.ceil(Math.abs(date2.getTime() - date1.getTime()) / (1000 * 3600 * 24));
 
         if (daysLag >= element.killDate) {
-          dispatch(deleteAd(element._id, userId));
-          element.photoName.forEach(pn => deletPhotoInFirebase(pn));
+          dispatch(deleteAd(element._id, { userId }));
         }
       });
     }
@@ -55,6 +49,7 @@ function App() {
             {alert ? <Alert title={alert.text} type={alert.type} /> : null}
             <Routes isAuthenticated={isAuthenticated} userId={userId} />
           </div>
+          
         </div>
       </Router>
     </AuthContext.Provider>

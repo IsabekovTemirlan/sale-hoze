@@ -1,1 +1,1 @@
-This is my own diploma project on the MERN stack.
+This is my own project on the MERN stack.

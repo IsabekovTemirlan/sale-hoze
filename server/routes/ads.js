@@ -1,5 +1,5 @@
 import express from 'express';
-import User from "../models/User.js";
+import AdMessage from "../models/adMessage.js";
 
 import {paginatedResults} from "../middleware/paginatedmiddleware.js";
 
@@ -7,7 +7,7 @@ import { getAds, createAd, likeAd, deleteAd, updateAd, searchAds, getUserAds, so
 
 const router = express.Router();
 
-router.get('/', paginatedResults(User), getAds);
+router.get('/', paginatedResults(AdMessage), getAds);
 router.post('/', createAd);
 router.post('/userads', getUserAds);
 router.post('/search', searchAds);

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { categoryList, location, fileUploadeToFirebase } from "../utils";
+import { categoryList, location } from "../utils";
 import { Button } from "../components/Button";
 import { updateAd } from "../actions/ads";
+import { uploadImage } from "../api";
 
-export const AdEditForm = ({ showForm, data, id }) => {
+export const AdEditForm = ({ showForm, userId, data, id }) => {
   const [state, setState] = useState(data);
   const dispatch = useDispatch();
 
@@ -22,9 +23,25 @@ export const AdEditForm = ({ showForm, data, id }) => {
     setState({ ...state, killDate: e.target.value });
 
   // multiple files upload
-  const fileUploadHandler = (e) => {
-    const [imgUrl, fileName] = fileUploadeToFirebase(e.target.files);
-    setState((prev) => ({ ...prev, photo: imgUrl, photoName: fileName }));
+  const fileUploadHandler = async (e) => {
+
+    try {
+      const formData = new FormData();
+      const file = e.target.files[0];
+
+      formData.append('adImages', file)
+      formData.append('name', file.name)
+      formData.append('imgInfo', userId)
+
+      const { data } = await uploadImage(formData);
+
+      setState((prev) => ({ ...prev, photo: [...prev.photo, data] }));
+    } catch (e) {
+      console.log(e.message);
+    }
+
+    // const [imgUrl, fileName] = fileUploadeToFirebase(e.target.files);
+    // setState((prev) => ({ ...prev, photo: imgUrl, photoName: fileName }));     
   };
 
   return (
@@ -193,9 +210,9 @@ export const AdEditForm = ({ showForm, data, id }) => {
                 {state.photo &&
                   state.photo.map((p) => (
                     <img
-                      key={p.length}
+                      key={p.id}
                       className="m-1 w-auto h-12 border-solid border border-gray-600"
-                      src={p}
+                      src={p.url}
                       alt=""
                     />
                   ))}

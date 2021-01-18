@@ -3,13 +3,15 @@ import mongoose from "mongoose";
 import AdMessage from "../models/adMessage.js";
 import User from "../models/User.js";
 import Comment from "../models/Comment.js";
+import Image from "../models/Image.js";
+import fs from "fs";
+import config from "../config.js";
 
 const router = express.Router();
 
 export const getAds = async (req, res) => {
   try {
-    const AdMessages = await AdMessage.find().lean();
-    await res.status(200).json(AdMessages)
+    res.status(200).json(res.paginatedResults);
   } catch (error) {
     await res.status(404).json({ message: error.message });
   }
@@ -57,9 +59,25 @@ export const deleteAd = async (req, res) => {
 
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
-    await AdMessage.findByIdAndRemove(id);
+
+    const ad = await AdMessage.findByIdAndRemove(id);
     await User.findByIdAndUpdate(userId, { links: newLinks, favorites: newFavorites }, { new: true });
-    await Comment.deleteMany({owner: id});
+    await Comment.deleteMany({ owner: id });
+
+    const adImg = ad.photo;
+
+    if (adImg.length) {
+      const __dirname = config.dirname;
+      
+      adImg.forEach(async img => {
+        await Image.findByIdAndRemove(img._id);
+
+        fs.unlink(`${__dirname}/${img.url}`, (err) => {
+          console.log('File deleted!');
+        });
+      });
+    }
+
     res.json({ message: "Объявление успешно удалено!" });
 
   } catch (e) { res.json({ message: e }); }
@@ -67,11 +85,11 @@ export const deleteAd = async (req, res) => {
 
 export const updateAd = async (req, res) => {
   const { id } = req.params;
-  const { title, description, location, killDate, price, creator, category, createdAt, likeCount, contactNumber, timeOut, photo, photoName } = req.body;
+  const { title, description, location, killDate, price, creator, category, createdAt, likeCount, contactNumber, timeOut, photo } = req.body;
 
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
-    const updatedAd = { title, description, location, killDate, price, creator, category, createdAt, likeCount, contactNumber, timeOut, photo, photoName, _id: id };
+    const updatedAd = { title, description, location, killDate, price, creator, category, createdAt, likeCount, contactNumber, timeOut, photo, _id: id };
     await AdMessage.findByIdAndUpdate(id, updatedAd, { new: true });
     res.json(updatedAd);
 

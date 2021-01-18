@@ -7,12 +7,15 @@ import adRoutes from "./routes/ads.js";
 import authRoutes from "./routes/auth.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import commentsRoutes from "./routes/comments.routes.js";
+import imgUploadRoutes from "./routes/imgUpload.routes.js";
 
 import config from "./config.js";
 
 const app = express();
 
 app.use(cors());
+app.use(express.static(config.dirname));
+app.use('/uploads', express.static('uploads'));
 app.use(express.json({ limit: "50mb", extended: true}));
 app.use(bodyParser.json({ limit: "50mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
@@ -21,8 +24,9 @@ app.use('/ads', adRoutes);
 app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
 app.use('/comments', commentsRoutes);
+app.use('/imgUpload', imgUploadRoutes);
 
-const CONNECTION_URL = process.env.CONNECTION_URL || config.CONNECTION_URL;
+const CONNECTION_URL = process.env.CONNECTION_URL || config.CONNECTION_URL_LOCAL;
 const PORT = process.env.PORT || config.PORT;
 
 mongoose.set('useCreateIndex', true);

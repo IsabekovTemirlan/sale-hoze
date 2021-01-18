@@ -6,7 +6,6 @@ import { Loader } from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAd } from "../actions/ads";
 import { getUserAds } from "../actions/users";
-import { deletPhotoInFirebase } from "../utils";
 import { AdEditForm } from "../components/AdEditForm";
 import { Link } from "react-router-dom";
 import { DELETE_USER_AD } from "../types";
@@ -24,8 +23,7 @@ export const ProfilePage = () => {
   const deleteAdById = (id) => {
     dispatch(deleteAd(id, { userId }));
     dispatch({ type: DELETE_USER_AD, payload: id });
-    const deletedPhotoName = [...userAds.filter((ad) => ad._id === id)[0].photoName];
-    deletedPhotoName.forEach((pn) => deletPhotoInFirebase(pn));
+ 
   };
 
   useEffect(() => {
@@ -55,7 +53,7 @@ export const ProfilePage = () => {
           />
         </div>
       </div>
-      {showEditForm && <AdEditForm data={selectedAd.data} id={selectedAd.id} showForm={setShowEditForm} />}
+      {showEditForm && <AdEditForm data={selectedAd.data} userId={userId} id={selectedAd.id} showForm={setShowEditForm} />}
       <hr />
       <div className="pt-4 block">
         <h1 className="text-2xl text-center page-enter"> Мои обьявления</h1>

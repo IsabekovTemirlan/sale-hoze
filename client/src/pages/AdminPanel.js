@@ -6,7 +6,7 @@ import { UserItem } from "../components/UserItem";
 import { AuthContext } from "../context/authContext";
 import { deleteAd } from "../actions/ads"
 import { getUsers } from "../actions/users"
-import { deletPhotoInFirebase, tablHeaders } from "../utils";
+import { tablHeaders } from "../utils";
 
 export const AdminPanel = () => {
   const { logout, userName, token, userId } = useContext(AuthContext);
@@ -28,8 +28,6 @@ export const AdminPanel = () => {
 
   const deleteAdById = (id) => {
     dispatch(deleteAd(id, { userId }));
-    const deletedPhotoName = [...ads.filter((ad) => ad._id === id)[0].photoName];
-    deletedPhotoName.forEach((pn) => deletPhotoInFirebase(pn));
   };
 
   return (

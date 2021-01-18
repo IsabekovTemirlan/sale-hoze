@@ -3,7 +3,7 @@ import { GET_ADS, CLEARE_ADS, CREATE, LIKE, DELETE, UPDATE, SEARCH_AD, SORT_ADS 
 const adReducer = (state = [], action) => {
   switch (action.type) {
     case GET_ADS:
-      return action.payload.reverse()
+      return [...state, ...action.payload]
 
     case CLEARE_ADS:
       return []

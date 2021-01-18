@@ -14,6 +14,6 @@ const CommentShema = Schema({
   }
 })
 
-const Role = model('Comment', CommentShema);
+const Comment = model('Comment', CommentShema);
 
-export default Role;
+export default Comment;
