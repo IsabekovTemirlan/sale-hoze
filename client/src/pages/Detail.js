@@ -1,38 +1,38 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-
 import { getNormalDate } from '../utils';
 import { Comment } from "../components/Comment";
+import {url} from "../api";
 
-export const DetailPage = () => {
+export const DetailPage = ({ isAuth }) => {
   const { id } = useParams();
   const ads = useSelector((state) => state.ads.find((item) => item._id === id));
-  const [mainImg, setMainImg] = useState(ads ? ads.photo : []);
+  const [mainImg, setMainImg] = useState(ads ? ads.photo[0] : []);
 
   if (ads) {
     return (
-      <div className="py-6 mt-6 bg-white rounded-lg">
+      <div className="py-6 mt-6 bg-white rounded-lg page-enter">
         <div className="max-w-7xl mx-auto p-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row -mx-4">
             <div className="md:flex-1 px-4">
               <div>
                 <div className="h-64 md:h-80 rounded-lg bg-gray-300 mb-4">
                   <div className="h-64 md:h-80 rounded-lg bg-gray-300 mb-4 flex items-center justify-center">
-                    {mainImg ? <img
+                    {ads.photo.length ? <img
                       className="h-64 m-4 w-auto"
-                      src={ads && mainImg}
+                      src={`${url}${mainImg.url}`}
                       alt=""
-                    /> : <p className="text-4xl text-gray-500">Нет фото</p>}
+                    /> : <div className="flex justify-center aitems-center text-4xl font-extrabold text-gray-800">Фото нет</div>}
                   </div>
                 </div>
 
                 <div className="flex -mx-2 mb-4">
                   {
                     ads.photo.length ? ads.photo.map((p) => (
-                      <div key={p} className="flex-1 px-2">
+                      <div key={p.id} className="flex-1 px-2">
                         <button onClick={() => setMainImg(p)} className={`overflow-hidden focus:outline-none rounded-lg h-24 md:h-32 bg-gray-100 flex items-center ${ads.photo.length === 1 ? 'w-1/3' : 'w-full'} justify-center` + (p === mainImg ? " border-2 border-bgColor " : "")}>
-                          <img src={p} alt="" />
+                          <img src={`${url}${p.url}`} alt="" />
                         </button>
                       </div>
                     )) : <p></p>
@@ -83,12 +83,9 @@ export const DetailPage = () => {
             </div>
           </div>
           <hr />
-          {ads.creator ? <Comment comments={ads.comments} id={id}/> : null}
+          {ads.creator ? <Comment isAuth={isAuth} id={id} adCreator={ads.creator} /> : null}
         </div>
       </div>
     );
-  } else {
-    return <p className="mt-16 text-center">Ничего нет</p>
-  }
-
+  } else { return <p className="mt-16 text-center">Ничего нет</p>}
 };

@@ -1,18 +1,15 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-
-import { categoryList, location, fileUploadeToFirebase } from "../utils";
+import { categoryList, location } from "../utils";
 import { Button } from "../components/Button";
-
 import { updateAd } from "../actions/ads";
+import { uploadImage } from "../api";
 
-export const AdEditForm = ({ showForm, data, id }) => {
+export const AdEditForm = ({ showForm, userId, data, id }) => {
   const [state, setState] = useState(data);
   const dispatch = useDispatch();
 
-  const updateAdHandler = () => {
-    dispatch(updateAd(id, state));
-  };
+  const updateAdHandler = () => { dispatch(updateAd(id, state)); };
 
   // set field names and values
   const fieldChange = (e) =>
@@ -26,9 +23,25 @@ export const AdEditForm = ({ showForm, data, id }) => {
     setState({ ...state, killDate: e.target.value });
 
   // multiple files upload
-  const fileUploadHandler = (e) => {
-    const [imgUrl, fileName] = fileUploadeToFirebase(e.target.files);
-    setState((prev) => ({ ...prev, photo: imgUrl, photoName: fileName }));
+  const fileUploadHandler = async (e) => {
+
+    try {
+      const formData = new FormData();
+      const file = e.target.files[0];
+
+      formData.append('adImages', file)
+      formData.append('name', file.name)
+      formData.append('imgInfo', userId)
+
+      const { data } = await uploadImage(formData);
+
+      setState((prev) => ({ ...prev, photo: [...prev.photo, data] }));
+    } catch (e) {
+      console.log(e.message);
+    }
+
+    // const [imgUrl, fileName] = fileUploadeToFirebase(e.target.files);
+    // setState((prev) => ({ ...prev, photo: imgUrl, photoName: fileName }));     
   };
 
   return (
@@ -38,15 +51,14 @@ export const AdEditForm = ({ showForm, data, id }) => {
         <h1 className="text-2xl text-center">Редактирование</h1>
       </div>
       <div className="mt-6 bg-white p-2 ">
-        <div className="w-full rounded flex justify-between flex-wrap">
-          <div className="m-2 w-1/4">
+        <div className="w-full rounded flex justify-evenly flex-wrap">
+          <div className="m-2 w-290">
             <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="title"
               >
-                {" "}
-                Наименование{" "}
+                Наименование
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -64,8 +76,7 @@ export const AdEditForm = ({ showForm, data, id }) => {
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="description"
               >
-                {" "}
-                Описание{" "}
+                Описание
               </label>
               <textarea
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
@@ -78,14 +89,13 @@ export const AdEditForm = ({ showForm, data, id }) => {
               />
             </div>
           </div>
-          <div className="m-2 w-1/4">
+          <div className="m-2 w-290">
             <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="contactNumber"
               >
-                {" "}
-                Номер телефона{" "}
+                Номер телефона
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -103,8 +113,7 @@ export const AdEditForm = ({ showForm, data, id }) => {
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="price"
               >
-                {" "}
-                Цена (com){" "}
+                Цена (com)
               </label>
               <input
                 placeholder="Укажиет цену"
@@ -122,8 +131,7 @@ export const AdEditForm = ({ showForm, data, id }) => {
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="category"
               >
-                {" "}
-                Категория{" "}
+                Категория
               </label>
               <select
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -138,14 +146,13 @@ export const AdEditForm = ({ showForm, data, id }) => {
               </select>
             </div>
           </div>
-          <div className="m-2 w-1/4">
+          <div className="m-2 w-290">
             <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="location"
               >
-                {" "}
-                Выберите область{" "}
+                Выберите область
               </label>
               <select
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -165,8 +172,7 @@ export const AdEditForm = ({ showForm, data, id }) => {
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="killDate"
               >
-                {" "}
-                Срок существования{" "}
+                Срок существования
               </label>
               <select
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -191,8 +197,7 @@ export const AdEditForm = ({ showForm, data, id }) => {
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="photo"
               >
-                {" "}
-                Фото{" "}
+                Фото
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -205,9 +210,9 @@ export const AdEditForm = ({ showForm, data, id }) => {
                 {state.photo &&
                   state.photo.map((p) => (
                     <img
-                      key={p.length}
+                      key={p.id}
                       className="m-1 w-auto h-12 border-solid border border-gray-600"
-                      src={p}
+                      src={p.url}
                       alt=""
                     />
                   ))}

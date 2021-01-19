@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { SET_ALERT } from "../types";
 
 export const Alert = () => {
   const dispatch = useDispatch();
@@ -7,19 +8,17 @@ export const Alert = () => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      text && dispatch({ type: "SET_ALERT", payload: { text: '' } });
+      text && dispatch({ type: SET_ALERT, payload: { text: '' } });
       clearTimeout(timeout)
-    }, 4000);
+    }, 5000);
   }, [dispatch, text]);
 
-  if (text === "") {
-    return <></>
-  }
+  if (text === "") return <></>;
 
   switch (type) {
     case 400:
       return (
-        <div className="bg-red-200 px-6 py-4 my-4 rounded-md text-lg flex items-center mx-auto w-3/4 xl:w-2/4">
+        <div style={{ top: "80%", left: "0", right: "0" }} className="fixed z-30 bg-red-200 px-6 py-4 my-4 rounded-md text-lg flex items-center mx-auto w-3/4 xl:w-2/4 page-enter">
           <svg
             viewBox="0 0 24 24"
             className="text-red-600 w-5 h-5 sm:w-5 sm:h-5 mr-3"
@@ -35,7 +34,7 @@ export const Alert = () => {
 
     case 300:
       return (
-        <div className="bg-yellow-200 px-6 py-4 my-4 rounded-md text-lg flex items-center mx-auto w-3/4 xl:w-2/4">
+        <div style={{ top: "80%", left: "0", right: "0" }} className="bg-yellow-200 z-30 px-6 py-4 my-4 rounded-md text-lg flex items-center mx-auto w-3/4 xl:w-2/4 page-enter">
           <svg viewBox="0 0 24 24" className="text-yellow-600 w-5 h-5 sm:w-5 sm:h-5 mr-3" >
             <path fill="currentColor" d="M23.119,20,13.772,2.15h0a2,2,0,0,0-3.543,0L.881,20a2,2,0,0,0,1.772,2.928H21.347A2,2,0,0,0,23.119,20ZM11,8.423a1,1,0,0,1,2,0v6a1,1,0,1,1-2,0Zm1.05,11.51h-.028a1.528,1.528,0,0,1-1.522-1.47,1.476,1.476,0,0,1,1.448-1.53h.028A1.527,1.527,0,0,1,13.5,18.4,1.475,1.475,0,0,1,12.05,19.933Z" ></path>
           </svg>
@@ -47,7 +46,7 @@ export const Alert = () => {
 
     case "info":
       return (
-        <div className="bg-blue-200 px-6 py-4 my-4 rounded-md text-lg flex items-center mx-auto w-3/4 xl:w-2/4">
+        <div style={{ top: "80%", left: "0", right: "0" }} className="bg-blue-200 z-30 px-6 py-4 my-4 rounded-md text-lg flex items-center mx-auto w-3/4 xl:w-2/4 page-enter">
           <svg
             viewBox="0 0 24 24"
             className="text-blue-600 w-5 h-5 sm:w-5 sm:h-5 mr-3"
@@ -63,7 +62,7 @@ export const Alert = () => {
 
     default:
       return (
-        <div className="bg-green-200 px-6 py-4 my-4 rounded-md text-lg flex items-center mx-auto w-3/4 xl:w-2/4">
+        <div style={{ top: "80%", left: "0", right: "0" }} className="fixed z-30 bg-green-200 px-6 py-4 my-4 rounded-md text-lg flex items-center mx-auto w-3/4 xl:w-2/4 page-enter">
           <svg
             viewBox="0 0 24 24"
             className="text-green-600 w-5 h-5 sm:w-5 sm:h-5 mr-3"

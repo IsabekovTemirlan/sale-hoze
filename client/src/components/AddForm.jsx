@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-
+import React, { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Button } from "./Button";
 import { createAd } from "../actions/ads";
-
 import {
   categoryList,
-  fileUploadeToFirebase,
   initialStateForm,
   location,
-} from "../utils"
+} from "../utils";
+import { SET_ALERT } from "../types";
+import { uploadImage, url } from "../api";
+import { AuthContext } from "../context/authContext";
 
 export const AddForm = ({ ownerId }) => {
-  const [state, setState] = useState(initialStateForm);  
+  const [state, setState] = useState(initialStateForm);
+  const { userId } = useContext(AuthContext);
   const dispatch = useDispatch();
 
   // put the data to the data base
@@ -23,9 +24,7 @@ export const AddForm = ({ ownerId }) => {
       dispatch(createAd(state));
       setState(initialStateForm); // set initial state
       window.scrollTo(0, 0);
-    } else {
-      dispatch({ type: "SET_ALERT", payload: {text: "Загрузите фото", type: 300} });
-    }
+    } else { dispatch({ type: SET_ALERT, payload: { text: "Загрузите фото", type: 300 } }); }
   }
 
   // set field names and values
@@ -40,25 +39,38 @@ export const AddForm = ({ ownerId }) => {
   const changeKillDate = (e) => {
     const killDate = e.target.value;
     setState(prev => {
-        return { ...prev, killDate }
+      return { ...prev, killDate }
     });
   }
 
   // multiple files upload
-  const fileUploadHandler = (e) => {
-    const [imgUrl, fileName] = fileUploadeToFirebase(e.target.files);
+   const fileUploadHandler = async (e) => {
     try {
-      setState((prev) => ({ ...prev, photo: imgUrl, photoName: fileName })); 
-    } catch (error) {
-      console.log(error);
+      const formData = new FormData();
+      const file = e.target.files[0];
+
+      formData.append('adImages', file)
+      formData.append('name', file.name)
+      formData.append('imgInfo', userId || ownerId)
+
+      const { data } = await uploadImage(formData);
+
+      setState((prev) => ({ ...prev, photo: [...prev.photo, data] }));
+    } catch (e) {
+      console.log(e.message);
     }
   }
 
   // terms got it
   const checkboxHandler = (e) => setState({ ...state, isCheked: e.target.value });
 
+  const clearFormField = (e) => {
+    e.preventDefault();
+    setState(initialStateForm);
+  }
+
   return (
-    <div className="w-full m-auto max-w-sm">
+    <div className="w-full m-auto max-w-sm page-enter">
       <form
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         onSubmit={submitForm}
@@ -202,26 +214,25 @@ export const AddForm = ({ ownerId }) => {
         </div>
 
         <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="photo"
-          >
+          <span className="block text-gray-700 text-sm font-bold mb-2">
             Фото
-          </label>
+          </span>
           <input
-            className="shadow overflow-hidden appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            // className="shadow overflow-hidden appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="hidden focus:outline-none focus:shadow-outline"
             name="photo"
+            id="imgupload"
             type="file"
-            multiple
             onChange={fileUploadHandler}
           />
-          <div className="flex flex-wrap">
+          <label className="shadow cursor-pointer flex items-center justify-between overflow-hidden border mt-2 mx-auto rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" htmlFor='imgupload'>Добавить фото <box-icon color="#ff5722" name='image-add'></box-icon></label>
+          <div className="flex flex-wrap mt-3">
             {state.photo &&
               state.photo.map((p) => (
                 <img
-                  key={p.length}
+                  key={p.id}
                   className="m-1 w-auto h-12 border-solid border border-gray-600"
-                  src={p}
+                  src={`${url}${p.url}`}
                   alt=""
                 />
               ))}
@@ -251,6 +262,7 @@ export const AddForm = ({ ownerId }) => {
         <div className="flex items-center justify-center">
           <Button type={"submit"} title="Опубликовать" />
         </div>
+        <div className="text-center"><button className="focus:outline-none" onClick={clearFormField}>Очистить форму</button></div>
       </form>
     </div>
   );

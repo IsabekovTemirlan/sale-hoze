@@ -1,34 +1,21 @@
 import mongoose from "mongoose";
 
-const adsSchema = mongoose.Schema({
+const { Schema, model, Types } = mongoose;
+
+const adsSchema = Schema({
   title: String,
   description: String,
   location: String,
   contactNumber: String,
-  photo: [String],
+  photo: [Object],
   killDate: String,
-  price: String,
-  likeCount: {
-    type: Number,
-    default: 0
-  },
-  createdAt: {
-    type: Date,
-    default: new Date()
-  },
+  price: Number,
+  createdAt: { type: Date, default: new Date() },
   timeOut: Number,
-  creator: String,
-  category: String,
-  photoName: [String],
-  comments: [{
-    text: String,
-    author: String,
-    date: {
-      type: Date
-    }
-  }]
-})
+  creator: { type: Types.ObjectId, ref: "user" },
+  category: String
+});
 
-const AdMessage = mongoose.model('AdMessage', adsSchema);
+const AdMessage = model('AdMessage', adsSchema);
 
 export default AdMessage;

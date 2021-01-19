@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 export const Breadcrumbs = () => {
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
 
   return (
     <div className="max-w-7xl mx-auto pt-20 px-4 sm:px-6 lg:px-8">
@@ -32,7 +32,7 @@ export const Breadcrumbs = () => {
           {pathname === "/profile" ? "Профиль" : null}
           {pathname === "/about" ? "О проекте" : null}
           {pathname === "/categories" ? "Категории" : null}
-          {pathname.includes("/detail/") ? "Подробнее" : null }
+          {pathname.includes("/detail/") ? "Подробнее" : null}
           {pathname === "/auth" ? "Вход" : null}
           {pathname === "/chat" ? "Сообщения" : null}
         </p>}

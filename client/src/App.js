@@ -1,19 +1,16 @@
 import React, { useEffect } from 'react';
-
 import { BrowserRouter as Router } from "react-router-dom";
-
-import { Navbar } from "./components/Navbar";
-import {Routes} from "./routes";
-import { useAuth } from "./hooks/auth.hook";
-
-import { AuthContext } from "./context/authContext";
 import { useDispatch, useSelector } from "react-redux";
-
-import { getAds, deleteAd } from "./actions/ads";
-import { getUsers } from "./actions/users";
+import { Navbar } from "./components/Navbar";
 import { Breadcrumbs } from './components/Breadcrumbs';
+import { Routes } from "./routes";
+import { Alert } from './components/Alert';
+import { useAuth } from "./hooks/auth.hook";
+import { AuthContext } from "./context/authContext";
+import { deleteAd } from "./actions/ads";
+import { getUsers } from "./actions/users";
 
-import { deletPhotoInFirebase } from "./utils";
+import "./app.css";
 
 function App() {
   const { token, userId, login, logout, userName, userAds, userType } = useAuth();
@@ -21,15 +18,12 @@ function App() {
 
   const ads = useSelector(state => state.ads);
   const dispatch = useDispatch();
-
-  useEffect(() => { 
-    dispatch(getAds());
-    if (token && userType) {
-      dispatch(getUsers(token));
-    }
-  }, [dispatch, token, userType]);
+  const greetingFlag = JSON.parse(localStorage.getItem("isVisiting"));
 
   useEffect(() => {
+    if (!greetingFlag) { localStorage.setItem("isVisiting", JSON.stringify(true)); }
+    if (token && userType) { dispatch(getUsers(token)); }
+
     // auto delete ads who time is out logic 
     if (ads.length) {
       ads.forEach(element => {
@@ -38,23 +32,24 @@ function App() {
         const daysLag = Math.ceil(Math.abs(date2.getTime() - date1.getTime()) / (1000 * 3600 * 24));
 
         if (daysLag >= element.killDate) {
-          dispatch(deleteAd(element._id, userId));
-          element.photoName.forEach(pn => deletPhotoInFirebase(pn));
+          dispatch(deleteAd(element._id, { userId }));
         }
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   return (
     <AuthContext.Provider value={{ token, userName, userId, login, logout, isAuthenticated, userAds, userType }}>
       <Router>
-        <div className={!userType ? "container max-w-screen-xxl" : null}>
+        <div className={!userType ? "container max-w-screen-xl mx-auto" : null}>
           {userType ? <Navbar isAuth={isAuthenticated} isAdmin /> : <Navbar isAuth={isAuthenticated} />}
           {!userType && <Breadcrumbs />}
-          <div className="m-auto max-w-screen-xl">
-            <Routes isAuthenticated={isAuthenticated} userId={userId}/>
+          <div className="mx-auto max-w-screen">
+            {alert ? <Alert title={alert.text} type={alert.type} /> : null}
+            <Routes isAuthenticated={isAuthenticated} userId={userId} />
           </div>
+          
         </div>
       </Router>
     </AuthContext.Provider>

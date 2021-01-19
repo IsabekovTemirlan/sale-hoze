@@ -1,23 +1,20 @@
 import React, { useState, useContext } from "react";
-
-import { Alert } from "../components/Alert";
-
+import { useDispatch } from "react-redux";
 import { loginAdmin, loginUser, registerUser } from "../api";
 import { AuthContext } from "../context/authContext";
-import { useSelector, useDispatch } from "react-redux";
+import { SET_ALERT } from "../types";
 
 export const AuthPage = ({ isAdmin }) => {
   let [userData, setUserData] = useState({ login: '', password: '', email: '' });
   const [isRegister, setIsResgister] = useState(false);
 
   const auth = useContext(AuthContext)
-  const alert = useSelector(state => state.alert);
   const dispatch = useDispatch();
 
   const fieldChanged = e => setUserData({ ...userData, [e.target.name]: e.target.value });
 
-  const loginSubmit = async () => {   
-    setIsResgister(false); 
+  const loginSubmit = async () => {
+    setIsResgister(false);
     if (userData.login.length && (userData.password.length >= 6)) {
 
       try {
@@ -25,46 +22,42 @@ export const AuthPage = ({ isAdmin }) => {
         const result = data.data;
 
         if (result) {
-          dispatch({ type: "SET_ALERT", payload: { text: result.msg } })
+          dispatch({ type: SET_ALERT, payload: { text: result.msg } })
           auth.login(result.token, result.userId, result.userName, result.userAds, result.isAdmin);
         }
 
       } catch ({ response }) {
         const message = response.data.message;
-        dispatch({ type: "SET_ALERT", payload: { text: message, type: response.status } });
+        dispatch({ type: SET_ALERT, payload: { text: message, type: response.status } });
       }
-      if (isAdmin) {
-        window.location.href = '/dashboard';
-      }
+      if (isAdmin) { window.location.href = '/dashboard'; }
     }
   }
 
   const registerSubmit = async () => {
     setIsResgister(true);
-    if (userData.login.length && (userData.password.length >= 6)) {
+    if (userData.login.length && (userData.password.length >= 6) && userData.email.length) {
       try {
         const data = await registerUser(userData);
         const result = data.data;
 
-        if (result) {
-          dispatch({ type: "SET_ALERT", payload: { text: result.message, type: 200 } })
-        }
+        if (result) { dispatch({ type: SET_ALERT, payload: { text: result.message, type: 200 } }) }
       } catch ({ response }) {
         const message = response.data.message;
-        dispatch({ type: "SET_ALERT", payload: { text: message, type: response.status } });
+        dispatch({ type: SET_ALERT, payload: { text: message, type: response.status } });
       }
     }
   }
 
   return (
     <>
-      <h2 className="text-3xl uppercase font-bold leading-tight font-heading">
+      <h2 className="text-3xl uppercase font-bold leading-tight font-heading text-center mt-2 w-full md:w-auto md:text-left">
         {isAdmin ? "Вход для администратора" : "Вход"}
       </h2>
-      <div className="w-full m-auto mt-20 max-w-xs">
+      <div style={{top: "40%"}} className="w-full m-auto absolute left-0 right-0 max-w-xs page-enter">
 
         <form
-          className="bg-white shadow-md rounded px-8 pt-2 pb-8 mb-4"
+          className="bg-white shadow-md rounded p-8 mb-4"
           onSubmit={e => e.preventDefault()}
         >
           <div className="mb-4">
@@ -84,20 +77,20 @@ export const AuthPage = ({ isAdmin }) => {
           </div>
           {auth.token || isAdmin || !isRegister ? null : (
             <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-              E-mail
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                E-mail
             </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              name="email"
-              type="email"
-              value={userData.email}
-              placeholder="Ваш email"
-              autoComplete="email"
-              required
-              onChange={fieldChanged}
-            />
-          </div>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                name="email"
+                type="email"
+                value={userData.email}
+                placeholder="Ваш email"
+                autoComplete="email"
+                required
+                onChange={fieldChanged}
+              />
+            </div>
           )}
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
@@ -133,7 +126,6 @@ export const AuthPage = ({ isAdmin }) => {
           </div>
         </form>
       </div>
-      {alert && <Alert />}
     </>
   )
 }

@@ -1,13 +1,15 @@
+import { SET_ALERT } from "../types";
+
 const alertReducer = (state = {
   text: '',
   type: undefined
 }, action) => {
   switch (action.type) {
 
-    case "SET_ALERT":
+    case SET_ALERT:
       return action.payload
 
-    default :
+    default:
       return state
   }
 }

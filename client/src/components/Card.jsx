@@ -1,41 +1,34 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { likeAd } from "../actions/ads";
+import { AuthContext } from "../context/authContext";
+import {url} from "../api";
 
-import "boxicons";
-
-export const Card = ({ data, isAuth, handler, size }) => {
-  const [isLiked, setIsLiked] = useState(false);
-  const { title, description, photo, likeCount, price, _id } = data;
-
+export const Card = ({ data, size }) => {
+  const { userId } = useContext(AuthContext);
+  const { title, description, photo, price, _id } = data;
   const dispatch = useDispatch();
 
-  const likeHandler = () => {
-    setIsLiked(true);
-    dispatch(likeAd(_id));
-  };
+  const likeHandler = () => { dispatch(likeAd({ adId: _id, userId })); };
 
   const LikeIcon = () => (
     <div className="cursor-pointer mr-4 transition-all">
       <box-icon
         onClick={likeHandler}
-        name="like"
-        type={isLiked ? "solid" : ""}
+        name="bookmark-heart"
+        size="md"
         color="#ff5722"
       ></box-icon>
     </div>
   );
 
   return (
-    <div
-      className={`wrapper m-1 mb-4 ${
-        size ? size : "w-290"
-      } bg-gray-50 rounded-b-md shadow-lg overflow-hidden`}
-    >
+    <div className={`wrapper m-1 mb-4 ${size ? size : "w-290"} page-enter bg-white rounded-b-md shadow-lg overflow-hidden`}>
       <div className="h-40 overflow-hidden">
-        <img src={photo[0]} alt="" className="w-full h-inherit" />
+        {photo.length ? <img src={`${url}${photo[0].url}`} alt="" className="w-full h-inherit" /> : <div className="mt-12 flex justify-center aitems-center text-4xl font-extrabold text-gray-400">Нет фото</div>}
       </div>
+      <hr/>
       <div className="p-3 space-y-3 overflow-hidden">
         <h3 className="text-gray-700 font-semibold text-md">{title}</h3>
         <p className="text-sm h-12 text-gray-900 leading-sm">{description}</p>
@@ -43,9 +36,9 @@ export const Card = ({ data, isAuth, handler, size }) => {
 
       <div className="p-4 flex justify-between items-center">
         <div className="flex w-6">
-          <LikeIcon /> <span>{likeCount}</span>
+          {userId && <LikeIcon />}
         </div>
-        <span className="font-bold text-2xl text-bgColor">{price} com</span>
+        <span className="font-bold text-2xl text-bgColor">{price} сом</span>
       </div>
 
       <div className="flex">
@@ -55,14 +48,6 @@ export const Card = ({ data, isAuth, handler, size }) => {
         >
           Подробнее
         </Link>
-        {isAuth && (
-          <button
-            onClick={() => handler && handler(_id)}
-            className="bg-red-600 w-full flex justify-center py-2 text-white font-semibold transition duration-300 hover:bg-opacity-75"
-          >
-            Удалить
-          </button>
-        )}
       </div>
     </div>
   );

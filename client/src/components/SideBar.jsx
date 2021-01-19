@@ -42,22 +42,23 @@ export const SideBar = ({ state }) => {
         alt="menu"
       />
       <div
-        className={`duration-300 z-20 bg-white shadow-lg bg-opacity-75 ease-out fixed right-0 top-0 h-full ${
-          !visible ? "w-0" : "w-3/5 p-4 md:w-2/6  "
-        }`}
-        style={{backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)"}}
+        className={`duration-300 z-20 bg-white shadow-lg bg-opacity-75 ease-out fixed right-0 top-0 h-full ${!visible ? "w-0" : "w-full p-4 md:w-2/6"}`}
+        style={{
+          backdropFilter: "blur(14px)",
+          WebkitBackdropFilter: "blur(14px)"
+        }}
       >
         <button onClick={() => setVisible(false)} className="p-2 rounded-full transition-all border border-gray-600 duration-500 hover:bg-white focus:outline-none focus:ring outline-none">
-            <svg
-              className="w-6 h-6 text-gray-800"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+          <svg
+            className="w-6 h-6 text-gray-800"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
         <ul className="list-disc mt-6">
           {state &&
             state.map((item) => (
