@@ -18,7 +18,6 @@ export const sortList = [
 export const authPageLinks = [
   {id: 0, title: 'Главная', img: "home", url: '/'},
   {id: 1, title: 'Профиль', img: "user", url: '/profile'},
-  {id: 2, title: 'Все объявлении', img: "spreadsheet", url: '/ads'},
   {id: 3, title: 'Избранные', img: "heart", url: '/favorites'},
   {id: 4, title: 'Подать объявление', img: "add-to-queue", url: '/advertise'},
   {id: 5, title: 'Категории', img: "category-alt", url: '/categories'},
@@ -27,7 +26,6 @@ export const authPageLinks = [
 
 export const pageLinks = [
   {id: 0, title: 'Главная', img: "home", url: '/'},
-  {id: 2, title: 'Все объявлении', img: "spreadsheet", url: '/ads'},
   {id: 3, title: 'Категории', img: "category-alt", url: '/categories'},
   {id: 4, title: 'Подать объявление', img: "add-to-queue", url: '/advertise'},
   {id: 5, title: 'О проекте', img: "question-mark", url: '/about'},

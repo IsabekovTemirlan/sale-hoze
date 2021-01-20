@@ -8,7 +8,6 @@ base.js
 debug.log
 package-lock.json
 storage.rules
-/public
 
 # testing
 /coverage

@@ -5,7 +5,6 @@ import {
   MainPage,
   AboutPage,
   AdvertisePage,
-  AllAdsPage,
   CategoriesPage,
   AuthPage,
   ProfilePage,
@@ -15,7 +14,7 @@ import {
   FavoritePage
 } from "./pages";
 
-export const Routes = ({ isAuthenticated, userId }) => {
+export const Routes = ({ isAuthenticated, userId, page, setPage }) => {
   const { userType } = useAuth();
 
   if (isAuthenticated && userType) {
@@ -36,8 +35,7 @@ export const Routes = ({ isAuthenticated, userId }) => {
   if (isAuthenticated) {
     return (
       <Switch>
-        <Route path="/" exact><MainPage isAuth={isAuthenticated} /> </Route>
-        <Route path="/ads" component={AllAdsPage} />
+        <Route path="/" exact><MainPage isAuth={isAuthenticated} page={page} setPage={setPage} /> </Route>
         <Route path="/categories" exact component={CategoriesPage} />
         <Route path="/about" exact component={AboutPage} />
         <Route path="/favorites" exact >
@@ -57,8 +55,7 @@ export const Routes = ({ isAuthenticated, userId }) => {
   } else {
     return (
       <Switch>
-        <Route path="/" exact> <MainPage /></Route>
-        <Route path="/ads" exact component={AllAdsPage} />
+        <Route path="/" exact> <MainPage page={page} setPage={setPage} /></Route>
         <Route path="/categories" exact component={CategoriesPage} />
         <Route path="/advertise" exact component={AdvertisePage} />
         <Route path="/about" exact component={AboutPage} />

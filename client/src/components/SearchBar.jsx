@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { searchAds, sortAds, getAds } from "../actions/ads";
 import { sortList } from "../utils";
 
-export const SearchBar = ({ setSorted }) => {
+export const SearchBar = () => {
   const [value, setValue] = useState('');
   const [searchTimeout, setSearchTimeout] = useState(false);
   const [sortValue, setSortValue] = useState('');
@@ -17,7 +17,6 @@ export const SearchBar = ({ setSorted }) => {
         dispatch(searchAds(value));
       }, 1000, e.target.value));
     } else { dispatch(getAds()); }
-    setSorted(true);
   }
 
   const onSearch = () => {
@@ -25,17 +24,14 @@ export const SearchBar = ({ setSorted }) => {
       dispatch(searchAds(value));
       setValue('');
     }
-    setSorted(true);
   }
 
   const onSort = () => {
     if (sortValue.trim()) { dispatch(sortAds(sortValue)); }
-    setSorted(true);
   }
 
   const sortHandler = (e) => {
     if (e.target.value.trim()) { dispatch(sortAds(e.target.value)); }
-    setSorted(true);
     setSortValue(e.target.value);
   }
 
