@@ -15,7 +15,6 @@ const CommentItem = ({ text, date, author }) => (
   </div>
 )
 
-
 export const Comment = ({ id, isAuth }) => {
   const [comments, setComments] = useState([]);
   const { userName } = useContext(AuthContext);
