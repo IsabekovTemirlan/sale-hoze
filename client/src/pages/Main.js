@@ -17,7 +17,7 @@ export const MainPage = ({ isAuth, page, setPage }) => {
 
   window.onscroll = () => {
     let { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-    if (scrollHeight - Math.floor(scrollTop) === clientHeight) setPage(page + 1);
+    if (scrollHeight - Math.floor(scrollTop) === clientHeight) ads.length >= 8 && setPage(page + 1);
   }
 
   return <>
