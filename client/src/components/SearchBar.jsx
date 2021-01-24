@@ -37,13 +37,13 @@ export const SearchBar = () => {
 
   return (
     <div className="flex items-center justify-around flex-wrap">
-      <div className="bg-transparent m-4 flex items-center p-2 border-b-2 border-t-0 border-r-0 border-l-0 border-gray-300 hover:border-bgColor w-full sm:w-1/3 ">
+      <div className="bg-white m-4 flex text-gray-600 items-center p-2 rounded-lg w-full sm:w-1/3 shadow-sm">
         <p>Искать: </p>
         <input
           type="search"
           name="search"
           placeholder="Что ищете? (например: овцы)"
-          className="w-full pl-4 text-lg outline-none focus:outline-none bg-transparent"
+          className="w-full pl-4 outline-none focus:outline-none bg-transparent"
           value={value}
           onChange={(e) => searchHandler(e)}
         />
@@ -51,7 +51,7 @@ export const SearchBar = () => {
           <box-icon name='search' color='#ff5722'></box-icon>
         </button>
       </div>
-      <div className="bg-transparent m-4 flex items-center justify-between p-2 border-b-2 border-t-0 border-r-0 border-l-0 border-gray-300 hover:border-bgColor w-full sm:w-1/3">
+      <div className="bg-white m-4 flex text-gray-600 items-center justify-between p-2 w-full sm:w-1/3 rounded-lg shadow-sm">
         <p>Сортировать: </p>
         <select
           className="pl-4 cursor-pointer outline-none focus:outline-none bg-transparent"

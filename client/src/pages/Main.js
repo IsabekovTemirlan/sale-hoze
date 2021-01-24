@@ -17,7 +17,7 @@ export const MainPage = ({ isAuth, page, setPage }) => {
 
   window.onscroll = () => {
     let { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-    if (scrollHeight - Math.floor(scrollTop) === clientHeight) ads.length >= 8 && setPage(page + 1);
+    if (scrollHeight - Math.floor(scrollTop) === clientHeight + 1) ads.length >= 8 && setPage(page + 1);
   }
 
   return <>
@@ -74,7 +74,6 @@ export const MainPage = ({ isAuth, page, setPage }) => {
       </div>
       <hr />
       <SearchBar />
-      <hr />
 
       <div style={{ bottom: 15, right: 15 }} className="fixed w-12 h-12 bg-white bg-opacity-50 z-40 flex items-center justify-center rounded-md cursor-pointer right-0">
         <box-icon onClick={() => window.scrollTo(0, 0)} name='up-arrow-circle' size="md" color="#ff5722" ></box-icon>
