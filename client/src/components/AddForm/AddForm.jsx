@@ -1,74 +1,10 @@
-import React, { useContext, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Button } from "./Button";
-import { createAd } from "../actions/ads";
-import {
-  categoryList,
-  initialStateForm,
-  location,
-} from "../utils";
-import { SET_ALERT } from "../types";
-import { uploadImage, url } from "../api";
-import { AuthContext } from "../context/authContext";
+import React from 'react'
+import { categoryList, location } from "../../utils";
+import { url } from "../../api";
 
-export const AddForm = ({ ownerId }) => {
-  const [state, setState] = useState(initialStateForm);
-  const { userId } = useContext(AuthContext);
-  const dispatch = useDispatch();
+import { Button } from "../Button";
 
-  // put the data to the data base
-  const submitForm = (e) => {
-    e.preventDefault();
-
-    if (state.isCheked) {
-      dispatch(createAd(state));
-      setState(initialStateForm); // set initial state
-      window.scrollTo(0, 0);
-    } else { dispatch({ type: SET_ALERT, payload: { text: "Загрузите фото", type: 300 } }); }
-  }
-
-  // set field names and values
-  const fieldChange = (e) =>
-    setState({
-      ...state,
-      [e.target.name]: e.target.value,
-      creator: ownerId,
-    });
-
-  // set date when ads to be auto deleted
-  const changeKillDate = (e) => {
-    const killDate = e.target.value;
-    setState(prev => {
-      return { ...prev, killDate }
-    });
-  }
-
-  // multiple files upload
-   const fileUploadHandler = async (e) => {
-    try {
-      const formData = new FormData();
-      const file = e.target.files[0];
-
-      formData.append('adImages', file)
-      formData.append('name', file.name)
-      formData.append('imgInfo', userId || ownerId)
-
-      const { data } = await uploadImage(formData);
-
-      setState((prev) => ({ ...prev, photo: [...prev.photo, data] }));
-    } catch (e) {
-      console.log(e.message);
-    }
-  }
-
-  // terms got it
-  const checkboxHandler = (e) => setState({ ...state, isCheked: e.target.value });
-
-  const clearFormField = (e) => {
-    e.preventDefault();
-    setState(initialStateForm);
-  }
-
+const AddForm = ({ ownerId, state, submitForm, fieldChange, changeKillDate, fileUploadHandler, checkboxHandler, clearFormField }) => {
   return (
     <div className="w-full m-auto max-w-sm page-enter">
       <form
@@ -266,4 +202,6 @@ export const AddForm = ({ ownerId }) => {
       </form>
     </div>
   );
-};
+}
+
+export default AddForm;

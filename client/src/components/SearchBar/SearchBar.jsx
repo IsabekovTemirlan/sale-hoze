@@ -1,40 +1,8 @@
-import React, { useState } from 'react';
-import { useDispatch } from "react-redux";
-import { searchAds, sortAds, getAds } from "../actions/ads";
-import { sortList } from "../utils";
+import React from 'react'
 
-export const SearchBar = () => {
-  const [value, setValue] = useState('');
-  const [searchTimeout, setSearchTimeout] = useState(false);
-  const [sortValue, setSortValue] = useState('');
-  const dispatch = useDispatch();
+import { sortList } from "../../utils";
 
-  const searchHandler = (e) => {
-    setValue(e.target.value);
-    if (searchTimeout !== false) { clearTimeout(searchTimeout); }
-    if (e.target.value !== "") {
-      setSearchTimeout(setTimeout(value => {
-        dispatch(searchAds(value));
-      }, 1000, e.target.value));
-    } else { dispatch(getAds()); }
-  }
-
-  const onSearch = () => {
-    if (value.trim()) {
-      dispatch(searchAds(value));
-      setValue('');
-    }
-  }
-
-  const onSort = () => {
-    if (sortValue.trim()) { dispatch(sortAds(sortValue)); }
-  }
-
-  const sortHandler = (e) => {
-    if (e.target.value.trim()) { dispatch(sortAds(e.target.value)); }
-    setSortValue(e.target.value);
-  }
-
+const SearchBar = ({ value, onSearch, sortValue, sortHandler, searchHandler, onSort }) => {
   return (
     <div className="flex items-center justify-around flex-wrap">
       <div className="bg-white m-4 flex text-gray-600 items-center p-2 rounded-lg w-full sm:w-1/3 shadow-sm">
@@ -68,3 +36,5 @@ export const SearchBar = () => {
     </div>
   )
 }
+
+export default SearchBar;

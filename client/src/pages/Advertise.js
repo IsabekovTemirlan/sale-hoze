@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../components/Button";
-import { AddForm } from "../components/AddForm";
+import {AddForm} from "../components/AddForm";
 
 export const AdvertisePage = ({ isAuth, userId }) => {
   if (isAuth) {

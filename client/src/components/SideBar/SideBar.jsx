@@ -1,38 +1,22 @@
-import React, { useState } from "react";
-import { menu } from "../assets/icons";
+import React from 'react'
+import { Link } from "react-router-dom";
+import { menu } from "../../assets/icons";
 import "boxicons";
 
-import { Link } from "react-router-dom";
-
-const ListItem = ({ title, icon, url }) => {
-  const listStyle =
-    "list-none border bg-white rounded transition-all transform hover:translate-x-2 transition-transform duration-200 text-gray-500 hover:text-gray-800 uppercase duration-200 mb-1 px-3 py-3 hover:bg-gray-100 cursor-pointer";
-
-  return (
-    <Link to={url}>
-      <li className={listStyle}>
-        <span className="flex flex-row items-center">
-          <span className="inline-flex items-center justify-center w-12 text-lg">
-            <box-icon name={icon} color="#ff5722"></box-icon>
-          </span>
-          <span className="text-sm font-medium">{title}</span>
+const ListItem = ({ title, icon, url }) => (
+  <Link to={url}>
+    <li className="list-none border bg-white rounded transform hover:translate-x-2 transition-transform text-gray-500 hover:text-gray-800 uppercase duration-200 mb-1 px-3 py-3 hover:bg-gray-100 cursor-pointer">
+      <span className="flex flex-row items-center">
+        <span className="inline-flex items-center justify-center w-12 text-lg">
+          <box-icon name={icon} color="#ff5722"></box-icon>
         </span>
-      </li>
-    </Link>
-  );
-};
+        <span className="text-sm font-medium">{title}</span>
+      </span>
+    </li>
+  </Link>
+);
 
-export const SideBar = ({ state }) => {
-  const [visible, setVisible] = useState(false);
-
-  document.onclick = (e) => {
-    if (visible) {
-      e.target.classList[0] === "transition-all"
-        ? setVisible(true)
-        : setVisible(false);
-    }
-  };
-
+const SideBar = ({ state, visible, setVisible }) => {
   return (
     <div id="sidebar">
       <img
@@ -72,5 +56,7 @@ export const SideBar = ({ state }) => {
         </ul>
       </div>
     </div>
-  );
-};
+  )
+}
+
+export default SideBar;

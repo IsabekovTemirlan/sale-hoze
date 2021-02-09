@@ -1,9 +1,6 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { AuthContext } from '../context/authContext';
-import { Button } from "./Button";
-import { adComment } from "../api";
-import { getNormalDate } from "../utils";
-import * as api from "../api";
+import React from 'react';
+import { Button } from "../Button";
+import { getNormalDate } from "../../utils";
 
 const CommentItem = ({ text, date, author }) => (
   <div className="bg-white border border-l-0 border-t-0 justify-start border-r-0 p-3 flex flex-col">
@@ -15,36 +12,8 @@ const CommentItem = ({ text, date, author }) => (
   </div>
 )
 
-export const Comment = ({ id, isAuth }) => {
-  const [comments, setComments] = useState([]);
-  const { userName } = useContext(AuthContext);
-  const [value, setValue] = useState("");
-
-  const getCommentsFromServer = async (id) => {
-    const { data } = await api.getComments({ id });
-    setComments(data);
-  }
-
-  useEffect(() => {
-    if (isAuth) getCommentsFromServer(id);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const sendComment = async (e) => {
-    e.preventDefault();
-    const date = new Date();
-    const commentObj = { id, value, author: userName, date};
-
-    if (value) {
-      await adComment(commentObj);
-      commentObj.id = Date.now();
-      commentObj.date = date;
-      comments.push(commentObj);
-    }
-    setValue("");
-  }
-
+const Comment = ({ isAuth, comments, sendComment, value, setValue }) => {
+ 
   return (
     <div className="w-full mt-10">
       <h1 className="mt-3 text-gray-500 text-2xl text-center">Комментарии</h1>
@@ -69,5 +38,6 @@ export const Comment = ({ id, isAuth }) => {
         </form> : <p className="text-lg text-center mt-3 text-gray-600">Зарегистрируйтесь чтобы остовлять комментарии</p>}
       </section>
     </div>
-  )
+    )
 }
+export default Comment;
