@@ -23,18 +23,13 @@ Navigate to the extracted folder
 cd sale-hoze
 ```
 
-Install the dependencies and modules
-```sh
-$ npm install
-```
-
 ### Usage
 Usage for client side
 ```sh
 cd client
 ```
 ```sh
-$ npm tart
+$ npm run start
 ```
 Usage for server side
 ```sh
