@@ -1,34 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AdItem } from "../components/AdItem";
-import { Button } from "../components/Button";
-import { UserItem } from "../components/UserItem";
-import { AuthContext } from "../context/authContext";
-import { deleteAd } from "../actions/ads"
-import { getUsers } from "../actions/users"
-import { tablHeaders } from "../utils";
+import React from "react";
+import { AdItem } from "../../components/AdItem";
+import { Button } from "../../components/Button";
+import { UserItem } from "../../components/UserItem";
+import { tablHeaders } from "../../utils";
 
-export const AdminPanel = () => {
-  const { logout, userName, token, userId } = useContext(AuthContext);
-  const users = useSelector((state) => state.users);
-  const ads = useSelector((state) => state.ads);
-  const [tab, setTab] = useState("user");
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (!users.length) { dispatch(getUsers(token)) }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const logoutHandler = () => {
-    logout();
-    window.location.href = "/";
-  };
-
-  const deleteAdById = (id) => {
-    dispatch(deleteAd(id, { userId }));
-  };
+const AdminPanel = ({ userName, logoutHandler, ads, users, setTab, tab, userId, deleteAdById }) => {
 
   return (
     <div className="flex overflow-y-hidden py-4 mb-12 bg-white" x-data="setup()">
@@ -129,3 +105,4 @@ export const AdminPanel = () => {
     </div>
   );
 };
+export default AdminPanel;

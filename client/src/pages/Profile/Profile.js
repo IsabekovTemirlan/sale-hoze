@@ -1,40 +1,11 @@
-import React, { useEffect, useContext, useState } from "react";
-import { AuthContext } from "../context/authContext";
-import { Button } from "../components/Button";
-import { AdItem } from "../components/AdItem";
-import { Loader } from "../components/Loader";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteAd } from "../actions/ads";
-import { getUserAds } from "../actions/users";
-import { AdEditForm } from "../components/AdEditForm";
+import React from "react";
+import { Button } from "../../components/Button";
+import { AdItem } from "../../components/AdItem";
+import { Loader } from "../../components/Loader";
+import { AdEditForm } from "../../components/AdEditForm";
 import { Link } from "react-router-dom";
-import { DELETE_USER_AD } from "../types";
 
-export const ProfilePage = () => {
-  const { logout, userName, userId } = useContext(AuthContext);
-  const [showEditForm, setShowEditForm] = useState(false);
-  const [selectedAd, setSelectedAd] = useState({});
-
-  // const ads = useSelector((state) => state.ads.filter((ad) => ad.creator === userId));
-  const userAds = useSelector(state => state.users);
-  const loading = useSelector(state => state.loading);
-  const dispatch = useDispatch();
-
-  const deleteAdById = (id) => {
-    dispatch(deleteAd(id, { userId }));
-    dispatch({ type: DELETE_USER_AD, payload: id });
- 
-  };
-
-  useEffect(() => {
-    dispatch(getUserAds({ userId }))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId]);
-
-  const editFormHandler = (data, id) => {
-    setShowEditForm(true);
-    setSelectedAd({ data, id });
-  }
+const ProfilePage = ({ userName, logout, showEditForm, selectedAd, userId, setShowEditForm, loading, userAds, deleteAdById, editFormHandler }) => {
 
   return (
     <section className="mt-2 pb-6">
@@ -59,7 +30,7 @@ export const ProfilePage = () => {
         <h1 className="text-2xl text-center page-enter"> Мои обьявления</h1>
       </div>
       <div className="py-4 flex justify-center page-enter">
-      {loading ? <Loader/> : null}
+        {loading ? <Loader /> : null}
         {userAds.length ? (
           <table className="w-full text-md bg-white shadow-md rounded mb-4">
             <tbody>
@@ -87,3 +58,4 @@ export const ProfilePage = () => {
     </section>
   );
 };
+export default ProfilePage;

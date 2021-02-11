@@ -1,60 +1,13 @@
-import React, { useState, useContext } from "react";
-import { useDispatch } from "react-redux";
-import { loginAdmin, loginUser, registerUser } from "../api";
-import { AuthContext } from "../context/authContext";
-import { SET_ALERT } from "../types";
+import React from "react";
 
-export const AuthPage = ({ isAdmin }) => {
-  let [userData, setUserData] = useState({ login: '', password: '', email: '' });
-  const [isRegister, setIsResgister] = useState(false);
-
-  const auth = useContext(AuthContext)
-  const dispatch = useDispatch();
-
-  const fieldChanged = e => setUserData({ ...userData, [e.target.name]: e.target.value });
-
-  const loginSubmit = async () => {
-    setIsResgister(false);
-    if (userData.login.length && (userData.password.length >= 6)) {
-
-      try {
-        const data = (isAdmin ? await loginAdmin(userData) : await loginUser(userData));
-        const result = data.data;
-
-        if (result) {
-          dispatch({ type: SET_ALERT, payload: { text: result.msg } })
-          auth.login(result.token, result.userId, result.userName, result.userAds, result.isAdmin);
-        }
-
-      } catch ({ response }) {
-        const message = response.data.message;
-        dispatch({ type: SET_ALERT, payload: { text: message, type: response.status } });
-      }
-      if (isAdmin) { window.location.href = '/dashboard'; }
-    }
-  }
-
-  const registerSubmit = async () => {
-    setIsResgister(true);
-    if (userData.login.length && (userData.password.length >= 6) && userData.email.length) {
-      try {
-        const data = await registerUser(userData);
-        const result = data.data;
-
-        if (result) { dispatch({ type: SET_ALERT, payload: { text: result.message, type: 200 } }) }
-      } catch ({ response }) {
-        const message = response.data.message;
-        dispatch({ type: SET_ALERT, payload: { text: message, type: response.status } });
-      }
-    }
-  }
+const AuthPage = ({ isAdmin, userData, fieldChanged, auth, isRegister, loginSubmit, registerSubmit }) => {
 
   return (
     <>
       <h2 className="text-3xl uppercase font-bold leading-tight font-heading text-center mt-2 w-full md:w-auto md:text-left">
         {isAdmin ? "Вход для администратора" : "Вход"}
       </h2>
-      <div style={{top: "40%"}} className="w-full m-auto absolute left-0 right-0 max-w-xs page-enter">
+      <div style={{ top: "40%" }} className="w-full m-auto absolute left-0 right-0 max-w-xs page-enter">
 
         <form
           className="bg-white shadow-md rounded p-8 mb-4"
@@ -129,3 +82,5 @@ export const AuthPage = ({ isAdmin }) => {
     </>
   )
 }
+
+export default AuthPage;
